@@ -1,8 +1,11 @@
 mod config;
 pub use config::{AppConfig, read_config};
 
-use log::LevelFilter;
+use crate::database;
+
+use log::{LevelFilter, info};
 use chrono::Local;
+use diesel::pg::PgConnection;
 
 use std::env;
 use std::io::Write;
@@ -26,12 +29,7 @@ impl From<&str> for BlogEnv {
     }
 }
 
-pub fn initialize() {
-    init_logging();
-    let app_config = init_config();
-}
-
-fn init_logging() {
+pub fn init_logging() {
     env_logger::Builder::new()
         .format(|buf, record| {
             writeln!(buf, 
@@ -43,28 +41,40 @@ fn init_logging() {
         })
         .filter(None, LevelFilter::Info)
         .init();
+    info!("Successfully init logging");
 }
 
-fn init_config() -> Result<AppConfig> {
-    let blog_env_str = if let Ok(blog_env) = env::var("BLOG_ENV") {
-        blog_env
-    } else {
-        String::from("development")
+pub fn init_config() -> Result<AppConfig> {
+    let blog_env = match env::var("BLOG_ENV") {
+        Ok(blog_env) => BlogEnv::from(blog_env.as_str()),
+        #[cfg(debug_assertions)]
+        _ => BlogEnv::Development,
+        #[cfg(not(debug_assertions))]
+        _ => BlogEnv::Production
     };
 
-    let blog_env = BlogEnv::from(blog_env_str.as_str());
-
-    let app_configs = read_config().or_else(|config_error| Err(Error::Config(config_error)))?;
+    let app_configs = read_config()
+        .or_else(|config_error| Err(Error::Config(config_error)))?;
     
+    info!("Successfully init config");
+
     Ok(match blog_env {
         BlogEnv::Development => app_configs.development,
         BlogEnv::Production => app_configs.production
     })
 }
 
+pub fn init_database(url: String) -> Result<PgConnection> {
+    let pg_connection = database::establish_connection(url);
+    database::embed_migration(&pg_connection)
+        .or_else(|database_error| Err(Error::Database(database_error)))?;
+    Ok(pg_connection)
+}
+
 #[derive(Debug)]
 pub enum Error {
     Config(config::Error),
+    Database(database::Error),
 }
 
 impl error::Error for Error { }
@@ -75,6 +85,7 @@ impl fmt::Display for Error {
 
         let message = match &self {
             Config(config_error) => format!("{}", config_error),
+            Database(database_error) => format!("{}", database_error)
         };
 
         write!(f, "{}", message)

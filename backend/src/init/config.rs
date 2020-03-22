@@ -16,12 +16,40 @@ pub struct AppConfigs {
 #[derive(Deserialize)]
 pub struct AppConfig {
     pub server: ServerConfig,
+    pub database: DatabaseConfig
 }
 
 #[derive(Deserialize)]
 pub struct ServerConfig {
     pub address: String,
     pub port: usize,
+}
+
+impl ServerConfig {
+    pub fn to_socket(&self) -> String {
+        format!("{}:{}", self.address, self.port)
+    }
+}
+
+#[derive(Deserialize)]
+pub struct DatabaseConfig {
+    pub username: String,
+    pub password: String,
+    pub address: String,
+    pub port: usize,
+    pub database_name: String,
+}
+
+impl DatabaseConfig {
+    pub fn to_url(&self) -> String {
+        format!("postgresql://{}:{}@{}:{}/{}",
+            self.username,
+            self.password,
+            self.address,
+            self.port,
+            self.database_name
+        )
+    }
 }
 
 // read server config from config.toml

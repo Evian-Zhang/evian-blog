@@ -1,5 +1,5 @@
 [package]
-name = "blog-backend"
+name = "backend"
 version = "0.1.0"
 authors = ["Evian-Zhang <evianzhang1999@163.com>"]
 edition = "2018"
@@ -10,6 +10,9 @@ edition = "2018"
 log = "0.4"
 env_logger = "0.7"
 chrono = "0.4"
+diesel = { version = "1.0", features = ["postgres"] }
+dotenv = "0.9"
+diesel_migrations = "1.4"
 actix-web = "2.0"
 actix-rt = "1.0"
 serde = { version = "1.0", features = ["derive"] }
