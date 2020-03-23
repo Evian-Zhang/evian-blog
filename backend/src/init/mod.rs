@@ -2,10 +2,10 @@ mod config;
 pub use config::{AppConfig, read_config};
 
 use crate::database;
+pub use database::DbPool;
 
 use log::{LevelFilter, info};
 use chrono::Local;
-use diesel::pg::PgConnection;
 
 use std::env;
 use std::io::Write;
@@ -53,8 +53,7 @@ pub fn init_config() -> Result<AppConfig> {
         _ => BlogEnv::Production
     };
 
-    let app_configs = read_config()
-        .or_else(|config_error| Err(Error::Config(config_error)))?;
+    let app_configs = read_config()?;
     
     info!("Successfully init config");
 
@@ -64,11 +63,11 @@ pub fn init_config() -> Result<AppConfig> {
     })
 }
 
-pub fn init_database(url: String) -> Result<PgConnection> {
-    let pg_connection = database::establish_connection(url);
-    database::embed_migration(&pg_connection)
-        .or_else(|database_error| Err(Error::Database(database_error)))?;
-    Ok(pg_connection)
+pub fn init_database(url: String) -> Result<DbPool> {
+    let db_pool = database::create_connection_pool(url);
+    let pg_connection = database::get_connection(&db_pool)?;
+    database::embed_migration(&pg_connection)?;
+    Ok(db_pool)
 }
 
 #[derive(Debug)]
@@ -89,5 +88,17 @@ impl fmt::Display for Error {
         };
 
         write!(f, "{}", message)
+    }
+}
+
+impl From<config::Error> for Error {
+    fn from(config_error: config::Error) -> Error {
+        Error::Config(config_error)
+    }
+}
+
+impl From<database::Error> for Error {
+    fn from(database_error: database::Error) -> Error {
+        Error::Database(database_error)
     }
 }

@@ -29,8 +29,8 @@ async fn main() -> std::io::Result<()> {
     };
 
     let database_url = app_config.database.to_url();
-    let pg_connection = match init::init_database(database_url) {
-        Ok(pg_connection) => pg_connection,
+    let db_pool = match init::init_database(database_url) {
+        Ok(db_pool) => db_pool,
         Err(error) => {
             error!("{}", error);
             std::process::exit(1);
@@ -39,9 +39,13 @@ async fn main() -> std::io::Result<()> {
 
     // init server
     let server_socket = app_config.server.to_socket();
-    HttpServer::new(|| {
+    HttpServer::new(move || {
         App::new()
-            .service(web::scope("/api/v1").service(index))
+            .service(web::scope("/api/v1")
+                // Application data does not need to be `Send` or `Sync`. Internally `Data` type uses `Arc`. If your data implements `Send` + `Sync` trait you can use `web::Data::new()` and avoid double `Arc`
+                .data(db_pool.clone())
+                .service(index)
+            )
     })
     .bind(&server_socket)?
     .run()
