@@ -56,7 +56,7 @@ impl DatabaseConfig {
 pub fn read_config() -> Result<AppConfigs> {
     let config_path = PathBuf::from("config.toml");
     let config_str = fs::read_to_string(config_path).or(Err(Error::ConfigNotFound))?;
-    toml::from_str(&config_str).or_else(|toml_error| Err(Error::WrongConfigSyntax(toml_error)))
+    toml::from_str(&config_str).map_err(|toml_error| Error::WrongConfigSyntax(toml_error))
 }
 
 #[derive(Debug)]

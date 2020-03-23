@@ -1,5 +1,6 @@
 mod init;
 mod database;
+mod routes;
 
 use log::{error};
 use actix_web::{web, App, HttpResponse, HttpServer, Responder, get};
@@ -8,11 +9,6 @@ use actix_web::{web, App, HttpResponse, HttpServer, Responder, get};
 extern crate diesel_migrations;
 #[macro_use]
 extern crate diesel;
-
-#[get("/hello")]
-async fn index() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
-}
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
@@ -28,6 +24,7 @@ async fn main() -> std::io::Result<()> {
         }
     };
 
+    // init database
     let database_url = app_config.database.to_url();
     let db_pool = match init::init_database(database_url) {
         Ok(db_pool) => db_pool,

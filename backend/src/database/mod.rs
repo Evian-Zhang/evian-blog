@@ -1,7 +1,9 @@
 pub mod schema;
 pub mod models;
+pub mod actions;
 
 use log::{info, warn};
+use diesel::prelude::*;
 use diesel::pg::PgConnection;
 use diesel::r2d2::{self, ConnectionManager, PooledConnection};
 
@@ -10,7 +12,7 @@ use std::fmt;
 use std::time::Duration;
 
 pub type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
-type PooledPgConnection = PooledConnection<ConnectionManager<PgConnection>>;
+pub type PooledPgConnection = PooledConnection<ConnectionManager<PgConnection>>;
 type Result<T> = std::result::Result<T, Error>;
 
 static CONNECTION_TIMEOUT: u64 = 15;
@@ -38,7 +40,7 @@ pub fn create_connection_pool(url: String) -> DbPool {
 pub fn embed_migration(pg_connection: &PgConnection) -> Result<()> {
     embed_migrations!();
     embedded_migrations::run_with_output(pg_connection, &mut std::io::stdout())
-        .or_else(|migration_error| Err(Error::MigrationError(migration_error)))
+        .map_err(|migration_error| Error::MigrationError(migration_error))
 }
 
 pub fn get_connection(db_pool: &DbPool) -> Result<PooledPgConnection> {
@@ -56,7 +58,8 @@ pub fn get_connection(db_pool: &DbPool) -> Result<PooledPgConnection> {
 #[derive(Debug)]
 pub enum Error {
     CannotGetConnectionFromPool,
-    MigrationError(diesel_migrations::RunMigrationsError)
+    MigrationError(diesel_migrations::RunMigrationsError),
+    SqlFailed(diesel::result::Error)
 }
 
 impl error::Error for Error { }
@@ -68,10 +71,9 @@ impl fmt::Display for Error {
         let message = match &self {
             CannotGetConnectionFromPool => String::from("Cannot get connection from pool."),
             MigrationError(migration_error) => format!("Migration error: {}", migration_error),
+            SqlFailed(sql_error) => format!("SQL error: {}", sql_error),
         };
 
         write!(f, "{}", message)
     }
 }
-
-
