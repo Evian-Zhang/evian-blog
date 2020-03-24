@@ -3,7 +3,6 @@ pub mod models;
 pub mod actions;
 
 use log::{info, warn};
-use diesel::prelude::*;
 use diesel::pg::PgConnection;
 use diesel::r2d2::{self, ConnectionManager, PooledConnection};
 
@@ -48,7 +47,7 @@ pub fn get_connection(db_pool: &DbPool) -> Result<PooledPgConnection> {
         match db_pool.get() {
             Ok(pg_connection) => return Ok(pg_connection),
             Err(error) => {
-                warn!("Cannot get a connection from connection pool due to {}, retried {} times...", error, count);
+                warn!("Cannot get a connection from connection pool due to {}, tried {} times...", error, count + 1);
             }
         }
     }
