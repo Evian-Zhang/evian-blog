@@ -3,7 +3,7 @@ mod database;
 mod routes;
 
 use log::{error};
-use actix_web::{web, App, HttpResponse, HttpServer, Responder, get};
+use actix_web::{web, middleware, App, HttpServer};
 
 #[macro_use]
 extern crate diesel_migrations;
@@ -38,10 +38,13 @@ async fn main() -> std::io::Result<()> {
     let server_socket = app_config.server.to_socket();
     HttpServer::new(move || {
         App::new()
+            .wrap(middleware::Logger::default())
             .service(web::scope("/api/v1")
                 // Application data does not need to be `Send` or `Sync`. Internally `Data` type uses `Arc`. If your data implements `Send` + `Sync` trait you can use `web::Data::new()` and avoid double `Arc`
                 .data(db_pool.clone())
-                .service(routes::get_tags)
+                .service(routes::get_all_tags)
+                .service(routes::get_all_series)
+                .service(routes::get_all_articles_of_tag)
             )
     })
     .bind(&server_socket)?

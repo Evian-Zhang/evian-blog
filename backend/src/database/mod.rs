@@ -58,7 +58,6 @@ pub fn get_connection(db_pool: &DbPool) -> Result<PooledPgConnection> {
 pub enum Error {
     CannotGetConnectionFromPool,
     MigrationError(diesel_migrations::RunMigrationsError),
-    SqlFailed(diesel::result::Error)
 }
 
 impl error::Error for Error { }
@@ -70,7 +69,6 @@ impl fmt::Display for Error {
         let message = match &self {
             CannotGetConnectionFromPool => String::from("Cannot get connection from pool."),
             MigrationError(migration_error) => format!("Migration error: {}", migration_error),
-            SqlFailed(sql_error) => format!("SQL error: {}", sql_error),
         };
 
         write!(f, "{}", message)
