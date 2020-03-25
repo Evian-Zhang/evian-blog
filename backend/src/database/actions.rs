@@ -22,6 +22,7 @@ pub fn get_all_series(pg_connection: &PgConnection) -> Result<Vec<String>> {
         .map_err(|sql_error| Error::SqlFailed(sql_error))
 }
 
+// return all articles whose tag_name is `tag_name` in their `publish_date`'s descending order
 pub fn get_all_articles_of_tag(pg_connection: &PgConnection, tag_name: &String) -> Result<Vec<String>> {
     use super::schema::{tags, articles, tag_with_articles};
 
@@ -33,10 +34,12 @@ pub fn get_all_articles_of_tag(pg_connection: &PgConnection, tag_name: &String) 
                 .and(tags::dsl::name.eq(tag_name))
             )
         )
+        .order(articles::dsl::publish_date.desc())
         .load::<String>(pg_connection)
         .map_err(|sql_error| Error::SqlFailed(sql_error))
 }
 
+// return all articles whose series_name is `series_name` in their `series_index`'s ascending order
 pub fn get_all_articles_of_series(pg_connection: &PgConnection, series_name: &String) -> Result<Vec<String>> {
     use super::schema::{series, articles};
 
@@ -47,13 +50,32 @@ pub fn get_all_articles_of_series(pg_connection: &PgConnection, series_name: &St
                 .and(series::dsl::name.eq(&series_name))
             )
         )
+        .order(articles::dsl::series_index.asc())
         .load::<String>(pg_connection)
         .map_err(|sql_error| Error::SqlFailed(sql_error))
+}
+
+pub fn get_article(pg_connection: &PgConnection, article_title: &String) -> Result<Option<super::models::Article>> {
+    use super::schema::articles::dsl::*;
+
+    match articles
+        .filter(title.eq(article_title))
+        .load::<super::models::Article>(pg_connection) {
+        Ok(mut article_vec) => {
+            if article_vec.len() > 1 {
+                Err(Error::NonUnique(format!("Querying articles with article_title: {}", article_title)))
+            } else {
+                Ok(article_vec.pop())
+            }
+        },
+        Err(error) => Err(Error::SqlFailed(error))
+    }
 }
 
 #[derive(Debug)]
 pub enum Error {
     SqlFailed(diesel::result::Error),
+    NonUnique(String)
 }
 
 impl error::Error for Error { }
@@ -64,6 +86,7 @@ impl fmt::Display for Error {
 
         let message = match &self {
             SqlFailed(sql_error) => format!("SQL error: {}", sql_error),
+            NonUnique(description) => format!("The result is non-unique: {}", description),
         };
 
         write!(f, "{}", message)

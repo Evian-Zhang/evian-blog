@@ -8,6 +8,8 @@ CREATE TABLE articles (
     series_index INTEGER
 );
 
+CREATE INDEX articles_series_id ON articles(series_id);
+
 CREATE FUNCTION series_id_and_index_guard() RETURNS trigger AS $series_id_and_index_guard$
     BEGIN
         IF (NEW.series_id IS NULL AND NEW.series_index IS NOT NULL) OR (New.series_id IS NOT NULL AND NEW.series_index IS NULL) THEN

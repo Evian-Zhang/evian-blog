@@ -45,6 +45,8 @@ async fn main() -> std::io::Result<()> {
                 .service(routes::get_all_tags)
                 .service(routes::get_all_series)
                 .service(routes::get_all_articles_of_tag)
+                .service(routes::get_all_articles_of_series)
+                .service(routes::get_article_of_title)
             )
     })
     .bind(&server_socket)?
