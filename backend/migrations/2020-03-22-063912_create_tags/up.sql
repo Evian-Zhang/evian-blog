@@ -1,5 +1,5 @@
 CREATE TABLE tags (
     id SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL
+    name VARCHAR NOT NULL UNIQUE
 );
 CREATE INDEX tag_name ON tags(name);
