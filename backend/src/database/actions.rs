@@ -9,7 +9,8 @@ type Result<T> = std::result::Result<T, Error>;
 pub fn get_all_tags(pg_connection: &PgConnection) -> Result<Vec<super::models::Tag>> {
     use super::schema::tags::dsl::*;
 
-    tags.load::<super::models::Tag>(pg_connection)
+    tags.order(article_count.desc())
+        .load::<super::models::Tag>(pg_connection)
         .map_err(|sql_error| Error::SqlFailed(sql_error))
 }
 
@@ -17,6 +18,7 @@ pub fn get_all_series(pg_connection: &PgConnection) -> Result<Vec<String>> {
     use super::schema::series::dsl::*;
 
     series.select(name)
+        .order(name.asc())
         .load::<String>(pg_connection)
         .map_err(|sql_error| Error::SqlFailed(sql_error))
 }
