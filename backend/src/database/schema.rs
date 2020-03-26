@@ -4,7 +4,6 @@ table! {
         title -> Varchar,
         body -> Varchar,
         publish_date -> Timestamptz,
-        last_revise_date -> Timestamptz,
         series_id -> Nullable<Int4>,
         series_index -> Nullable<Int4>,
     }
@@ -28,6 +27,7 @@ table! {
     tags (id) {
         id -> Int4,
         name -> Varchar,
+        article_count -> Int4,
     }
 }
 

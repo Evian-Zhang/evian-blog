@@ -3,7 +3,6 @@ CREATE TABLE articles (
     title VARCHAR NOT NULL UNIQUE,
     body VARCHAR NOT NULL,
     publish_date TIMESTAMPTZ NOT NULL,
-    last_revise_date TIMESTAMPTZ NOT NULL,
     series_id INTEGER REFERENCES series(id),
     series_index INTEGER
 );

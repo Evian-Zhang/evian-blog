@@ -6,11 +6,10 @@ use std::fmt;
 
 type Result<T> = std::result::Result<T, Error>;
 
-pub fn get_all_tags(pg_connection: &PgConnection) -> Result<Vec<String>> {
+pub fn get_all_tags(pg_connection: &PgConnection) -> Result<Vec<super::models::Tag>> {
     use super::schema::tags::dsl::*;
 
-    tags.select(name)
-        .load::<String>(pg_connection)
+    tags.load::<super::models::Tag>(pg_connection)
         .map_err(|sql_error| Error::SqlFailed(sql_error))
 }
 
