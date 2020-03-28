@@ -66,3 +66,13 @@ pub async fn get_article_of_title(db_pool: web::Data<DbPool>, article_title: web
 
     Ok(HttpResponse::Ok().json(article))
 }
+
+#[get("/articles")]
+pub async fn get_all_articles(db_pool: web::Data<DbPool>) -> Result<HttpResponse, HttpResponse> {
+    let pg_connection = get_connection(&db_pool).map_err(map_to_internal_server_error)?;
+    let articles = web::block(move || actions::get_all_articles(&pg_connection))
+        .await
+        .map_err(map_to_internal_server_error)?;
+
+    Ok(HttpResponse::Ok().json(articles))
+}

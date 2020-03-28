@@ -36,12 +36,9 @@ mod my_date_format {
     use chrono::{DateTime, Utc};
     use serde::{self, Serializer};
 
-    const FORMAT: &'static str = "%Y-%m-%d %H:%M:%S";
-
     pub fn serialize<S>(date: &DateTime<Utc>, serializer: S) -> Result<S::Ok, S::Error>
         where
             S: Serializer {
-        let s = format!("{}", date.format(FORMAT));
-        serializer.serialize_str(&s)
+        serializer.serialize_i64(date.timestamp())
     }
 }

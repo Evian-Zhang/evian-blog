@@ -73,6 +73,15 @@ pub fn get_article(pg_connection: &PgConnection, article_title: &String) -> Resu
     }
 }
 
+pub fn get_all_articles(pg_connection: &PgConnection) -> Result<Vec<super::models::Article>> {
+    use super::schema::articles::dsl::*;
+
+    articles
+        .order(publish_date.desc())
+        .load::<super::models::Article>(pg_connection)
+        .map_err(|sql_error| Error::SqlFailed(sql_error))
+}
+
 #[derive(Debug)]
 pub enum Error {
     SqlFailed(diesel::result::Error),
