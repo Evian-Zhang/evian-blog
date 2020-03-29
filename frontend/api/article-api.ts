@@ -1,5 +1,5 @@
 import { ENDPOINT } from '../utils/config'
-import { Article, toArticle, toArticles } from '../interfaces'
+import { Article } from '../interfaces'
 
 import fetch from 'node-fetch'
 
@@ -8,7 +8,7 @@ async function getArticles(): Promise<Article[]> {
     if (res.status !== 200) {
         return Promise.reject(res.statusText);
     }
-    const data = await toArticles(res);
+    const data = await res.json();
     return Promise.resolve(data);
 }
 
@@ -17,7 +17,7 @@ async function getArticle(articleTitle: string): Promise<Article> {
     if (res.status != 200) {
         return Promise.reject(res.statusText);
     }
-    const data = await toArticle(res);
+    const data = await res.json();
     return Promise.resolve(data);
 }
 
