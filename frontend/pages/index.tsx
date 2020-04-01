@@ -7,15 +7,13 @@ import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 
-import { GetServerSideProps } from 'next'
+import Link from 'next/link'
 
 import MyHead from '../components/head';
-import { getArticles } from '../api/article-api'
 
 const useStyles = makeStyles({
-    card: {
-        textAlign: 'center',
-        // minHeight: '100'
+    a: {
+        textDecoration: "none"
     }
 });
 
@@ -30,12 +28,34 @@ const Home = () => {
                     Evian张的博客
                 </Typography>
             </AppBar>
-            <Grid container justify='center'>
-                <Grid item xs={6}>
+            <Grid container flex-wrap='wrap' justify='space-around'>
+                <Grid item xs={3}>
+                    <Link href="/writings">
+                        <a className={classes.a} rel="noopener noreferrer">
+                            <Card>
+                                <CardContent>
+                                    <Typography align='center' variant='h6'>
+                                        我的创作
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </a>
+                    </Link>
+                </Grid>
+                <Grid item xs={3}>
                     <Card>
                         <CardContent>
                             <Typography align='center' variant='h6'>
-                                Hello<br/>There
+                                我的程序
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={3}>
+                    <Card>
+                        <CardContent>
+                            <Typography align='center' variant='h6'>
+                                我的简历
                             </Typography>
                         </CardContent>
                     </Card>
