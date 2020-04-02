@@ -1,7 +1,18 @@
 type Tag = {
     id: number,
     name: string,
-    article_count: string
+    articleCount: string
+}
+
+type ArticleMeta = {
+    title: string,
+    // unix timestamp
+    publishDate: number
+}
+
+type ArticleMetasWithPagination = {
+    articleMetas: ArticleMeta[],
+    totalPages: number
 }
 
 type Article = {
@@ -9,9 +20,9 @@ type Article = {
     title: string,
     body: string,
     // unix timestamp
-    publish_date: number,
-    series_id?: number,
-    series_index?: number
+    publishDate: number,
+    seriesId?: number,
+    seriesIndex?: number
 }
 
-export type { Tag, Article };
+export type { Tag, ArticleMeta, ArticleMetasWithPagination, Article };

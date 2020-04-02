@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
@@ -10,10 +9,12 @@ import CardContent from '@material-ui/core/CardContent'
 import Link from 'next/link'
 
 import MyHead from '../components/head';
+import MyHeader from '../components/header'
 
 const useStyles = makeStyles({
     a: {
-        textDecoration: "none"
+        textDecoration: "none",
+        color: "inherit"
     }
 });
 
@@ -23,11 +24,7 @@ const Home = () => {
     return (
         <div>
             <MyHead title="Evian张的博客" keywords="software,blog,Evian-Zhang" />
-            <AppBar position="static">
-                <Typography variant="h6">
-                    Evian张的博客
-                </Typography>
-            </AppBar>
+            <MyHeader/>
             <Grid container flex-wrap='wrap' justify='space-around'>
                 <Grid item xs={3}>
                     <Link href="/writings">

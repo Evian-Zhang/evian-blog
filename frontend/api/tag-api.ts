@@ -1,5 +1,5 @@
 import { ENDPOINT } from '../utils/config'
-import { Tag } from '../interfaces'
+import { Tag, ArticleMetasWithPagination } from '../interfaces'
 
 import fetch from 'node-fetch'
 
@@ -12,7 +12,7 @@ async function getTags(): Promise<Tag[]> {
     return Promise.resolve(data);
 }
 
-async function getArticlesOfTag(tagName: string): Promise<string[]> {
+async function getArticlesOfTag(tagName: string): Promise<ArticleMetasWithPagination> {
     const res = await fetch(ENDPOINT + '/api/v1/tag/' + tagName);
     if (res.status !== 200) {
         return Promise.reject(res.statusText);

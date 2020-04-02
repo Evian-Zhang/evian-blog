@@ -1,9 +1,9 @@
 import { ENDPOINT } from '../utils/config'
-import { Article } from '../interfaces'
+import { Article, ArticleMetasWithPagination } from '../interfaces'
 
 import fetch from 'node-fetch'
 
-async function getArticles(): Promise<Article[]> {
+async function getArticleMetas(): Promise<ArticleMetasWithPagination> {
     const res = await fetch(ENDPOINT + '/api/v1/articles');
     if (res.status !== 200) {
         return Promise.reject(res.statusText);
@@ -21,4 +21,4 @@ async function getArticle(articleTitle: string): Promise<Article> {
     return Promise.resolve(data);
 }
 
-export { getArticle, getArticles };
+export { getArticle, getArticleMetas };
