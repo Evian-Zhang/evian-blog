@@ -1,6 +1,8 @@
 mod init;
 mod database;
-mod routes;
+mod server;
+
+use server::routes;
 
 use log::{error};
 use actix_web::{web, middleware, App, HttpServer};

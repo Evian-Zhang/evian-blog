@@ -16,6 +16,7 @@ pub struct Series {
 }
 
 #[derive(Queryable, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Article {
     pub id: i32,
     pub title: String,
