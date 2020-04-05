@@ -1,1 +1,1 @@
-DROP TABLE `series`;
+DROP TABLE series;

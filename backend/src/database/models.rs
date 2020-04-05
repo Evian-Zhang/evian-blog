@@ -2,17 +2,19 @@ use chrono::{DateTime, Utc};
 use serde::Serialize;
 
 // Using `#[derive(Queryable)]` assumes that the order of fields on the target struct matches the columns in the corresponding table, so make sure to define them in the order seen in the `schema.rs` file
-#[derive(Queryable, Serialize)]
+#[derive(Queryable)]
 pub struct Tag {
     pub id: i32,
     pub name: String,
     pub article_count: i32,
+    pub last_update_date: DateTime<Utc>
 }
 
 #[derive(Queryable)]
 pub struct Series {
     pub id: i32,
     pub name: String,
+    pub last_update_date: DateTime<Utc>
 }
 
 #[derive(Queryable, Serialize)]
@@ -23,6 +25,8 @@ pub struct Article {
     pub body: String,
     #[serde(with = "my_date_format")]
     pub publish_date: DateTime<Utc>,
+    #[serde(with = "my_date_format")]
+    pub last_update_date: DateTime<Utc>,
     pub series_id: Option<i32>,
     pub series_index: Option<i32>,
 }

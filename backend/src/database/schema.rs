@@ -4,6 +4,7 @@ table! {
         title -> Varchar,
         body -> Varchar,
         publish_date -> Timestamptz,
+        last_update_date -> Timestamptz,
         series_id -> Nullable<Int4>,
         series_index -> Nullable<Int4>,
     }
@@ -13,6 +14,7 @@ table! {
     series (id) {
         id -> Int4,
         name -> Varchar,
+        last_update_date -> Timestamptz,
     }
 }
 
@@ -28,6 +30,7 @@ table! {
         id -> Int4,
         name -> Varchar,
         article_count -> Int4,
+        last_update_date -> Timestamptz,
     }
 }
 

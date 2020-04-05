@@ -1,6 +1,7 @@
 pub mod schema;
 pub mod models;
 pub mod actions;
+pub mod dgraph_ops;
 
 use log::{info, warn};
 use diesel::pg::PgConnection;
