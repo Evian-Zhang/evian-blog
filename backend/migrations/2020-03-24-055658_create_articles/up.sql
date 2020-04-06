@@ -1,6 +1,6 @@
 CREATE TABLE articles (
     id SERIAL PRIMARY KEY,
-    title VARCHAR NOT NULL UNIQUE,
+    title VARCHAR NOT NULL,
     body VARCHAR NOT NULL,
     publish_date TIMESTAMPTZ NOT NULL,
     last_update_date TIMESTAMPTZ NOT NULL,
