@@ -9,22 +9,17 @@ type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Deserialize, Debug)]
 struct ApiRawError {
-    message: String,
-    #[serde(flatten)]
-    remain: HashMap<String, serde_json::value::Value>,
+    message: String
 }
 
 #[derive(Deserialize, Debug)]
 struct ApiError {
-    errors: Vec<ApiRawError>,
-    #[serde(flatten)]
-    remain: HashMap<String, serde_json::value::Value>
+    errors: Vec<ApiRawError>
 }
 
 #[derive(Deserialize)]
 struct QueryResult<T> {
-    data: HashMap<String, Vec<T>>,
-    remain: HashMap<String, serde_json::value::Value>
+    data: HashMap<String, Vec<T>>
 }
 
 pub async fn alter(url: String) -> Result<()> {
