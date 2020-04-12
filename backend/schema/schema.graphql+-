@@ -1,0 +1,29 @@
+tag.name: string @index(hash) .
+series.name: string @index(hash) .
+article.title: string @index(hash) .
+article.body: string .
+article.publish_date: int @index(int) .
+article.last_revise_date: int @index(int) .
+article.tags: [uid] @reverse .
+article.series: uid @reverse .
+article.series_index: int .
+
+type Tag {
+    tag.name
+    <~article.tags>
+}
+
+type Series {
+    series.name
+    <~article.series>
+}
+
+type Article {
+    article.title
+    article.body
+    article.publish_date
+    article.last_revise_date
+    article.tags
+    article.series
+    article.series_index
+}

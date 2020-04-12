@@ -1,5 +1,5 @@
-use diesel::prelude::*;
-use diesel::pg::PgConnection;
+use super::models::*;
+
 use chrono::{DateTime, Utc};
 
 use std::error;
@@ -7,13 +7,14 @@ use std::fmt;
 
 type Result<T> = std::result::Result<T, Error>;
 
-pub fn get_all_tags(pg_connection: &PgConnection) -> Result<Vec<super::models::Tag>> {
-    use super::schema::tags::dsl::*;
-
-    tags.select((id, name, article_count, last_update_date))
-        .order(last_update_date.desc())
-        .load::<super::models::Tag>(pg_connection)
-        .map_err(|sql_error| Error::SqlFailed(sql_error))
+pub fn get_all_tags(url: &str) -> Result<Vec<TagMeta>> {
+    let query = "\
+query {
+    queryTag {
+        name
+        
+    }
+}";
 }
 
 pub fn get_all_series(pg_connection: &PgConnection) -> Result<Vec<super::models::Series>> {

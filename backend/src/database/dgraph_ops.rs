@@ -1,5 +1,5 @@
 use actix_web::client::Client;
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 
 use std::collections::HashMap;
 use std::error;
@@ -12,66 +12,50 @@ struct ApiRawError {
     message: String
 }
 
-#[derive(Deserialize, Debug)]
-struct ApiError {
-    errors: Vec<ApiRawError>
-}
-
 #[derive(Deserialize)]
-struct QueryResult<T> {
-    data: HashMap<String, Vec<T>>
+struct GraphqlResponse<T> {
+    data: Option<T>,
+    errors: Option<Vec<ApiRawError>>
 }
 
-pub async fn alter(url: String) -> Result<()> {
-    let response = Client::default()
-        .post(url + "/alter")
-        .send()
-        .await
-        .or(Err(Error::SendError))?;
-    match response.status().as_u16() {
-        200 => Ok(()),
-        400 => {
-            if let Ok(api_error) = response.json::<ApiError>().await {
-                Err(Error::Api(api_error))
-            } else {
-                Err(Error::Unexpected)
-            }
-        }
-        _ => Err(Error::Unexpected)
-    }
+#[derive(Serialize)]
+pub struct GraphqlQueryBody {
+    query: &'static str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    variables: Option<HashMap<String, serde_json::Value>>
 }
 
-pub async fn query<T: serde::de::DeserializeOwned>(url: String, body: String) -> Result<HashMap<String, Vec<T>>> {
+pub async fn query<T: serde::de::DeserializeOwned>(url: &str, body: GraphqlQueryBody) -> Result<T> {
     let response = Client::default()
-        .post(url + "/query")
+        .post(url)
         .header("Content-Type", "application/graphql+-")
-        .send_body(body)
+        .send_body(serde_json::to_string(&body).unwrap())
         .await
         .or(Err(Error::SendError))?;
-    match response.status().as_u16() {
-        200 => {
-            if let Ok(query_result) = response.json::<QueryResult<T>>().await {
-                Ok(query_result.data)
-            } else {
-                Err(Error::Unexpected)
-            }
-        },
-        400 => {
-            if let Ok(api_error) = response.json::<ApiError>().await {
-                Err(Error::Api(api_error))
+    if response.status().is_success() {
+        let graphql_response = response.json::<GraphqlResponse<T>>()
+            .await
+            .map_err(|deserialize_error| Error::Deserialize(deserialize_error))?;
+        if let Some(errors) = graphql_response.errors {
+            Err(Error::Api(errors))
+        } else {
+            if let Some(data) = graphql_response.data {
+                Ok(data)
             } else {
                 Err(Error::Unexpected)
             }
         }
-        _ => Err(Error::Unexpected)
+    } else {
+        Err(Error::BadResponse(response.status().as_u16()))
     }
 }
 
 #[derive(Debug)]
 pub enum Error {
     SendError,
-    Api(ApiError),
-    Deserialize(serde_json::error::Error),
+    BadResponse(u16),
+    Api(Vec<ApiRawError>),
+    Deserialize(awc::error::JsonPayloadError),
     Unexpected
 }
 
@@ -83,7 +67,8 @@ impl fmt::Display for Error {
 
         let message = match &self {
             SendError => String::from("Send error"),
-            Api(api_error) => format!("{:?}", api_error.errors),
+            BadResponse(status_code) => format!("Bad response with status code: {}", status_code),
+            Api(api_error) => format!("{:?}", api_error),
             Deserialize(de_error) => format!("Deserialize error: {}", de_error),
             Unexpected => String::from("Unexpected error")
         };
