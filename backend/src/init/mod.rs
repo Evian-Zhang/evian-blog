@@ -1,8 +1,8 @@
 mod config;
-pub use config::{AppConfig, read_config};
+pub use config::{AppConfig, read_config, DatabaseConfig};
 
 use crate::database;
-pub use database::DbPool;
+// pub use database::DbPool;
 
 use log::{LevelFilter, info};
 use chrono::Local;
@@ -63,17 +63,17 @@ pub fn init_config() -> Result<AppConfig> {
     })
 }
 
-pub fn init_database(url: String) -> Result<DbPool> {
-    let db_pool = database::create_connection_pool(url);
-    let pg_connection = database::get_connection(&db_pool)?;
-    database::embed_migration(&pg_connection)?;
-    Ok(db_pool)
-}
+// pub fn init_database(url: String) -> Result<DbPool> {
+//     let db_pool = database::create_connection_pool(url);
+//     let pg_connection = database::get_connection(&db_pool)?;
+//     database::embed_migration(&pg_connection)?;
+//     Ok(db_pool)
+// }
 
 #[derive(Debug)]
 pub enum Error {
     Config(config::Error),
-    Database(database::Error),
+    // Database(database::Error),
 }
 
 impl error::Error for Error { }
@@ -84,7 +84,7 @@ impl fmt::Display for Error {
 
         let message = match &self {
             Config(config_error) => format!("{}", config_error),
-            Database(database_error) => format!("{}", database_error)
+            // Database(database_error) => format!("{}", database_error)
         };
 
         write!(f, "{}", message)
@@ -97,8 +97,8 @@ impl From<config::Error> for Error {
     }
 }
 
-impl From<database::Error> for Error {
-    fn from(database_error: database::Error) -> Error {
-        Error::Database(database_error)
-    }
-}
+// impl From<database::Error> for Error {
+//     fn from(database_error: database::Error) -> Error {
+//         Error::Database(database_error)
+//     }
+// }

@@ -1,7 +1,35 @@
 // pub mod schema;
-// pub mod models;
+pub mod models;
+use models::*;
 // pub mod actions;
-pub mod dgraph_ops;
+pub mod neo4j_ops;
+
+use crate::init::DatabaseConfig;
+
+use std::error;
+use std::fmt;
+
+type Result<T> = std::result::Result<T, Error>;
+
+pub struct Database {
+    url: String,
+    authorization: String
+}
+
+impl Database {
+    pub fn new(config: DatabaseConfig) -> Database {
+        let url = format!("{}:{}", config.address, config.port);
+        Database {
+            url,
+            authorization: base64::encode(format!("{}:{}", config.username, config.password))
+        }
+    }
+
+    pub async fn get_all_tags(&self) -> Result<Vec<TagMeta>> {
+        
+        Ok(())
+    }
+}
 
 // use log::{info, warn};
 // use diesel::pg::PgConnection;
@@ -55,23 +83,23 @@ pub mod dgraph_ops;
 //     Err(Error::CannotGetConnectionFromPool)
 // }
 
-// #[derive(Debug)]
-// pub enum Error {
-//     CannotGetConnectionFromPool,
-//     MigrationError(diesel_migrations::RunMigrationsError),
-// }
+#[derive(Debug)]
+pub enum Error {
+    CannotGetConnectionFromPool,
+    // MigrationError(diesel_migrations::RunMigrationsError),
+}
 
-// impl error::Error for Error { }
+impl error::Error for Error { }
 
-// impl fmt::Display for Error {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         use Error::*;
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        use Error::*;
 
-//         let message = match &self {
-//             CannotGetConnectionFromPool => String::from("Cannot get connection from pool."),
-//             MigrationError(migration_error) => format!("Migration error: {}", migration_error),
-//         };
+        let message = match &self {
+            CannotGetConnectionFromPool => String::from("Cannot get connection from pool."),
+            // MigrationError(migration_error) => format!("Migration error: {}", migration_error),
+        };
 
-//         write!(f, "{}", message)
-//     }
-// }
+        write!(f, "{}", message)
+    }
+}

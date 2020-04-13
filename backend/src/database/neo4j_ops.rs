@@ -13,37 +13,58 @@ struct ApiRawError {
 }
 
 #[derive(Deserialize)]
-struct GraphqlResponse<T> {
-    data: Option<T>,
-    errors: Option<Vec<ApiRawError>>
+struct Neo4jResponse<T> {
+    results: Vec<Neo4jResult<T>>,
+    errors: Vec<ApiRawError>
+}
+
+#[derive(Deserialize)]
+struct Neo4jResult<T> {
+    columns: Vec<String>,
+    data: Neo4jData<T>
+}
+
+#[derive(Deserialize)]
+struct Neo4jData<T> {
+    row: Vec<T>
 }
 
 #[derive(Serialize)]
-pub struct GraphqlQueryBody {
-    query: &'static str,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    variables: Option<HashMap<String, serde_json::Value>>
+pub struct Neo4jQueryBody {
+    statements: Vec<Neo4jStatement>
 }
 
-pub async fn query<T: serde::de::DeserializeOwned>(url: &str, body: GraphqlQueryBody) -> Result<T> {
-    let response = Client::default()
+#[derive(Serialize)]
+pub struct Neo4jStatement {
+    statement: &'static str,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    parameters: Option<HashMap<String, serde_json::Value>>
+}
+
+pub async fn query<T: serde::de::DeserializeOwned>(
+    url: &str,
+    client: &Client,
+    authorization: &str,
+    neo4j_statement: Neo4jStatement
+) -> Result<T> {
+    let query = Neo4jQueryBody {
+        statements: vec![neo4j_statement]
+    };
+    let mut response = client
         .post(url)
-        .header("Content-Type", "application/graphql+-")
-        .send_body(serde_json::to_string(&body).unwrap())
+        .header("Authorization", authorization)
+        .send_body(serde_json::to_string(&query).unwrap())
         .await
         .or(Err(Error::SendError))?;
     if response.status().is_success() {
-        let graphql_response = response.json::<GraphqlResponse<T>>()
+        let mut neo4j_response = response.json::<Neo4jResponse<T>>()
             .await
             .map_err(|deserialize_error| Error::Deserialize(deserialize_error))?;
-        if let Some(errors) = graphql_response.errors {
-            Err(Error::Api(errors))
+        if !neo4j_response.errors.is_empty() {
+            Err(Error::Api(neo4j_response.errors))
         } else {
-            if let Some(data) = graphql_response.data {
-                Ok(data)
-            } else {
-                Err(Error::Unexpected)
-            }
+            Ok(neo4j_response.results.pop().ok_or(Error::Unexpected)?
+                .data.row.pop().ok_or(Error::Unexpected)?)
         }
     } else {
         Err(Error::BadResponse(response.status().as_u16()))
