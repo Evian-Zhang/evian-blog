@@ -26,7 +26,9 @@ impl Database {
     }
 
     pub async fn get_all_tags(&self) -> Result<Vec<TagMeta>> {
-        
+        let statement = "\
+MATCH (tag:Tag: $tag_name)<-[:TAGS]-(article:Article)
+RETURN tag.name, collect(article.title), collect();";
         Ok(())
     }
 }

@@ -21,12 +21,12 @@ struct Neo4jResponse<T> {
 #[derive(Deserialize)]
 struct Neo4jResult<T> {
     columns: Vec<String>,
-    data: Neo4jData<T>
+    data: Vec<Neo4jData<T>>
 }
 
 #[derive(Deserialize)]
 struct Neo4jData<T> {
-    row: Vec<T>
+    row: T
 }
 
 #[derive(Serialize)]
@@ -46,7 +46,7 @@ pub async fn query<T: serde::de::DeserializeOwned>(
     client: &Client,
     authorization: &str,
     neo4j_statement: Neo4jStatement
-) -> Result<T> {
+) -> Result<Vec<T>> {
     let query = Neo4jQueryBody {
         statements: vec![neo4j_statement]
     };
@@ -63,8 +63,11 @@ pub async fn query<T: serde::de::DeserializeOwned>(
         if !neo4j_response.errors.is_empty() {
             Err(Error::Api(neo4j_response.errors))
         } else {
-            Ok(neo4j_response.results.pop().ok_or(Error::Unexpected)?
-                .data.row.pop().ok_or(Error::Unexpected)?)
+            Ok(neo4j_response.results
+                .pop().ok_or(Error::Unexpected)?
+                .data.into_iter()
+                .map(|neo4j_data| neo4j_data.row)
+                .collect::<Vec<_>>())
         }
     } else {
         Err(Error::BadResponse(response.status().as_u16()))
