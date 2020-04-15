@@ -42,9 +42,7 @@ pub struct DatabaseConfig {
 
 impl DatabaseConfig {
     pub fn to_url(&self) -> String {
-        format!("postgresql://{}:{}@{}:{}/{}",
-            self.username,
-            self.password,
+        format!("{}:{}/db/{}/tx/commit/",
             self.address,
             self.port,
             self.database_name

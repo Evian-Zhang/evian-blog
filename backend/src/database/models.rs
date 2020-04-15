@@ -1,32 +1,23 @@
-use serde::Deserialize;
+use serde::{Serialize, Deserialize};
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all(serialize = "camelCase"))]
 pub struct TagMeta {
     name: String,
     last_revise_date: u64,
     article_count: usize
 }
 
-#[derive(Deserialize)]
-pub struct Tag {
-    name: String,
-    articles: Vec<ArticleMeta>
-}
-
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all(serialize = "camelCase"))]
 pub struct SeriesMeta {
     name: String,
     last_revise_date: u64,
     article_count: usize
 }
 
-#[derive(Deserialize)]
-pub struct Series {
-    name: String,
-    articles: Vec<ArticleMeta>
-}
-
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all(serialize = "camelCase"))]
 pub struct ArticleMeta {
     title: String,
     publish_date: u64,
@@ -36,7 +27,15 @@ pub struct ArticleMeta {
     series_index: Option<usize>
 }
 
-#[derive(Deserialize)]
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all(serialize = "camelCase"))]
+pub struct ArticleMetaWithPagination {
+    pub page_count: usize,
+    pub article_metas: Vec<ArticleMeta>
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all(serialize = "camelCase"))]
 pub struct Article {
     title: String,
     body: String,

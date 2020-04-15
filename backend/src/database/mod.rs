@@ -1,94 +1,213 @@
-// pub mod schema;
 pub mod models;
-use models::*;
-// pub mod actions;
 pub mod neo4j_ops;
 
+use models::*;
+use neo4j_ops::Neo4jStatement;
 use crate::init::DatabaseConfig;
+
+use reqwest::Client;
 
 use std::error;
 use std::fmt;
 
 type Result<T> = std::result::Result<T, Error>;
 
+#[derive(Clone)]
 pub struct Database {
     url: String,
-    authorization: String
+    authorization: String,
+    client: Client
 }
 
 impl Database {
     pub fn new(config: DatabaseConfig) -> Database {
-        let url = format!("{}:{}", config.address, config.port);
         Database {
-            url,
-            authorization: base64::encode(format!("{}:{}", config.username, config.password))
+            url: config.to_url(),
+            authorization: base64::encode(format!("{}:{}", config.username, config.password)),
+            client: Client::new()
         }
     }
 
     pub async fn get_all_tags(&self) -> Result<Vec<TagMeta>> {
-        let statement = "\
-MATCH (tag:Tag: $tag_name)<-[:TAGS]-(article:Article)
-RETURN tag.name, collect(article.title), collect();";
-        Ok(())
+        let query_str = "\
+MATCH (tag:Tag)<-[:HAS_TAG]-(article:Article)
+RETURN {{name: tag.name, last_revise_date: max(article.last_revise_date), article_count: count(article)}} AS tag_meta
+ORDER BY tag_meta.last_revise_date DESC, tag_meta.name ASC";
+        let query_statment = Neo4jStatement {
+            statement: query_str,
+            parameters: None
+        };
+        Ok(neo4j_ops::query::<TagMeta>(&self.url, &self.client, &self.authorization, query_statment)
+            .await?)
+    }
+
+    pub async fn get_all_series(&self) -> Result<Vec<SeriesMeta>> {
+        let query_str = "\
+MATCH (series:Series)<-[:IN_SERIES]-(article:Article)
+RETURN {{name: series.name, last_revise_date: max(article.last_revise_date), article_count: count(article)}} AS tag_meta
+ORDER BY tag_meta.last_revise_date DESC, tag_meta.name ASC";
+        let query_statment = Neo4jStatement {
+            statement: query_str,
+            parameters: None
+        };
+        Ok(neo4j_ops::query::<SeriesMeta>(&self.url, &self.client, &self.authorization, query_statment)
+            .await?)
+    }
+
+    pub async fn get_all_articles(
+        &self,
+        page_index: usize,
+        page_size: usize
+    ) -> Result<ArticleMetaWithPagination> {
+        let total_count_str = "\
+MATCH (article:Article)
+RETURN count(article)";
+        let total_count_statement = Neo4jStatement {
+            statement: total_count_str,
+            parameters: None,
+        };
+        let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
+            .await?
+            .pop().ok_or(Error::Unexpected)?;
+        let page_count = if total_count == 0 {
+            0
+        } else {
+            (total_count - 1) / page_size + 1
+        };
+        let pagination_str = "\
+MATCH (article:Article)
+MATCH (article)-[:HAS_TAG]->(tag:Tag)
+OPTIONAL MATCH (article)-[in_series:IN_SERIES]->(series:Series)
+RETURN {{title: article.title, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: series.name, series_index: in_series.index}} AS article_meta
+ORDER BY article_meta.last_revise_date DESC, article_meta.title ASC
+SKIP $skip
+LIMIT $limit";
+        let pagination_statement = Neo4jStatement {
+            statement: pagination_str,
+            parameters: Some(hashmap!{
+                "skip" => serde_json::Value::from(page_index * page_size),
+                "limit" => serde_json::Value::from(page_size)
+            })
+        };
+        let article_metas = neo4j_ops::query::<ArticleMeta>(&self.url, &self.client, &self.authorization, pagination_statement)
+            .await?;
+        Ok(ArticleMetaWithPagination {
+            page_count,
+            article_metas
+        })
+    }
+
+    pub async fn get_all_articles_of_tag(
+        &self,
+        tag_name: &String,
+        page_index: usize,
+        page_size: usize
+    ) -> Result<ArticleMetaWithPagination> {
+        let total_count_str = "\
+MATCH (:Tag {{name: $tag_name}})<-[:HAS_TAG]-(article:Article)
+RETURN count(article)";
+        let total_count_statement = Neo4jStatement {
+            statement: total_count_str,
+            parameters: Some(hashmap!{"tag_name" => serde_json::Value::from(tag_name.as_str())}),
+        };
+        let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
+            .await?
+            .pop().ok_or(Error::Unexpected)?;
+        let page_count = if total_count == 0 {
+            0
+        } else {
+            (total_count - 1) / page_size + 1
+        };
+        let pagination_str = "\
+MATCH (:Tag {{name: $tag_name}})<-[:HAS_TAG]-(article:Article)
+MATCH (article)-[:HAS_TAG]->(tag:Tag)
+OPTIONAL MATCH (article)-[in_series:IN_SERIES]->(series:Series)
+RETURN {{title: article.title, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: series.name, series_index: in_series.index}} AS article_meta
+ORDER BY article_meta.last_revise_date DESC, article_meta.title ASC
+SKIP $skip
+LIMIT $limit";
+        let pagination_statement = Neo4jStatement {
+            statement: pagination_str,
+            parameters: Some(hashmap!{
+                "series_name" => serde_json::Value::from(tag_name.as_str()),
+                "skip" => serde_json::Value::from(page_index * page_size),
+                "limit" => serde_json::Value::from(page_size)
+            })
+        };
+        let article_metas = neo4j_ops::query::<ArticleMeta>(&self.url, &self.client, &self.authorization, pagination_statement)
+            .await?;
+        Ok(ArticleMetaWithPagination {
+            page_count,
+            article_metas
+        })
+    }
+
+    pub async fn get_all_articles_of_series(
+        &self,
+        series_name: &String,
+        page_index: usize,
+        page_size: usize
+    ) -> Result<ArticleMetaWithPagination> {
+        let total_count_str = "\
+MATCH (:Series {{name: $series_name}})<-[:IN_SERIES]-(article:Article)
+RETURN count(article)";
+        let total_count_statement = Neo4jStatement {
+            statement: total_count_str,
+            parameters: Some(hashmap!{"tag_name" => serde_json::Value::from(series_name.as_str())}),
+        };
+        let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
+            .await?
+            .pop().ok_or(Error::Unexpected)?;
+        let page_count = if total_count == 0 {
+            0
+        } else {
+            (total_count - 1) / page_size + 1
+        };
+        let pagination_str = "\
+MATCH (:Series {{name: $series_name}})<-[in_series:IN_SERIES]-(article:Article)
+MATCH (article)-[:HAS_TAG]->(tag:Tag)
+RETURN {{title: article.title, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: $series_name, series_index: in_series.index}} AS article_meta
+ORDER BY article_meta.series_index ASC
+SKIP $skip
+LIMIT $limit";
+        let pagination_statement = Neo4jStatement {
+            statement: pagination_str,
+            parameters: Some(hashmap!{
+                "series_name" => serde_json::Value::from(series_name.as_str()),
+                "skip" => serde_json::Value::from(page_index * page_size),
+                "limit" => serde_json::Value::from(page_size)
+            })
+        };
+        let article_metas = neo4j_ops::query::<ArticleMeta>(&self.url, &self.client, &self.authorization, pagination_statement)
+            .await?;
+        Ok(ArticleMetaWithPagination {
+            page_count,
+            article_metas
+        })
+    }
+
+    pub async fn get_article(&self, article_title: &String) -> Result<Option<Article>> {
+        let query_str = "\
+MATCH (article:Article {{title: $article_title}})
+MATCH (article)-[:HAS_TAG]->(tag:Tag)
+OPTIONAL MATCH (article)-[in_series:IN_SERIES]->(series:Series)
+RETURN {{title: article.title, body: article.body, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: series.name, series_index: in_series.index}};";
+        let query_statment = Neo4jStatement {
+            statement: query_str,
+            parameters: Some(hashmap!{
+                "article_title" => serde_json::Value::from(article_title.as_str())
+            })
+        };
+        Ok(neo4j_ops::query::<Article>(&self.url, &self.client, &self.authorization, query_statment)
+            .await?
+            .pop())
     }
 }
 
-// use log::{info, warn};
-// use diesel::pg::PgConnection;
-// use diesel::r2d2::{self, ConnectionManager, PooledConnection};
-
-// use std::error;
-// use std::fmt;
-// use std::time::Duration;
-
-// pub type DbPool = r2d2::Pool<ConnectionManager<PgConnection>>;
-// pub type PooledPgConnection = PooledConnection<ConnectionManager<PgConnection>>;
-// type Result<T> = std::result::Result<T, Error>;
-
-// static CONNECTION_TIMEOUT: u64 = 15;
-// static MAX_CONNECT_SIZE: u32 = 5;
-// static MAX_GET_CONNNECTION_TIMES: usize = 5;
-
-// pub fn create_connection_pool(url: String) -> DbPool {
-//     loop {
-//         let manager = ConnectionManager::<PgConnection>::new(&url);
-//         match r2d2::Pool::builder()
-//             .max_size(MAX_CONNECT_SIZE)
-//             .connection_timeout(Duration::from_secs(CONNECTION_TIMEOUT))
-//             .build(manager) {
-//             Ok(db_pool) => {
-//                 info!("Successfully connected to database at {} with {} connections.", &url, MAX_CONNECT_SIZE);
-//                 break db_pool
-//             },
-//             Err(error) => {
-//                 warn!("Cannot connect to database at {} due to {}, retrying...", &url, error);
-//             }
-//         }
-//     }
-// }
-
-// pub fn embed_migration(pg_connection: &PgConnection) -> Result<()> {
-//     embed_migrations!();
-//     embedded_migrations::run_with_output(pg_connection, &mut std::io::stdout())
-//         .map_err(|migration_error| Error::MigrationError(migration_error))
-// }
-
-// pub fn get_connection(db_pool: &DbPool) -> Result<PooledPgConnection> {
-//     for count in 0..MAX_GET_CONNNECTION_TIMES {
-//         match db_pool.get() {
-//             Ok(pg_connection) => return Ok(pg_connection),
-//             Err(error) => {
-//                 warn!("Cannot get a connection from connection pool due to {}, tried {} times...", error, count + 1);
-//             }
-//         }
-//     }
-//     Err(Error::CannotGetConnectionFromPool)
-// }
-
 #[derive(Debug)]
 pub enum Error {
-    CannotGetConnectionFromPool,
-    // MigrationError(diesel_migrations::RunMigrationsError),
+    Database(neo4j_ops::Error),
+    Unexpected,
 }
 
 impl error::Error for Error { }
@@ -98,10 +217,16 @@ impl fmt::Display for Error {
         use Error::*;
 
         let message = match &self {
-            CannotGetConnectionFromPool => String::from("Cannot get connection from pool."),
-            // MigrationError(migration_error) => format!("Migration error: {}", migration_error),
+            Database(database_error) => format!("{}", database_error),
+            Unexpected => String::from("unexpected error."),
         };
 
         write!(f, "{}", message)
+    }
+}
+
+impl From<neo4j_ops::Error> for Error {
+    fn from(database_error: neo4j_ops::Error) -> Self {
+        Self::Database(database_error)
     }
 }

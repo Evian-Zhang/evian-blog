@@ -1,4 +1,4 @@
-use actix_web::client::Client;
+use reqwest::Client;
 use serde::{Serialize, Deserialize};
 
 use std::collections::HashMap;
@@ -8,7 +8,7 @@ use std::fmt;
 type Result<T> = std::result::Result<T, Error>;
 
 #[derive(Deserialize, Debug)]
-struct ApiRawError {
+pub struct ApiRawError {
     message: String
 }
 
@@ -20,25 +20,24 @@ struct Neo4jResponse<T> {
 
 #[derive(Deserialize)]
 struct Neo4jResult<T> {
-    columns: Vec<String>,
     data: Vec<Neo4jData<T>>
 }
 
 #[derive(Deserialize)]
 struct Neo4jData<T> {
-    row: T
+    row: Vec<T>
 }
 
 #[derive(Serialize)]
-pub struct Neo4jQueryBody {
+struct Neo4jQueryBody {
     statements: Vec<Neo4jStatement>
 }
 
 #[derive(Serialize)]
 pub struct Neo4jStatement {
-    statement: &'static str,
+    pub statement: &'static str,
     #[serde(skip_serializing_if = "Option::is_none")]
-    parameters: Option<HashMap<String, serde_json::Value>>
+    pub parameters: Option<HashMap<&'static str, serde_json::Value>>
 }
 
 pub async fn query<T: serde::de::DeserializeOwned>(
@@ -50,10 +49,12 @@ pub async fn query<T: serde::de::DeserializeOwned>(
     let query = Neo4jQueryBody {
         statements: vec![neo4j_statement]
     };
-    let mut response = client
+    let response = client
         .post(url)
         .header("Authorization", authorization)
-        .send_body(serde_json::to_string(&query).unwrap())
+        .header("Content-Type", "application/json")
+        .body(serde_json::to_string(&query).unwrap())
+        .send()
         .await
         .or(Err(Error::SendError))?;
     if response.status().is_success() {
@@ -66,8 +67,9 @@ pub async fn query<T: serde::de::DeserializeOwned>(
             Ok(neo4j_response.results
                 .pop().ok_or(Error::Unexpected)?
                 .data.into_iter()
-                .map(|neo4j_data| neo4j_data.row)
-                .collect::<Vec<_>>())
+                .map(|mut neo4j_data| neo4j_data.row.pop())
+                .collect::<Option<Vec<_>>>()
+                .ok_or(Error::Unexpected)?)
         }
     } else {
         Err(Error::BadResponse(response.status().as_u16()))
@@ -79,7 +81,7 @@ pub enum Error {
     SendError,
     BadResponse(u16),
     Api(Vec<ApiRawError>),
-    Deserialize(awc::error::JsonPayloadError),
+    Deserialize(reqwest::Error),
     Unexpected
 }
 

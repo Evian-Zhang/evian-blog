@@ -1,1 +1,0 @@
-DROP TABLE tag_with_articles;
