@@ -32,7 +32,7 @@ impl Database {
     pub async fn get_all_tags(&self) -> Result<Vec<TagMeta>> {
         let query_str = "\
 MATCH (tag:Tag)<-[:HAS_TAG]-(article:Article)
-RETURN {{name: tag.name, last_revise_date: max(article.last_revise_date), article_count: count(article)}} AS tag_meta
+RETURN {name: tag.name, last_revise_date: max(article.last_revise_date), article_count: count(article)} AS tag_meta
 ORDER BY tag_meta.last_revise_date DESC, tag_meta.name ASC";
         let query_statment = Neo4jStatement {
             statement: query_str,
@@ -46,7 +46,7 @@ ORDER BY tag_meta.last_revise_date DESC, tag_meta.name ASC";
     pub async fn get_all_series(&self) -> Result<Vec<SeriesMeta>> {
         let query_str = "\
 MATCH (series:Series)<-[:IN_SERIES]-(article:Article)
-RETURN {{name: series.name, last_revise_date: max(article.last_revise_date), article_count: count(article)}} AS tag_meta
+RETURN {name: series.name, last_revise_date: max(article.last_revise_date), article_count: count(article)} AS tag_meta
 ORDER BY tag_meta.last_revise_date DESC, tag_meta.name ASC";
         let query_statment = Neo4jStatement {
             statement: query_str,
@@ -81,7 +81,9 @@ RETURN count(article)";
 MATCH (article:Article)
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
 OPTIONAL MATCH (article)-[in_series:IN_SERIES]->(series:Series)
-RETURN {{title: article.title, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: series.name, series_index: in_series.index}} AS article_meta
+WITH article, tag, in_series, series
+ORDER BY tag.name ASC
+RETURN {title: article.title, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: series.name, series_index: in_series.index} AS article_meta
 ORDER BY article_meta.last_revise_date DESC, article_meta.title ASC
 SKIP $skip
 LIMIT $limit";
@@ -108,7 +110,7 @@ LIMIT $limit";
         page_size: usize
     ) -> Result<ArticleMetaWithPagination> {
         let total_count_str = "\
-MATCH (:Tag {{name: $tag_name}})<-[:HAS_TAG]-(article:Article)
+MATCH (:Tag {name: $tag_name})<-[:HAS_TAG]-(article:Article)
 RETURN count(article)";
         let total_count_statement = Neo4jStatement {
             statement: total_count_str,
@@ -123,17 +125,19 @@ RETURN count(article)";
             (total_count - 1) / page_size + 1
         };
         let pagination_str = "\
-MATCH (:Tag {{name: $tag_name}})<-[:HAS_TAG]-(article:Article)
+MATCH (:Tag {name: $tag_name})<-[:HAS_TAG]-(article:Article)
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
 OPTIONAL MATCH (article)-[in_series:IN_SERIES]->(series:Series)
-RETURN {{title: article.title, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: series.name, series_index: in_series.index}} AS article_meta
+WITH article, tag, in_series, series
+ORDER BY tag.name ASC
+RETURN {title: article.title, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: series.name, series_index: in_series.index} AS article_meta
 ORDER BY article_meta.last_revise_date DESC, article_meta.title ASC
 SKIP $skip
 LIMIT $limit";
         let pagination_statement = Neo4jStatement {
             statement: pagination_str,
             parameters: Some(hashmap!{
-                "series_name" => serde_json::Value::from(tag_name.as_str()),
+                "tag_name" => serde_json::Value::from(tag_name.as_str()),
                 "skip" => serde_json::Value::from(page_index * page_size),
                 "limit" => serde_json::Value::from(page_size)
             })
@@ -154,11 +158,11 @@ LIMIT $limit";
         page_size: usize
     ) -> Result<ArticleMetaWithPagination> {
         let total_count_str = "\
-MATCH (:Series {{name: $series_name}})<-[:IN_SERIES]-(article:Article)
+MATCH (:Series {name: $series_name})<-[:IN_SERIES]-(article:Article)
 RETURN count(article)";
         let total_count_statement = Neo4jStatement {
             statement: total_count_str,
-            parameters: Some(hashmap!{"tag_name" => serde_json::Value::from(series_name.as_str())}),
+            parameters: Some(hashmap!{"series_name" => serde_json::Value::from(series_name.as_str())}),
         };
         let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
             .await?
@@ -169,9 +173,11 @@ RETURN count(article)";
             (total_count - 1) / page_size + 1
         };
         let pagination_str = "\
-MATCH (:Series {{name: $series_name}})<-[in_series:IN_SERIES]-(article:Article)
+MATCH (:Series {name: $series_name})<-[in_series:IN_SERIES]-(article:Article)
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
-RETURN {{title: article.title, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: $series_name, series_index: in_series.index}} AS article_meta
+WITH article, tag, in_series
+ORDER BY tag.name ASC
+RETURN {title: article.title, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: $series_name, series_index: in_series.index} AS article_meta
 ORDER BY article_meta.series_index ASC
 SKIP $skip
 LIMIT $limit";
@@ -194,10 +200,12 @@ LIMIT $limit";
     // Return article in title `article_title`. If no such article, return Ok(None)
     pub async fn get_article(&self, article_title: &String) -> Result<Option<Article>> {
         let query_str = "\
-MATCH (article:Article {{title: $article_title}})
+MATCH (article:Article {title: $article_title})
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
 OPTIONAL MATCH (article)-[in_series:IN_SERIES]->(series:Series)
-RETURN {{title: article.title, body: article.body, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: series.name, series_index: in_series.index}};";
+WITH article, tag, in_series, series
+ORDER BY tag.name ASC
+RETURN {title: article.title, body: article.body, publish_date: article.publish_date, last_revise_date: article.last_revise_date, tags: collect(tag.name), series: series.name, series_index: in_series.index};";
         let query_statment = Neo4jStatement {
             statement: query_str,
             parameters: Some(hashmap!{

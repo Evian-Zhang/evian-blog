@@ -72,7 +72,8 @@ pub async fn query<T: serde::de::DeserializeOwned>(
                 .ok_or(Error::Unexpected)?)
         }
     } else {
-        Err(Error::BadResponse(response.status().as_u16()))
+        let status_code = response.status().as_u16();
+        Err(Error::BadResponse(status_code))
     }
 }
 
