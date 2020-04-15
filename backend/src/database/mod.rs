@@ -28,6 +28,7 @@ impl Database {
         }
     }
 
+    // Return all tags of type `TagMeta` with order of their last_revise_date
     pub async fn get_all_tags(&self) -> Result<Vec<TagMeta>> {
         let query_str = "\
 MATCH (tag:Tag)<-[:HAS_TAG]-(article:Article)
@@ -41,6 +42,7 @@ ORDER BY tag_meta.last_revise_date DESC, tag_meta.name ASC";
             .await?)
     }
 
+    // Return all series of type `SeriesMeta` with order of their last_revise_date
     pub async fn get_all_series(&self) -> Result<Vec<SeriesMeta>> {
         let query_str = "\
 MATCH (series:Series)<-[:IN_SERIES]-(article:Article)
@@ -54,6 +56,7 @@ ORDER BY tag_meta.last_revise_date DESC, tag_meta.name ASC";
             .await?)
     }
 
+    // Return all articles of type `ArticleMeta` with a page count with order of their last_revise_date
     pub async fn get_all_articles(
         &self,
         page_index: usize,
@@ -97,6 +100,7 @@ LIMIT $limit";
         })
     }
 
+    // Return all articles has tag in `tag_name` of type `ArticleMeta` with a page count with order of their last_revise_date
     pub async fn get_all_articles_of_tag(
         &self,
         tag_name: &String,
@@ -142,6 +146,7 @@ LIMIT $limit";
         })
     }
 
+    // Return all articles in series `series_name` of type `ArticleMeta` with a page count with order of their series_index
     pub async fn get_all_articles_of_series(
         &self,
         series_name: &String,
@@ -186,6 +191,7 @@ LIMIT $limit";
         })
     }
 
+    // Return article in title `article_title`. If no such article, return Ok(None)
     pub async fn get_article(&self, article_title: &String) -> Result<Option<Article>> {
         let query_str = "\
 MATCH (article:Article {{title: $article_title}})
