@@ -13,10 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "@material-ui/core": "^4.9.7",
+    "@types/react-redux": "^7.1.7",
+    "@types/redux": "^3.6.0",
     "next": "^9.3.2",
     "node-fetch": "^2.6.0",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@types/node": "^12.12.31",

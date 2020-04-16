@@ -1,13 +1,26 @@
 type Tag = {
-    id: number,
     name: string,
-    articleCount: string
+    articleCount: string,
+    // unix timestamp
+    lastReviseDate: number
+}
+
+type Series = {
+    name: string,
+    articleCount: string,
+    // unix timestamp
+    lastReviseDate: number
 }
 
 type ArticleMeta = {
     title: string,
     // unix timestamp
-    publishDate: number
+    publishDate: number,
+    // unix timestamp
+    lastReviseDate: number,
+    tags: string[],
+    series: string | null,
+    seriesIndex: number | null
 }
 
 type ArticleMetasWithPagination = {
@@ -16,13 +29,15 @@ type ArticleMetasWithPagination = {
 }
 
 type Article = {
-    id: number,
     title: string,
     body: string,
     // unix timestamp
     publishDate: number,
-    seriesId?: number,
-    seriesIndex?: number
+    // unix timestamp
+    lastReviseDate: number,
+    tags: string[],
+    series: string | null,
+    seriesIndex: number | null
 }
 
-export type { Tag, ArticleMeta, ArticleMetasWithPagination, Article };
+export type { Tag, Series, ArticleMeta, ArticleMetasWithPagination, Article };

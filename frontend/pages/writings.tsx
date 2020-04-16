@@ -1,43 +1,31 @@
-import { GetServerSideProps } from 'next'
-
 import MyHead from '../components/head'
 import MyHeader from '../components/header'
+import rootReducer, { RootState, useTypedSelector } from '../redux/writings/reducers'
 
-interface WritingsProps {
-    props: {
-        pageIndex?: number
-    }
-}
+import { createStore } from 'redux'
+import { Provider, useDispatch } from 'react-redux'
 
-const Writings = (props: WritingsProps) => {
-    console.log(props)
+const PAGE_SIZE = 20;
+
+const Writings = () => {
+    const dispatch = useDispatch();
+    const pageIndex = useTypedSelector(store => store.pageIndex);
     return (
         <div>
             <MyHead title="我的创作·Evian张的博客" keywords="software,blog,Evian-Zhang" />
             <MyHeader/>
 
         </div>
-    )
+    );
 };
 
-function isStringArray(value: string | string[]): value is string[] {
-    return Array.isArray(value);
-}
+const WrappedWritings = () => {
+    const store = createStore(rootReducer);
+    return (
+        <Provider store={store}>
+            <Writings/>
+        </Provider>
+    );
+};
 
-export const getServerSideProps: GetServerSideProps = async context => {
-    let writingsProps: WritingsProps = {
-        props: {}
-    };
-    let pageIndex = context.query.pageIndex;
-    if (pageIndex) {
-        if (!isStringArray(pageIndex)) {
-            let pageIndexInt = parseInt(pageIndex);
-            if (!isNaN(pageIndexInt)) {
-                writingsProps.props.pageIndex = pageIndexInt;
-            }
-        };
-    }
-    return writingsProps;
-}
-
-export default Writings;
+export default WrappedWritings;
