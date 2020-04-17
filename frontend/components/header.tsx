@@ -1,29 +1,21 @@
-import AppBar from '@material-ui/core/AppBar';
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
+import { PageHeader, Typography, Button } from 'antd'
 
 import Link from 'next/link'
 
-const useStyles = makeStyles({
-    a: {
-        textDecoration: "none",
-        color: "inherit"
-    }
-});
+const {Title} = Typography;
 
 const MyHeader = () => {
-    const classes = useStyles();
-
     return (
-        <AppBar position="static">
+        <div>
             <Link href="/">
-                <a rel="noopener noreferrer" className={classes.a}>
-                    <Typography variant="h6">
-                        Evian张的博客
-                    </Typography>
-                </a>
+                <Button type="link" size="large">
+                    Evian张的博客
+                </Button>
             </Link>
-        </AppBar>
+        </div>
+        // <AppBar position="static">
+            
+        // </AppBar>
     );
 };
 

@@ -1,34 +1,50 @@
-import { useState, useEffect } from 'react'
+import Link from 'next/link';
 
-import { makeStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-
-import Link from 'next/link'
+import { Layout, Row, Col, Card } from 'antd'
 
 import MyHead from '../components/head';
-import MyHeader from '../components/header'
+import MyHeader from '../components/header';
 
-const useStyles = makeStyles({
-    a: {
-        textDecoration: "none",
-        color: "inherit"
-    }
-});
+const { Header, Content } = Layout;
 
 const Home = () => {
-    const classes = useStyles();
-
     return (
         <div>
             <MyHead title="Evian张的博客" keywords="software,blog,Evian-Zhang" />
-            <MyHeader/>
-            <Grid container flex-wrap='wrap' justify='space-around'>
+            <Layout>
+                <Header><MyHeader/></Header>
+                <Content>
+                    <Row justify="space-around" gutter={8}>
+                        <Col span={8}>
+                            <Link href="/writings">
+                                <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
+                                    <Card style={{minHeight: 300, textAlign: "center"}}>
+                                        我的创作
+                                    </Card>
+                                </a>
+                            </Link>
+                        </Col>
+                        <Col span={8}>
+                            <Link href="/writings">
+                                <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
+                                    我的创作
+                                </a>
+                            </Link>
+                        </Col>
+                        <Col span={8}>
+                            <Link href="/writings">
+                                <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
+                                    我的创作
+                                </a>
+                            </Link>
+                        </Col>
+                    </Row>
+                </Content>
+            </Layout>
+            {/* <Grid container flex-wrap='wrap' justify='space-around'>
                 <Grid item xs={3}>
                     <Link href="/writings">
-                        <a className={classes.a} rel="noopener noreferrer">
+                        <a rel="noopener noreferrer">
                             <Card>
                                 <CardContent>
                                     <Typography align='center' variant='h6'>
@@ -57,7 +73,7 @@ const Home = () => {
                         </CardContent>
                     </Card>
                 </Grid>
-            </Grid>
+            </Grid> */}
         </div>
     );
 }

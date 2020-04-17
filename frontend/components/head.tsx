@@ -14,7 +14,6 @@ const MyHead = (props: MyHeadProps) => {
                 name="viewport"
                 content="minimum-scale=1, initial-scale=1, width=device-width"
             />
-            <link rel="stylesheet" href="https://fonts.lug.ustc.edu.cn/css?family=Roboto:300,400,500,700&display=swap" />
         </Head>
     );
 };
