@@ -1,21 +1,20 @@
-import { PageHeader, Typography, Button } from 'antd'
+import { PageHeader, Button } from 'antd';
 
-import Link from 'next/link'
-
-const {Title} = Typography;
+import Link from 'next/link';
 
 const MyHeader = () => {
     return (
         <div>
-            <Link href="/">
-                <Button type="link" size="large">
-                    Evian张的博客
-                </Button>
-            </Link>
+            <PageHeader
+                title={
+                    <Link href="/">
+                        <Button type="link" size="large">
+                            Evian张的博客
+                        </Button>
+                    </Link>
+                }
+            />
         </div>
-        // <AppBar position="static">
-            
-        // </AppBar>
     );
 };
 
