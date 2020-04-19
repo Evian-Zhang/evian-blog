@@ -1,10 +1,12 @@
 import pageIndex from './pageIndex'
+import articleMetas from './articleMetas'
 
 import { combineReducers } from 'redux'
 import { useSelector, TypedUseSelectorHook } from 'react-redux'
 
 const rootReducer = combineReducers({
-    pageIndex
+    pageIndex,
+    articleMetas
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

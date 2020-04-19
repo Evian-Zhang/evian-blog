@@ -52,7 +52,11 @@ const Home = () => {
                             </Link>
                         </Col>
                     </Row>
-                    <InfiniteScroller/>
+                    <Row justify="center">
+                        <Col span={20}>
+                            <InfiniteScroller/>
+                        </Col>
+                    </Row>
                 </Content>
             </Layout>
         </div>

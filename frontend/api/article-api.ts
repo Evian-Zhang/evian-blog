@@ -3,10 +3,10 @@ import { Article, ArticleMetasWithPagination } from '../interfaces'
 
 import fetch from 'node-fetch'
 
-async function getArticleMetas(): Promise<ArticleMetasWithPagination> {
-    const res = await fetch(ENDPOINT + '/api/v1/articles');
+async function getArticleMetas(pageIndex: number, pageSize: number): Promise<ArticleMetasWithPagination> {
+    const res = await fetch(ENDPOINT + `/api/v1/articles?pageIndex=${pageIndex}&pageSize=${pageSize}`);
     if (res.status !== 200) {
-        return Promise.reject(res.statusText);
+        return Promise.reject({ statusCode: res.statusCode, statusText: res.statusText });
     }
     const data = await res.json();
     return Promise.resolve(data);
@@ -15,7 +15,7 @@ async function getArticleMetas(): Promise<ArticleMetasWithPagination> {
 async function getArticle(articleTitle: string): Promise<Article> {
     const res = await fetch(ENDPOINT + '/api/v1/article/' + articleTitle);
     if (res.status != 200) {
-        return Promise.reject(res.statusText);
+        return Promise.reject({ statusCode: res.statusCode, statusText: res.statusText });
     }
     const data = await res.json();
     return Promise.resolve(data);
