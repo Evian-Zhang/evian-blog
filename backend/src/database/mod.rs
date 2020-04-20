@@ -72,11 +72,6 @@ RETURN count(article)";
         let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
             .await?
             .pop().ok_or(Error::Unexpected)?;
-        let page_count = if total_count == 0 {
-            0
-        } else {
-            (total_count - 1) / page_size + 1
-        };
         let pagination_str = "\
 MATCH (article:Article)
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
@@ -97,7 +92,7 @@ LIMIT $limit";
         let article_metas = neo4j_ops::query::<ArticleMeta>(&self.url, &self.client, &self.authorization, pagination_statement)
             .await?;
         Ok(ArticleMetaWithPagination {
-            page_count,
+            total_count,
             article_metas
         })
     }
@@ -119,11 +114,6 @@ RETURN count(article)";
         let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
             .await?
             .pop().ok_or(Error::Unexpected)?;
-        let page_count = if total_count == 0 {
-            0
-        } else {
-            (total_count - 1) / page_size + 1
-        };
         let pagination_str = "\
 MATCH (:Tag {name: $tag_name})<-[:HAS_TAG]-(article:Article)
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
@@ -145,7 +135,7 @@ LIMIT $limit";
         let article_metas = neo4j_ops::query::<ArticleMeta>(&self.url, &self.client, &self.authorization, pagination_statement)
             .await?;
         Ok(ArticleMetaWithPagination {
-            page_count,
+            total_count,
             article_metas
         })
     }
@@ -167,11 +157,6 @@ RETURN count(article)";
         let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
             .await?
             .pop().ok_or(Error::Unexpected)?;
-        let page_count = if total_count == 0 {
-            0
-        } else {
-            (total_count - 1) / page_size + 1
-        };
         let pagination_str = "\
 MATCH (:Series {name: $series_name})<-[in_series:IN_SERIES]-(article:Article)
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
@@ -192,7 +177,7 @@ LIMIT $limit";
         let article_metas = neo4j_ops::query::<ArticleMeta>(&self.url, &self.client, &self.authorization, pagination_statement)
             .await?;
         Ok(ArticleMetaWithPagination {
-            page_count,
+            total_count,
             article_metas
         })
     }
