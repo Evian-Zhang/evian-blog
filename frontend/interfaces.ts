@@ -25,7 +25,7 @@ type ArticleMeta = {
 
 type ArticleMetasWithPagination = {
     articleMetas: ArticleMeta[],
-    totalPages: number
+    totalCount: number
 }
 
 type Article = {

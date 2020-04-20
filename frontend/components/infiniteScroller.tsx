@@ -37,7 +37,7 @@ const InfinityScroller = () => {
                 <div id="gameButton">
                     <Button
                         onClick={() => {
-                            alert("恭喜您，成功了！")
+                            alert("恭喜您，成功了！");
                         }}
                     >
                         你居然真的看到我了
