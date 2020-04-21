@@ -1,12 +1,13 @@
 import MyHead from '../components/head';
 import MyHeader from '../components/header';
 import rootReducer, { RootState, useTypedSelector } from '../redux/writings/reducers';
+import { FetchStatus } from '../redux/writings/article/articleSlice';
 import { getArticleMetas } from '../api/article-api';
 import { ArticleMetasWithPagination } from '../interfaces';
-import ActionType from '../redux/writings/actionType';
 
 import { createStore } from 'redux';
 import { Provider, useDispatch } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -19,9 +20,9 @@ const { TabPane } = Tabs;
 const PAGE_SIZE = 1;
 
 const ArticlesList = () => {
-    const selectedPageIndex = useTypedSelector(store => store.articles.selectedPageIndex);
-    const totalCount = useTypedSelector(store => store.articles.articlesByPageIndex.totalCount);
-    const articles = useTypedSelector(store => store.articles.articlesByPageIndex.articles.get(selectedPageIndex).articles);
+    const selectedPageIndex = useTypedSelector(store => store.article.pageIndex);
+    const totalCount = useTypedSelector(store => store.article.articles.totalCount);
+    const articles = useTypedSelector(store => store.article.articles.articles.get(selectedPageIndex).articles);
 
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
@@ -45,7 +46,6 @@ const ArticlesList = () => {
                 loading={loading}
             />
             <Pagination
-                defaultCurrent={selectedPageIndex}
                 defaultPageSize={PAGE_SIZE}
                 total={totalCount}
                 hideOnSinglePage
@@ -105,16 +105,22 @@ const WrappedWritings = (props: WritingsProps) => {
     }
 
     const preloadedState: RootState = {
-        articles: {
-            selectedPageIndex: 0,
-            articlesByPageIndex: {
+        article: {
+            pageIndex: 0,
+            articles: {
                 totalCount: props.articleMetasWithPagination.totalCount,
-                articles: new Map().set(0, props.articleMetasWithPagination.articleMetas)
+                articles: new Map().set(0, {
+                    isFetching: FetchStatus.Success,
+                    articles: props.articleMetasWithPagination.articleMetas
+                })
             }
         }
     };
 
-    const store = createStore(rootReducer, preloadedState);
+    const store = configureStore({
+        reducer: rootReducer,
+        preloadedState
+    });
     return (
         <Provider store={store}>
             <Writings/>
