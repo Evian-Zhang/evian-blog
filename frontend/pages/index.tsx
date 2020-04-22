@@ -10,9 +10,9 @@ const { Header, Content } = Layout;
 
 const colResponsiveProps = {
     xs: 24,
-    sm: 12,
-    md: 12,
-    lg: 12,
+    sm: 16,
+    md: 8,
+    lg: 8,
     xl: 8
 };
 
@@ -24,7 +24,7 @@ const Home = () => {
                 <Header><MyHeader/></Header>
                 <Content>
                     <Row justify="space-around" gutter={24}>
-                        <Col span={8} {...colResponsiveProps}>
+                        <Col {...colResponsiveProps}>
                             <Link href="/writings">
                                 <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
                                     <Card style={{minHeight: 200, textAlign: "center"}}>
@@ -33,7 +33,7 @@ const Home = () => {
                                 </a>
                             </Link>
                         </Col>
-                        <Col span={8} {...colResponsiveProps}>
+                        <Col {...colResponsiveProps}>
                             <Link href="/writings">
                                 <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
                                     <Card style={{minHeight: 200, textAlign: "center"}}>
@@ -42,7 +42,7 @@ const Home = () => {
                                 </a>
                             </Link>
                         </Col>
-                        <Col span={8} {...colResponsiveProps}>
+                        <Col {...colResponsiveProps}>
                             <Link href="/writings">
                                 <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
                                     <Card style={{minHeight: 200, textAlign: "center"}}>

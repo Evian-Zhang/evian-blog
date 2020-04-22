@@ -4,6 +4,7 @@ import { FetchStatus, fetchArticles } from '../redux/writings/article/articleSli
 import { selectPageIndex } from '../redux/writings/article/pageIndexSlice';
 import { getArticleMetas } from '../api/article-api';
 import { ArticleMetasWithPagination } from '../interfaces';
+import ArticleList from '../components/articleList';
 
 import { Provider, useDispatch } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -17,42 +18,37 @@ const { TabPane } = Tabs;
 
 const PAGE_SIZE = 1;
 
-const ArticlesList = () => {
+const ArticlesListTab = () => {
     const selectedPageIndex = useTypedSelector(store => store.article.pageIndex);
     const totalCount = useTypedSelector(store => store.article.articles.totalCount);
-    const fetchStatus = useTypedSelector(store => store.article.articles.articles[selectedPageIndex].fetchStatus);
-    const articles = useTypedSelector(store => store.article.articles.articles[selectedPageIndex].articles);
+    const articlesList = useTypedSelector(store => store.article.articles.articles);
+
+    const selectedArticles = articlesList[selectedPageIndex];
 
     const dispatch = useDispatch();
 
     const onChange = (pageIndexPlusOne: number) => {
         const pageIndex = pageIndexPlusOne - 1;
-        dispatch(fetchArticles({ pageIndex, pageSize: PAGE_SIZE }));
+        if (articlesList[pageIndex]?.fetchStatus !== FetchStatus.Success) {
+            dispatch(fetchArticles({ pageIndex, pageSize: PAGE_SIZE }));
+        }
         dispatch(selectPageIndex(pageIndex));
     };
 
+    const onReload = () => {
+        dispatch(fetchArticles({ pageIndex: selectedPageIndex, pageSize: PAGE_SIZE }));
+    }
+
     return (
-        <div>
-            <List
-                dataSource={articles}
-                renderItem={(item, index) => {
-                    return (
-                        <div>
-                            {JSON.stringify(item)}
-                        </div>
-                    );
-                }}
-                loading={fetchStatus === FetchStatus.Fetching}
-                pagination={{
-                    defaultPageSize: PAGE_SIZE,
-                    total: totalCount,
-                    hideOnSinglePage: true,
-                    showQuickJumper: true,
-                    showSizeChanger: false,
-                    onChange: onChange
-                }}
-            />
-        </div>
+        <ArticleList
+            datasource={selectedArticles?.articles}
+            totalCount={totalCount}
+            pageSize={PAGE_SIZE}
+            loading={selectedArticles?.fetchStatus === FetchStatus.Fetching}
+            hasError={selectedArticles?.fetchStatus === FetchStatus.Failure}
+            onChange={onChange}
+            onReload={onReload}
+        />
     );
 }
 
@@ -77,7 +73,7 @@ const Writings = () => {
                     <Col span={20}>
                         <Tabs defaultActiveKey="articleTab" type="card">
                             <TabPane tab="文章" key="articleTab">
-                                <ArticlesList/>
+                                <ArticlesListTab/>
                             </TabPane>
                             <TabPane tab="标签" key="tagTab">
                                 Tag Tab
