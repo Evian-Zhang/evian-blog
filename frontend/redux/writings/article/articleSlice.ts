@@ -1,7 +1,14 @@
-import { ArticleMeta, ArticleMetasWithPagination } from '../../../interfaces';
-import { AppThunk } from '../store';
+import { ArticleMeta } from '../../../interfaces';
+import { getArticleMetas } from '../../../api/article-api';
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+const fetchArticles = createAsyncThunk(
+    'articles/fetchArticles',
+    async (arg: { pageIndex: number, pageSize: number }) => {
+        return getArticleMetas(arg.pageIndex, arg.pageSize)
+    }
+);
 
 export enum FetchStatus {
     Fetching,
@@ -10,53 +17,48 @@ export enum FetchStatus {
 };
 
 interface ArticlesStatePerPage {
-    isFetching: FetchStatus,
+    fetchStatus: FetchStatus,
     articles: ArticleMeta[]
 }
 
 interface ArticlesState {
     totalCount: number,
-    articles: Map<number, ArticlesStatePerPage>
+    articles: ArticlesStatePerPage[]
 }
 
 const initialState: ArticlesState = {
     totalCount: 0,
-    articles: new Map()
+    articles: []
 };
 
 const articleSlice = createSlice({
-    name: 'article',
+    name: 'articles',
     initialState,
-    reducers: {
-        requestArticles: (state, action: PayloadAction<number>) => {
-            state.articles.set(action.payload, {
-                isFetching: FetchStatus.Fetching,
-                articles: []
+    reducers: { },
+    extraReducers: builder => {
+        builder
+            .addCase(fetchArticles.pending, (state, action) => {
+                state.articles[action.meta.arg.pageIndex] = {
+                    fetchStatus: FetchStatus.Fetching,
+                    articles: []
+                };
+            })
+            .addCase(fetchArticles.fulfilled, (state, action) => {
+                state.totalCount = action.payload.totalCount;
+                state.articles[action.meta.arg.pageIndex] = {
+                    fetchStatus: FetchStatus.Success,
+                    articles: action.payload.articleMetas
+                };
+            })
+            .addCase(fetchArticles.rejected, (state, action) => {
+                state.articles[action.meta.arg.pageIndex] = {
+                    fetchStatus: FetchStatus.Failure,
+                    articles: []
+                };
             });
-        },
-        fetchArticlesSuccess: (state, action: PayloadAction<{pageIndex: number, articleMetasWithPagination: ArticleMetasWithPagination}>) => {
-            const {
-                pageIndex,
-                articleMetasWithPagination: {
-                    totalCount,
-                    articleMetas
-                }
-            } = action.payload;
-            state.totalCount = totalCount;
-            state.articles.set(pageIndex, {
-                isFetching: FetchStatus.Success,
-                articles: articleMetas
-            });
-        },
-        fetchArticlesFailure: (state, action: PayloadAction<number>) => {
-            state.articles.set(action.payload, {
-                isFetching: FetchStatus.Failure,
-                articles: []
-            });
-        }
     }
 });
 
-export const { requestArticles, fetchArticlesSuccess, fetchArticlesFailure } = articleSlice.actions;
+export { fetchArticles };
 
 export default articleSlice.reducer;

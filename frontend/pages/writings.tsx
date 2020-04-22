@@ -1,15 +1,13 @@
 import MyHead from '../components/head';
-import MyHeader from '../components/header';
 import rootReducer, { RootState, useTypedSelector } from '../redux/writings/reducers';
-import { FetchStatus } from '../redux/writings/article/articleSlice';
+import { FetchStatus, fetchArticles } from '../redux/writings/article/articleSlice';
+import { selectPageIndex } from '../redux/writings/article/pageIndexSlice';
 import { getArticleMetas } from '../api/article-api';
 import { ArticleMetasWithPagination } from '../interfaces';
 
-import { createStore } from 'redux';
 import { Provider, useDispatch } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { GetServerSideProps } from 'next';
-import { useState } from 'react';
 import Link from 'next/link';
 import Error from 'next/error';
 import { Layout, Tabs, Row, Col, PageHeader, Button, List, Pagination } from 'antd';
@@ -22,14 +20,15 @@ const PAGE_SIZE = 1;
 const ArticlesList = () => {
     const selectedPageIndex = useTypedSelector(store => store.article.pageIndex);
     const totalCount = useTypedSelector(store => store.article.articles.totalCount);
-    const articles = useTypedSelector(store => store.article.articles.articles.get(selectedPageIndex).articles);
+    const fetchStatus = useTypedSelector(store => store.article.articles.articles[selectedPageIndex].fetchStatus);
+    const articles = useTypedSelector(store => store.article.articles.articles[selectedPageIndex].articles);
 
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(false);
 
     const onChange = (pageIndexPlusOne: number) => {
         const pageIndex = pageIndexPlusOne - 1;
-        
+        dispatch(fetchArticles({ pageIndex, pageSize: PAGE_SIZE }));
+        dispatch(selectPageIndex(pageIndex));
     };
 
     return (
@@ -43,15 +42,15 @@ const ArticlesList = () => {
                         </div>
                     );
                 }}
-                loading={loading}
-            />
-            <Pagination
-                defaultPageSize={PAGE_SIZE}
-                total={totalCount}
-                hideOnSinglePage
-                showQuickJumper
-                showSizeChanger={false}
-                onChange={onChange}
+                loading={fetchStatus === FetchStatus.Fetching}
+                pagination={{
+                    defaultPageSize: PAGE_SIZE,
+                    total: totalCount,
+                    hideOnSinglePage: true,
+                    showQuickJumper: true,
+                    showSizeChanger: false,
+                    onChange: onChange
+                }}
             />
         </div>
     );
@@ -104,15 +103,18 @@ const WrappedWritings = (props: WritingsProps) => {
         return <Error statusCode={props.errorCode}/>
     }
 
+    let articles = [];
+    articles[0] = {
+        fetchStatus: FetchStatus.Success,
+        articles: props.articleMetasWithPagination.articleMetas
+    };
+
     const preloadedState: RootState = {
         article: {
             pageIndex: 0,
             articles: {
                 totalCount: props.articleMetasWithPagination.totalCount,
-                articles: new Map().set(0, {
-                    isFetching: FetchStatus.Success,
-                    articles: props.articleMetasWithPagination.articleMetas
-                })
+                articles
             }
         }
     };
