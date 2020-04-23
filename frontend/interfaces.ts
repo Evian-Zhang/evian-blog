@@ -1,13 +1,13 @@
 type Tag = {
     name: string,
-    articleCount: string,
+    articleCount: number,
     // unix timestamp
     lastReviseDate: number
 }
 
 type Series = {
     name: string,
-    articleCount: string,
+    articleCount: number,
     // unix timestamp
     lastReviseDate: number
 }
@@ -39,5 +39,11 @@ type Article = {
     series: string | null,
     seriesIndex: number | null
 }
+
+export enum FetchStatus {
+    Fetching,
+    Success,
+    Failure
+};
 
 export type { Tag, Series, ArticleMeta, ArticleMetasWithPagination, Article };

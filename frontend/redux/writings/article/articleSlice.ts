@@ -1,4 +1,4 @@
-import { ArticleMeta } from '../../../interfaces';
+import { ArticleMeta, FetchStatus } from '../../../interfaces';
 import { getArticleMetas } from '../../../api/article-api';
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
@@ -9,12 +9,6 @@ const fetchArticles = createAsyncThunk(
         return getArticleMetas(arg.pageIndex, arg.pageSize)
     }
 );
-
-export enum FetchStatus {
-    Fetching,
-    Success,
-    Failure
-};
 
 interface ArticlesStatePerPage {
     fetchStatus: FetchStatus,

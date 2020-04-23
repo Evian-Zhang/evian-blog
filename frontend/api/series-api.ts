@@ -1,9 +1,9 @@
 import { ENDPOINT } from '../utils/config'
-import { ArticleMetasWithPagination } from '../interfaces'
+import { Series, ArticleMetasWithPagination } from '../interfaces'
 
 import fetch from 'node-fetch'
 
-async function getSeries(): Promise<string[]> {
+async function getSeries(): Promise<Series[]> {
     const res = await fetch(ENDPOINT + '/api/v1/series');
     if (res.status !== 200) {
         return Promise.reject(res.statusText);

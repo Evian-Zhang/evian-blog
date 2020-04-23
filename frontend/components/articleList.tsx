@@ -98,7 +98,6 @@ const ArticleList = (props: ArticleListProps) => {
                             );
                         }}
                         loading={props.loading}
-                        style={{minHeight: ITEM_HEIGHT * props.pageSize}}
                     />}
             <Pagination
                 defaultPageSize={props.pageSize}

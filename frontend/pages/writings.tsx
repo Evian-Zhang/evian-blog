@@ -1,22 +1,27 @@
 import MyHead from '../components/head';
 import rootReducer, { RootState, useTypedSelector } from '../redux/writings/reducers';
-import { FetchStatus, fetchArticles } from '../redux/writings/article/articleSlice';
+import { fetchArticles } from '../redux/writings/article/articleSlice';
 import { selectPageIndex } from '../redux/writings/article/pageIndexSlice';
+import { fetchTags } from '../redux/writings/tag';
+import { fetchSeries } from '../redux/writings/series';
 import { getArticleMetas } from '../api/article-api';
-import { ArticleMetasWithPagination } from '../interfaces';
+import { ArticleMetasWithPagination, FetchStatus } from '../interfaces';
 import ArticleList from '../components/articleList';
+import TagList from '../components/tagList';
+import SeriesList from '../components/seriesList';
 
 import { Provider, useDispatch } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import Error from 'next/error';
-import { Layout, Tabs, Row, Col, PageHeader, Button, List, Pagination } from 'antd';
+import { Layout, Tabs, Row, Col, PageHeader, Button } from 'antd';
+import { useEffect } from 'react';
 
 const { Header, Content } = Layout;
 const { TabPane } = Tabs;
 
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 8;
 
 const ArticlesListTab = () => {
     const selectedPageIndex = useTypedSelector(store => store.article.pageIndex);
@@ -36,7 +41,9 @@ const ArticlesListTab = () => {
     };
 
     const onReload = () => {
-        dispatch(fetchArticles({ pageIndex: selectedPageIndex, pageSize: PAGE_SIZE }));
+        if (articlesList[selectedPageIndex]?.fetchStatus !== FetchStatus.Fetching) {
+            dispatch(fetchArticles({ pageIndex: selectedPageIndex, pageSize: PAGE_SIZE }));
+        }
     }
 
     return (
@@ -47,6 +54,60 @@ const ArticlesListTab = () => {
             loading={selectedArticles?.fetchStatus === FetchStatus.Fetching}
             hasError={selectedArticles?.fetchStatus === FetchStatus.Failure}
             onChange={onChange}
+            onReload={onReload}
+        />
+    );
+}
+
+const TagsTab = () => {
+    const fetchStatus = useTypedSelector(store => store.tag.fetchStatus);
+    const tags = useTypedSelector(store => store.tag.tags);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (fetchStatus === FetchStatus.Failure) {
+            dispatch(fetchTags());
+        }
+    }, []);
+
+    const onReload = () => {
+        if (fetchStatus !== FetchStatus.Fetching) {
+            dispatch(fetchTags());
+        }
+    };
+
+    return (
+        <TagList
+            fetchStatus={fetchStatus}
+            tags={tags}
+            onReload={onReload}
+        />
+    );
+};
+
+const SeriesTab = () => {
+    const fetchStatus = useTypedSelector(store => store.series.fetchStatus);
+    const series = useTypedSelector(store => store.series.series);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (fetchStatus === FetchStatus.Failure) {
+            dispatch(fetchSeries());
+        }
+    }, []);
+
+    const onReload = () => {
+        if (fetchStatus !== FetchStatus.Fetching){
+            dispatch(fetchSeries());
+        }
+    };
+
+    return (
+        <SeriesList
+            fetchStatus={fetchStatus}
+            series={series}
             onReload={onReload}
         />
     );
@@ -76,10 +137,10 @@ const Writings = () => {
                                 <ArticlesListTab/>
                             </TabPane>
                             <TabPane tab="标签" key="tagTab">
-                                Tag Tab
+                                <TagsTab/>
                             </TabPane>
                             <TabPane tab="系列" key="seriesTab">
-                                Series Tab
+                                <SeriesTab/>
                             </TabPane>
                         </Tabs>
                     </Col>
@@ -112,6 +173,14 @@ const WrappedWritings = (props: WritingsProps) => {
                 totalCount: props.articleMetasWithPagination.totalCount,
                 articles
             }
+        },
+        tag: {
+            fetchStatus: FetchStatus.Failure,
+            tags: []
+        },
+        series: {
+            fetchStatus: FetchStatus.Failure,
+            series: []
         }
     };
 
