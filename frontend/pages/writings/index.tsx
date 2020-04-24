@@ -1,21 +1,21 @@
-import MyHead from '../components/head';
-import rootReducer, { RootState, useTypedSelector } from '../redux/writings/reducers';
-import { fetchArticles } from '../redux/writings/article/articleSlice';
-import { selectPageIndex } from '../redux/writings/article/pageIndexSlice';
-import { fetchTags } from '../redux/writings/tag';
-import { fetchSeries } from '../redux/writings/series';
-import { getArticleMetas } from '../api/article-api';
-import { ArticleMetasWithPagination, FetchStatus } from '../interfaces';
-import ArticleList from '../components/articleList';
-import TagList from '../components/tagList';
-import SeriesList from '../components/seriesList';
+import MyHead from '../../components/head';
+import rootReducer, { RootState, useTypedSelector } from '../../redux/writings/reducers';
+import { fetchArticles } from '../../redux/writings/article/articleSlice';
+import { selectPageIndex } from '../../redux/writings/article/pageIndexSlice';
+import { fetchTags } from '../../redux/writings/tag';
+import { fetchSeries } from '../../redux/writings/series';
+import { getArticleMetas } from '../../api/article-api';
+import { ArticleMetasWithPagination, FetchStatus } from '../../interfaces';
+import { ArticleListWithPagination } from '../../components/articleList';
+import TagList from '../../components/tagList';
+import SeriesList from '../../components/seriesList';
+import { WritingsHeader } from '../../components/header';
 
 import { Provider, useDispatch } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { GetServerSideProps } from 'next';
-import Link from 'next/link';
+import { GetStaticProps } from 'next';
 import Error from 'next/error';
-import { Layout, Tabs, Row, Col, PageHeader, Button } from 'antd';
+import { Layout, Tabs, Row, Col } from 'antd';
 import { useEffect } from 'react';
 
 const { Header, Content } = Layout;
@@ -47,7 +47,7 @@ const ArticlesListTab = () => {
     }
 
     return (
-        <ArticleList
+        <ArticleListWithPagination
             datasource={selectedArticles?.articles}
             totalCount={totalCount}
             pageSize={PAGE_SIZE}
@@ -118,16 +118,7 @@ const Writings = () => {
         <div>
             <MyHead title="我的创作·Evian张的博客" keywords="software,blog,Evian-Zhang" />
             <Header style={{height: "auto"}}>
-                <PageHeader
-                    title={
-                        <Link href="/">
-                            <Button type="link" size="large">
-                                Evian张的博客
-                            </Button>
-                        </Link>
-                    }
-                    subTitle="我的创作"
-                />
+                <WritingsHeader/>
             </Header>
             <Content>
                 <Row justify="center">
@@ -195,7 +186,7 @@ const WrappedWritings = (props: WritingsProps) => {
     );
 };
 
-export const getServerSideProps: GetServerSideProps = async context => {
+export const getStaticProps: GetStaticProps = async context => {
     try {
         let articleMetasWithPagination = await getArticleMetas(0, PAGE_SIZE);
         return {

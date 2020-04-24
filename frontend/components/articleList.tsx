@@ -72,6 +72,34 @@ const ErrorPage = (props: { onReload: () => void }) => {
 
 interface ArticleListProps {
     datasource: ArticleMeta[],
+    loading: boolean,
+    hasError: boolean,
+    onReload: () => void,
+}
+
+const ArticleList = (props: ArticleListProps) => {
+    if (props.hasError) {
+        return <ErrorPage onReload={props.onReload}/>;
+    } else {
+        return (
+            <List
+                dataSource={props.datasource}
+                renderItem={(articleMeta) => {
+                    return (
+                        <div>
+                            <ArticleListItem articleMeta={articleMeta}/>
+                            <Divider/>
+                        </div>
+                    );
+                }}
+                loading={props.loading}
+            />
+        );
+    }
+};
+
+interface ArticleListWithPaginationProps {
+    datasource: ArticleMeta[],
     totalCount: number,
     pageSize: number,
     loading: boolean,
@@ -80,25 +108,10 @@ interface ArticleListProps {
     onReload: () => void,
 }
 
-const ITEM_HEIGHT = 100;
-
-const ArticleList = (props: ArticleListProps) => {
+const ArticleListWithPagination = (props: ArticleListWithPaginationProps) => {
     return (
         <div>
-            {props.hasError ?
-                <ErrorPage onReload={props.onReload}/> :
-                    <List
-                        dataSource={props.datasource}
-                        renderItem={(articleMeta) => {
-                            return (
-                                <div>
-                                    <ArticleListItem articleMeta={articleMeta}/>
-                                    <Divider/>
-                                </div>
-                            );
-                        }}
-                        loading={props.loading}
-                    />}
+            <ArticleList {...props}/>
             <Pagination
                 defaultPageSize={props.pageSize}
                 total={props.totalCount}
@@ -111,4 +124,4 @@ const ArticleList = (props: ArticleListProps) => {
     );
 }
 
-export default ArticleList;
+export { ArticleList, ArticleListWithPagination };

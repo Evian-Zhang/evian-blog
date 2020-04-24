@@ -29,7 +29,7 @@ const colResponsiveProps = {
 
 const TagList = (props: { tags: Tag[] }) => {
     return (
-        <Row justify="space-around" gutter={24}>
+        <Row justify="space-around" gutter={[24, 24]}>
             {
                 props.tags.map(tag => {
                     return (

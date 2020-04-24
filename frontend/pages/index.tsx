@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Layout, Row, Col, Card } from 'antd';
 
 import MyHead from '../components/head';
-import MyHeader from '../components/header';
+import { HomeHeader } from '../components/header';
 import InfiniteScroller from '../components/infiniteScroller'
 
 const { Header, Content } = Layout;
@@ -21,7 +21,9 @@ const Home = () => {
         <div>
             <MyHead title="Evian张的博客" keywords="software,blog,Evian-Zhang" />
             <Layout>
-                <Header><MyHeader/></Header>
+                <Header style={{height: "auto"}}>
+                    <HomeHeader/>
+                </Header>
                 <Content>
                     <Row justify="space-around" gutter={24}>
                         <Col {...colResponsiveProps}>

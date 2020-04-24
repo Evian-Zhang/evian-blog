@@ -12,8 +12,8 @@ async function getSeries(): Promise<Series[]> {
     return Promise.resolve(data);
 }
 
-async function getArticlesOfSeries(seriesName: string): Promise<ArticleMetasWithPagination> {
-    const res = await fetch(ENDPOINT + '/api/v1/series/' + seriesName);
+async function getArticlesOfSeries(seriesName: string, pageIndex: number, pageSize: number): Promise<ArticleMetasWithPagination> {
+    const res = await fetch(ENDPOINT + `/api/v1/series/${seriesName}?pageIndex=${pageIndex}&pageSize=${pageSize}`);
     if (res.status !== 200) {
         return Promise.reject(res.statusText);
     }
