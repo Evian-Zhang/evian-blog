@@ -32,7 +32,7 @@ const ArticleListItem = (props: { articleMeta: ArticleMeta }) => {
                                 {articleMeta.series}
                             </a>
                         </Link>
-                        系列
+                        系列[{articleMeta.seriesIndex + 1}]
                     </span>}
                 </Col>
                 <Col {...colResponsiveProps}>
@@ -43,14 +43,16 @@ const ArticleListItem = (props: { articleMeta: ArticleMeta }) => {
                 <Col span={24} style={{overflowX: "auto"}}>
                     {articleMeta.tags.map((tag) => {
                         return (
-                            <Link href={`/writings/tag/${tag}`}>
+                            <Link
+                                href={`/writings/tag/${tag}`}
+                                key={`${articleMeta.title}/${tag}`}
+                            >
                                 <Tag>
                                     <a
                                         rel="noopener noreferrer"
                                         style={{textDecoration: "none"}}
-                                        key={`${articleMeta.title}/${tag}`}
                                     >
-                                            {tag}
+                                        {tag}
                                     </a>
                                 </Tag>
                             </Link>

@@ -21,4 +21,13 @@ async function getArticle(articleTitle: string): Promise<Article> {
     return Promise.resolve(data);
 }
 
-export { getArticle, getArticleMetas };
+async function getArticleTitles(): Promise<string[]> {
+    const res = await fetch(ENDPOINT + '/api/v1/articleTitles');
+    if (res.status != 200) {
+        return Promise.reject({ statusCode: res.statusCode, statusText: res.statusText });
+    }
+    const data = await res.json();
+    return Promise.resolve(data);
+}
+
+export { getArticle, getArticleMetas, getArticleTitles };
