@@ -42,6 +42,18 @@ impl PageInfo {
     }
 }
 
+#[get("/tag/{tag_name}/count")]
+pub async fn get_all_articles_count_of_tag(
+    database: web::Data<Database>,
+    tag_name: web::Path<String>,
+) -> Result<HttpResponse, HttpResponse> {
+    let count = database.get_all_articles_count_of_tag(&tag_name)
+        .await
+        .map_err(map_to_internal_server_error)?;
+
+    Ok(HttpResponse::Ok().json(count))
+}
+
 #[get("/tag/{tag_name}")]
 pub async fn get_all_articles_of_tag(
     database: web::Data<Database>,
@@ -56,6 +68,18 @@ pub async fn get_all_articles_of_tag(
         .map_err(map_to_internal_server_error)?;
 
     Ok(HttpResponse::Ok().json(articles))
+}
+
+#[get("/tag/{series_name}/count")]
+pub async fn get_all_articles_count_of_series(
+    database: web::Data<Database>,
+    series_name: web::Path<String>,
+) -> Result<HttpResponse, HttpResponse> {
+    let count = database.get_all_articles_count_of_series(&series_name)
+        .await
+        .map_err(map_to_internal_server_error)?;
+
+    Ok(HttpResponse::Ok().json(count))
 }
 
 #[get("/series/{series_name}")]
@@ -89,6 +113,17 @@ pub async fn get_article_of_title(database: web::Data<Database>, article_title: 
     Ok(HttpResponse::Ok().json(article))
 }
 
+#[get("/articles/count")]
+pub async fn get_all_articles_count(
+    database: web::Data<Database>,
+) -> Result<HttpResponse, HttpResponse> {
+    let count = database.get_all_articles_count()
+        .await
+        .map_err(map_to_internal_server_error)?;
+
+    Ok(HttpResponse::Ok().json(count))
+}
+
 #[get("/articles")]
 pub async fn get_all_articles(
     database: web::Data<Database>,
@@ -102,4 +137,13 @@ pub async fn get_all_articles(
         .map_err(map_to_internal_server_error)?;
 
     Ok(HttpResponse::Ok().json(articles))
+}
+
+#[get("/articles/titles")]
+pub async fn get_all_article_titles(database: web::Data<Database>) -> Result<HttpResponse, HttpResponse> {
+    let article_titles = database.get_all_article_titles()
+        .await
+        .map_err(map_to_internal_server_error)?;
+
+    Ok(HttpResponse::Ok().json(article_titles))
 }

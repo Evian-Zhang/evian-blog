@@ -56,12 +56,8 @@ ORDER BY tag_meta.last_revise_date DESC, tag_meta.name ASC";
             .await?)
     }
 
-    // Return all articles of type `ArticleMeta` with a page count with order of their last_revise_date
-    pub async fn get_all_articles(
-        &self,
-        page_index: usize,
-        page_size: usize
-    ) -> Result<ArticleMetaWithPagination> {
+    // Return count of all articles
+    pub async fn get_all_articles_count(&self) -> Result<usize> {
         let total_count_str = "\
 MATCH (article:Article)
 RETURN count(article)";
@@ -72,6 +68,32 @@ RETURN count(article)";
         let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
             .await?
             .pop().ok_or(Error::Unexpected)?;
+
+        Ok(total_count)
+    }
+
+    // Return titles of all articles
+    pub async fn get_all_article_titles(&self) -> Result<Vec<String>> {
+        let query_str = "\
+MATCH (article:Article)
+RETURN article.title
+";
+        let query_statement = Neo4jStatement {
+            statement: query_str,
+            parameters: None,
+        };
+        let article_titles = neo4j_ops::query::<String>(&self.url, &self.client, &self.authorization, query_statement)
+            .await?;
+
+        Ok(article_titles)
+    }
+
+    // Return all articles with order of their last_revise_date descending
+    pub async fn get_all_articles(
+        &self,
+        page_index: usize,
+        page_size: usize
+    ) -> Result<Vec<ArticleMeta>> {
         let pagination_str = "\
 MATCH (article:Article)
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
@@ -91,19 +113,11 @@ LIMIT $limit";
         };
         let article_metas = neo4j_ops::query::<ArticleMeta>(&self.url, &self.client, &self.authorization, pagination_statement)
             .await?;
-        Ok(ArticleMetaWithPagination {
-            total_count,
-            article_metas
-        })
+        Ok(article_metas)
     }
 
-    // Return all articles has tag in `tag_name` of type `ArticleMeta` with a page count with order of their last_revise_date
-    pub async fn get_all_articles_of_tag(
-        &self,
-        tag_name: &String,
-        page_index: usize,
-        page_size: usize
-    ) -> Result<ArticleMetaWithPagination> {
+    // Return count of all articles has tag `tag_name`
+    pub async fn get_all_articles_count_of_tag(&self, tag_name: &String) -> Result<usize> {
         let total_count_str = "\
 MATCH (:Tag {name: $tag_name})<-[:HAS_TAG]-(article:Article)
 RETURN count(article)";
@@ -114,6 +128,17 @@ RETURN count(article)";
         let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
             .await?
             .pop().ok_or(Error::Unexpected)?;
+
+        Ok(total_count)
+    }
+
+    // Return all articles has tag `tag_name` with order of their last_revise_date descending
+    pub async fn get_all_articles_of_tag(
+        &self,
+        tag_name: &String,
+        page_index: usize,
+        page_size: usize
+    ) -> Result<Vec<ArticleMeta>> {
         let pagination_str = "\
 MATCH (:Tag {name: $tag_name})<-[:HAS_TAG]-(article:Article)
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
@@ -134,19 +159,11 @@ LIMIT $limit";
         };
         let article_metas = neo4j_ops::query::<ArticleMeta>(&self.url, &self.client, &self.authorization, pagination_statement)
             .await?;
-        Ok(ArticleMetaWithPagination {
-            total_count,
-            article_metas
-        })
+        Ok(article_metas)
     }
 
-    // Return all articles in series `series_name` of type `ArticleMeta` with a page count with order of their series_index
-    pub async fn get_all_articles_of_series(
-        &self,
-        series_name: &String,
-        page_index: usize,
-        page_size: usize
-    ) -> Result<ArticleMetaWithPagination> {
+    // Return count of all articles in series `series_name`
+    pub async fn get_all_articles_count_of_series(&self, series_name: &String) -> Result<usize> {
         let total_count_str = "\
 MATCH (:Series {name: $series_name})<-[:IN_SERIES]-(article:Article)
 RETURN count(article)";
@@ -157,6 +174,17 @@ RETURN count(article)";
         let total_count = neo4j_ops::query::<usize>(&self.url, &self.client, &self.authorization, total_count_statement)
             .await?
             .pop().ok_or(Error::Unexpected)?;
+        
+        Ok(total_count)
+    }
+
+    // Return all articles in series `series_name` with order of their series_index ascending
+    pub async fn get_all_articles_of_series(
+        &self,
+        series_name: &String,
+        page_index: usize,
+        page_size: usize
+    ) -> Result<Vec<ArticleMeta>> {
         let pagination_str = "\
 MATCH (:Series {name: $series_name})<-[in_series:IN_SERIES]-(article:Article)
 MATCH (article)-[:HAS_TAG]->(tag:Tag)
@@ -176,10 +204,7 @@ LIMIT $limit";
         };
         let article_metas = neo4j_ops::query::<ArticleMeta>(&self.url, &self.client, &self.authorization, pagination_statement)
             .await?;
-        Ok(ArticleMetaWithPagination {
-            total_count,
-            article_metas
-        })
+        Ok(article_metas)
     }
 
     // Return article in title `article_title`. If no such article, return Ok(None)

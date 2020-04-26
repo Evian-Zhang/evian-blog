@@ -29,13 +29,6 @@ pub struct ArticleMeta {
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all(serialize = "camelCase"))]
-pub struct ArticleMetaWithPagination {
-    pub total_count: usize,
-    pub article_metas: Vec<ArticleMeta>
-}
-
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all(serialize = "camelCase"))]
 pub struct Article {
     title: String,
     body: String,
