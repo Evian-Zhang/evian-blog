@@ -38,10 +38,9 @@ const articleSlice = createSlice({
                 };
             })
             .addCase(fetchArticles.fulfilled, (state, action) => {
-                state.totalCount = action.payload.totalCount;
                 state.articles[action.meta.arg.pageIndex] = {
                     fetchStatus: FetchStatus.Success,
-                    articles: action.payload.articleMetas
+                    articles: action.payload
                 };
             })
             .addCase(fetchArticles.rejected, (state, action) => {

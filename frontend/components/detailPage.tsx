@@ -1,4 +1,4 @@
-import { ArticleMetasWithPagination } from "../interfaces";
+import { ArticleMeta } from "../interfaces";
 import { WritingsHeader } from '../components/header';
 import MyHead from '../components/head';
 import { ArticleListWithPagination } from '../components/articleList';
@@ -11,9 +11,10 @@ const { Header, Content } = Layout;
 const { Title } = Typography;
 
 interface DetailPageProps {
-    fetcher: (name: string, pageIndex: number, pageSize: number) => Promise<ArticleMetasWithPagination>,
+    fetcher: (name: string, pageIndex: number, pageSize: number) => Promise<ArticleMeta[]>,
     name: string,
-    initialData: ArticleMetasWithPagination,
+    totalCount: number,
+    initialData: ArticleMeta[],
     keyName: string,
     pageSize: number,
     title: (name: string) => string
@@ -38,11 +39,9 @@ const DetailPage = (props: DetailPageProps) => {
         }
     );
 
-    let [articleMetas, totalCount] = [[], 0];
+    let articleMetas = [];
     if (data) {
-        let articleMetasWithPagination = data as ArticleMetasWithPagination;
-        articleMetas = articleMetasWithPagination.articleMetas;
-        totalCount = articleMetasWithPagination.totalCount;
+        articleMetas = data as ArticleMeta[];
     }
 
     const onChange = (pageIndex: number) => {
@@ -76,7 +75,7 @@ const DetailPage = (props: DetailPageProps) => {
                         <Col span={20}>
                             <ArticleListWithPagination
                                 datasource={articleMetas}
-                                totalCount={totalCount}
+                                totalCount={props.totalCount}
                                 pageSize={props.pageSize}
                                 loading={data === undefined || isValidating}
                                 hasError={error !== undefined}

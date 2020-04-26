@@ -1,5 +1,5 @@
-import { getSeries, getArticlesOfSeries } from '../../../api/series-api';
-import { ArticleMetasWithPagination } from '../../../interfaces';
+import { getSeries, getArticlesOfSeries, getArticlesCountOfSeries } from '../../../api/series-api';
+import { ArticleMeta } from '../../../interfaces';
 import MyHead from '../../../components/head';
 import DetailPage from '../../../components/detailPage';
 
@@ -9,7 +9,8 @@ import { useRouter } from 'next/router';
 const PAGE_SIZE = 8;
 
 interface SeriesDetailPageProps {
-    initialArticleMetasWithPagination: ArticleMetasWithPagination
+    totalCount: number,
+    initialArticleMetas: ArticleMeta[]
 }
 
 const SeriesDetailPage = (props: SeriesDetailPageProps) => {
@@ -25,7 +26,8 @@ const SeriesDetailPage = (props: SeriesDetailPageProps) => {
                 fetcher={getArticlesOfSeries}
                 name={seriesName}
                 keyName="seriesDetailPage"
-                initialData={props.initialArticleMetasWithPagination}
+                totalCount={props.totalCount}
+                initialData={props.initialArticleMetas}
                 pageSize={PAGE_SIZE}
                 title={title}
             />
@@ -48,10 +50,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async context => {
     const seriesName = context.params.seriesName as string;
-    const initialArticleMetasWithPagination = await getArticlesOfSeries(seriesName, 0, PAGE_SIZE);
+    const totalCount= await getArticlesCountOfSeries(seriesName);
+    const initialArticleMetas = await getArticlesOfSeries(seriesName, 0, PAGE_SIZE);
     return {
         props: {
-            initialArticleMetasWithPagination
+            totalCount,
+            initialArticleMetas
         }
     };
 };

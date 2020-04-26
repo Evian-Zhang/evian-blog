@@ -1,5 +1,5 @@
-import { getTags, getArticlesOfTag } from '../../../api/tag-api';
-import { ArticleMetasWithPagination } from '../../../interfaces';
+import { getTags, getArticlesOfTag, getArticlesCountOfTag } from '../../../api/tag-api';
+import { ArticleMeta } from '../../../interfaces';
 import MyHead from '../../../components/head';
 import DetailPage from '../../../components/detailPage';
 
@@ -9,7 +9,8 @@ import { useRouter } from 'next/router';
 const PAGE_SIZE = 8;
 
 interface TagDetailPageProps {
-    initialArticleMetasWithPagination: ArticleMetasWithPagination
+    totalCount: number,
+    initialArticleMetas: ArticleMeta[]
 }
 
 const TagDetailPage = (props: TagDetailPageProps) => {
@@ -25,7 +26,8 @@ const TagDetailPage = (props: TagDetailPageProps) => {
                 fetcher={getArticlesOfTag}
                 name={tagName}
                 keyName="tagDetailPage"
-                initialData={props.initialArticleMetasWithPagination}
+                totalCount={props.totalCount}
+                initialData={props.initialArticleMetas}
                 pageSize={PAGE_SIZE}
                 title={title}
             />
@@ -48,10 +50,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async context => {
     const tagName = context.params.tagName as string;
-    const initialArticleMetasWithPagination = await getArticlesOfTag(tagName, 0, PAGE_SIZE);
+    const totalCount = await getArticlesCountOfTag(tagName);
+    const initialArticleMetas = await getArticlesOfTag(tagName, 0, PAGE_SIZE);
     return {
         props: {
-            initialArticleMetasWithPagination
+            totalCount,
+            initialArticleMetas
         }
     };
 };

@@ -23,11 +23,6 @@ type ArticleMeta = {
     seriesIndex: number | null
 }
 
-type ArticleMetasWithPagination = {
-    articleMetas: ArticleMeta[],
-    totalCount: number
-}
-
 type Article = {
     title: string,
     body: string,
@@ -46,4 +41,4 @@ export enum FetchStatus {
     Failure
 };
 
-export type { Tag, Series, ArticleMeta, ArticleMetasWithPagination, Article };
+export type { Tag, Series, ArticleMeta, Article };

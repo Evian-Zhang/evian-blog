@@ -4,8 +4,8 @@ import { fetchArticles } from '../../redux/writings/article/articleSlice';
 import { selectPageIndex } from '../../redux/writings/article/pageIndexSlice';
 import { fetchTags } from '../../redux/writings/tag';
 import { fetchSeries } from '../../redux/writings/series';
-import { getArticleMetas } from '../../api/article-api';
-import { ArticleMetasWithPagination, FetchStatus } from '../../interfaces';
+import { getArticleMetas, getArticlesCount } from '../../api/article-api';
+import { ArticleMeta, FetchStatus } from '../../interfaces';
 import { ArticleListWithPagination } from '../../components/articleList';
 import TagList from '../../components/tagList';
 import SeriesList from '../../components/seriesList';
@@ -142,8 +142,9 @@ const Writings = () => {
 };
 
 interface WritingsProps {
-    errorCode: null | number
-    articleMetasWithPagination: ArticleMetasWithPagination
+    errorCode: null | number,
+    articlesCount: number,
+    articleMetas: ArticleMeta[]
 }
 
 const WrappedWritings = (props: WritingsProps) => {
@@ -154,14 +155,14 @@ const WrappedWritings = (props: WritingsProps) => {
     let articles = [];
     articles[0] = {
         fetchStatus: FetchStatus.Success,
-        articles: props.articleMetasWithPagination.articleMetas
+        articles: props.articleMetas
     };
 
     const preloadedState: RootState = {
         article: {
             pageIndex: 0,
             articles: {
-                totalCount: props.articleMetasWithPagination.totalCount,
+                totalCount: props.articlesCount,
                 articles
             }
         },
@@ -188,11 +189,13 @@ const WrappedWritings = (props: WritingsProps) => {
 
 export const getStaticProps: GetStaticProps = async context => {
     try {
-        let articleMetasWithPagination = await getArticleMetas(0, PAGE_SIZE);
+        let articlesCount = await getArticlesCount();
+        let articleMetas = await getArticleMetas(0, PAGE_SIZE);
         return {
             props: {
                 errorCode: null,
-                articleMetasWithPagination
+                articlesCount,
+                articleMetas
             }
         };
     } catch (errorCode) {
