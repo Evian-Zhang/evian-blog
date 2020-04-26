@@ -2,7 +2,10 @@ import { getArticleTitles, getArticle } from '../../api/article-api';
 import { Article } from '../../interfaces';
 import MyHead from '../../components/head';
 import { WritingsHeader } from '../../components/header';
+import MyFooter from '../../components/footer';
 
+import sha256 from 'crypto-js/sha256';
+import Base64 from 'crypto-js/enc-base64';
 import marked, { Renderer } from 'marked';
 import { useState, useEffect } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -12,7 +15,7 @@ import createDOMPurify from 'dompurify';
 import { JSDOM } from 'jsdom';
 import { Layout, Row, Col, Typography, Tag } from 'antd';
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 class MyRenderer extends Renderer {
@@ -23,6 +26,14 @@ class MyRenderer extends Renderer {
     </a>
 </h${level}>
 `;
+    }
+    image(href, title, text) {
+        if (title.startsWith("http")) {
+            return super.image(href, title, text);
+        } else {
+            const hashedHref = Base64.stringify(sha256(href));
+            return super.image(hashedHref, title, text);
+        }
     }
 }
 
@@ -42,7 +53,6 @@ const ArticlePage = (props: { article: Article }) => {
 
     // remain for next.js web worker
     const [body, setBody] = useState(article.body);
-    console.log(body);
     useEffect(() => {
         
     }, []);
@@ -108,11 +118,19 @@ const ArticlePage = (props: { article: Article }) => {
                     </Row>
                     <Row justify="center">
                         <Col span={20}>
-                            <div dangerouslySetInnerHTML={{__html: body}}/>
+                            <div id="article_body" dangerouslySetInnerHTML={{__html: body}}/>
                         </Col>
                     </Row>
                 </Content>
+                <Footer>
+                    <MyFooter/>
+                </Footer>
             </Layout>
+            <style jsx>{`
+                #articleBody img {
+                    max-width: 80%
+                }
+            `}</style>
             <script dangerouslySetInnerHTML={{__html: mathJaxSetup}}></script>
             <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
             <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>

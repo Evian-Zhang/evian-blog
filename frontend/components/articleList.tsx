@@ -18,7 +18,7 @@ const ArticleListItem = (props: { articleMeta: ArticleMeta }) => {
         <div>
             <Row>
                 <Col {...colResponsiveProps} style={{overflowX: "auto"}}>
-                    <Link href={`/writings/article/${articleMeta.title}`}>
+                    <Link href={`/writings/${articleMeta.title}`}>
                         <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
                             {articleMeta.title}
                         </a>

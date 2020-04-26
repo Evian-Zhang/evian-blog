@@ -15,13 +15,15 @@ const InfinityScroller = () => {
     const contentLength = gameContent.length;
     useEffect(() => {
         setContentIndex(Math.floor((window.scrollY > 0 ? window.scrollY : 0) / 150) % contentLength);
-        window.onscroll = () => {
+        const manager = () => {
             setContentIndex(Math.floor((window.scrollY > 0 ? window.scrollY : 0) / 150) % contentLength);
             const container = containerRef.current;
             if (window.scrollY > container.offsetTop + container.offsetHeight - window.innerHeight - VISIBLE_OFFSET) {
                 setHeight(prevHeight => prevHeight + HEIGHT_INCREASE);
             }
         };
+        window.onscroll = manager;
+        window.onresize = manager;
     }, []);
     return (
         <div ref={containerRef}>
@@ -52,6 +54,7 @@ const InfinityScroller = () => {
                 }
                 #gameChar {
                     position: fixed;
+                    z-index: 1;
                     bottom: 20%;
                     left: 50%;
                     transform: translateX(-50%);

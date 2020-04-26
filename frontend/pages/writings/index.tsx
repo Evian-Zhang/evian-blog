@@ -10,6 +10,7 @@ import { ArticleListWithPagination } from '../../components/articleList';
 import TagList from '../../components/tagList';
 import SeriesList from '../../components/seriesList';
 import { WritingsHeader } from '../../components/header';
+import MyFooter from '../../components/footer';
 
 import { Provider, useDispatch } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -18,7 +19,7 @@ import Error from 'next/error';
 import { Layout, Tabs, Row, Col } from 'antd';
 import { useEffect } from 'react';
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 const { TabPane } = Tabs;
 
 const PAGE_SIZE = 8;
@@ -115,7 +116,7 @@ const SeriesTab = () => {
 
 const Writings = () => {
     return (
-        <div>
+        <Layout>
             <MyHead title="我的创作·Evian张的博客" keywords="software,blog,Evian-Zhang" />
             <Header style={{height: "auto"}}>
                 <WritingsHeader/>
@@ -137,7 +138,10 @@ const Writings = () => {
                     </Col>
                 </Row>
             </Content>
-        </div>
+            <Footer>
+                <MyFooter/>
+            </Footer>
+        </Layout>
     );
 };
 

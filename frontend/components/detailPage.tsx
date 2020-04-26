@@ -1,13 +1,14 @@
 import { ArticleMeta } from "../interfaces";
 import { WritingsHeader } from '../components/header';
 import MyHead from '../components/head';
+import MyFooter from '../components/footer';
 import { ArticleListWithPagination } from '../components/articleList';
 
 import { useState } from 'react';
 import useSWR, { mutate } from 'swr';
 import { Layout, Row, Col, Typography } from 'antd';
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 interface DetailPageProps {
@@ -85,6 +86,9 @@ const DetailPage = (props: DetailPageProps) => {
                         </Col>
                     </Row>
                 </Content>
+                <Footer>
+                    <MyFooter/>
+                </Footer>
             </Layout>
         </div>
     );
