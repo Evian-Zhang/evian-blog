@@ -6,6 +6,7 @@ interface MyHeadProps {
 }
 
 const MyHead = (props: MyHeadProps) => {
+    
     return (
         <Head>
             <title>{props.title}</title>

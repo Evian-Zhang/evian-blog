@@ -27,19 +27,26 @@ const Home = () => {
                 </Header>
                 <Layout>
                     <Sider
-                        style={{width: "20%"}}
+                        style={{width: "20%", zIndex: 4}}
                         breakpoint="lg"
                         collapsedWidth="0"
+                        collapsible
                     >
-                        <div style={{marginLeft: "20%"}}>
+                        <div style={{marginLeft: "20%", color: "white"}}>
                             Evian张的个人博客<br/>
                             联系方式：<br/>
                             <Space direction="vertical">
                                 <div style={{width: "100%"}}>
-                                    GitHub<a href="https://github.com/Evian-Zhang" rel="noopener noreferrer"><GithubFilled/></a>
+                                    GitHub <a href="https://github.com/Evian-Zhang" rel="noopener noreferrer"><GithubFilled/></a>
                                 </div>
                                 <div style={{width: "100%"}}>
-                                    Gmail<a href="mailto:evianzhang1999@gmail.com"><MailFilled/></a>
+                                    Gmail <a href="mailto:evianzhang1999@gmail.com"><MailFilled/></a>
+                                </div>
+                                <div style={{width: "100%"}}>
+                                    知乎 <a href="https://www.zhihu.com/people/Evian_Zhang" rel="noopener noreferrer">勥巭炛</a>
+                                </div>
+                                <div style={{width: "100%"}}>
+                                    CSDN <a href="https://me.csdn.net/EvianZhang" rel="noopener noreferrer">EvianZhang</a>
                                 </div>
                             </Space>
                         </div>
