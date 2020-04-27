@@ -13,6 +13,12 @@ const MyFooter = () => {
                 <div>
                     Gmail<a href="mailto:evianzhang1999@gmail.com"><MailFilled/></a>
                 </div>
+                <div>
+                    知乎 <a href="https://www.zhihu.com/people/Evian_Zhang" rel="noopener noreferrer">勥巭炛</a>
+                </div>
+                <div>
+                    CSDN <a href="https://me.csdn.net/EvianZhang" rel="noopener noreferrer">EvianZhang</a>
+                </div>
             </Space>
         </div>
     );
