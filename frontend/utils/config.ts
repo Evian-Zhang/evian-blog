@@ -1,6 +1,8 @@
-const DEV_ENDPOINT = "http://localhost:8000"
-const PROD_ENDPOINT = "http://localhost:8000"
+import getConfig from 'next/config';
 
-const ENDPOINT = process.env["NODE_ENV"] === "development" ? DEV_ENDPOINT : PROD_ENDPOINT;
+const { serverRuntimeConfig } = getConfig();
+
+// Due to https://github.com/zeit/next.js/pull/7651, `process.browser` is deprecated
+const ENDPOINT = (typeof window === "undefined") ? serverRuntimeConfig.server_endpoint : serverRuntimeConfig.browser_endpoint;
 
 export { ENDPOINT };

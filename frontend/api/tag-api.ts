@@ -1,7 +1,7 @@
-import { ENDPOINT } from '../utils/config'
-import { Tag, ArticleMeta } from '../interfaces'
+import { ENDPOINT } from '../utils/config';
+import { Tag, ArticleMeta } from '../interfaces';
 
-import fetch from 'node-fetch'
+import fetch from 'node-fetch';
 
 async function getTags(): Promise<Tag[]> {
     const res = await fetch(ENDPOINT + '/api/v1/tags');

@@ -1,0 +1,59 @@
+version: "3.8"
+
+services:
+    database:
+        image: neo4j:4.0
+        environment:
+            NEO4J_AUTH: ${NEO4J_AUTH}
+            NEO4J_dbms_default__database: blog
+        secrets:
+         - neo4j_auth
+        volumes:
+         - database:/data
+        networks:
+            blog:
+                aliases:
+                 - database
+
+    backend:
+        image: evianzhang1999/blog_backend:1.0
+        environment: 
+            CONFIG_FILE: /backend_config
+            DATABASE_PASSWORD_FILE: /run/secrets/database_password
+        configs:
+         - backend_config
+        secrets:
+         - database_password
+        networks:
+            blog:
+    
+    frontend:
+        image: evianzhang1999/blog_frontend:1.0
+        environment:
+            CONFIG_FILE: /frontend_config
+        configs:
+         - frontend_config
+        networks:
+            blog:
+
+networks:
+    blog:
+        driver: overlay
+        attachable: true
+
+volumes:
+    database:
+
+configs:
+    backend_config:
+        external: true
+        name: blog_backend_config
+    frontend_config:
+        external: true
+        name: blog_frontend_config
+
+secrets:
+    database_password:
+        external: true
+        name: blog_database_password
+    

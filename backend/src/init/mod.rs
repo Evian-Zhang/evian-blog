@@ -6,7 +6,6 @@ use crate::database::Database;
 use log::{LevelFilter, info};
 use chrono::Local;
 
-use std::env;
 use std::io::Write;
 use std::error;
 use std::fmt;
@@ -44,22 +43,11 @@ pub fn init_logging() {
 }
 
 pub fn init_config() -> Result<AppConfig> {
-    let blog_env = match env::var("BLOG_ENV") {
-        Ok(blog_env) => BlogEnv::from(blog_env.as_str()),
-        #[cfg(debug_assertions)]
-        _ => BlogEnv::Development,
-        #[cfg(not(debug_assertions))]
-        _ => BlogEnv::Production
-    };
-
-    let app_configs = read_config()?;
+    let app_config = read_config()?;
     
     info!("Successfully init config");
 
-    Ok(match blog_env {
-        BlogEnv::Development => app_configs.development,
-        BlogEnv::Production => app_configs.production
-    })
+    Ok(app_config)
 }
 
 pub fn init_database(database_config: DatabaseConfig) -> Database {
