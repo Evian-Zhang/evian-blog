@@ -4,3 +4,5 @@ Cargo.lock
 .idea
 config.toml
 .env
+init.sh
+password

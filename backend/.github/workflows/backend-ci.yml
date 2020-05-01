@@ -1,0 +1,23 @@
+name: Backend-CI
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - 'backend/**'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        env:
+            working-directory: ./backend
+
+        steps:
+            - uses: actions/checkout@v2
+            - name: Build
+              run: cargo build --verbose
+              working-directory: ${{ env.working-directory }}
+            - name: Run tests
+              run: cargo tests --verbose
+              working-directory: ${{ env.working-directory }}
