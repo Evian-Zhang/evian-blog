@@ -3,7 +3,7 @@ FROM rust:alpine AS builder
 WORKDIR /app
 
 COPY . .
-RUN cargo build --release
+RUN RUSTFLAGS="-C target-feature=-crt-static" cargo build --release
 
 FROM alpine
 
