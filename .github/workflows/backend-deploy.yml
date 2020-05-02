@@ -1,7 +1,7 @@
 name: Backend-Deploy
 
 on:
-    create:
+    push:
         tags:
         - 'backend@v*'
 
