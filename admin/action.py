@@ -1,88 +1,61 @@
+import requests
 import toml
-import psycopg2
-import datetime
+import base64
+import json
 
-def read_conf(config_path):
-    with open(config_path, 'r') as config_file:
-        return toml.load(config_file)
-
-# must commit and close after use
-# exiting the connection's `with` block doesn't close the connection, should be put into a `try-catch` block to ensure close
-def establish_connection(config):
-    return psycopg2.connect(host=config['address'], port=config['port'], user=config['username'], password=config['password'], database=config['database_name'])
-
-def add_tag(cursor, tag_name):
-    cursor.execute("""
-    INSERT INTO tags (name, article_count) VALUES (%s, 0);
-    """,
-    (tag_name,)) # Python requires a comma to create a signle element tuple
-
-def remove_tag(cursor, tag_name):
-    cursor.execute("""
-    DELETE FROM tags WHERE name = %s;
-    """,
-    (tag_name, ))
-
-def add_series(cursor, series_name):
-    cursor.execute("""
-    INSERT INTO series (name) VALUES (%s);
-    """,
-    (series_name,))
-
-def remove_series(cursor, series_name):
-    cursor.execute("""
-    DELETE FROM series WHERE name = %s;
-    """,
-    (series_name,))
-
-def add_article_without_tag_and_series(cursor, title, body, publish_date):
-    cursor.execute("""
-    INSERT INTO articles (title, body, publish_date)
-    VALUES (%s, %s, %s)
-    RETURNING id;
-    """,
-    (title, body, publish_date))
-    return cursor.fetchone()    
-
-def add_tags_of_article(cursor, article_id, tags):
-    # `ANY` can work with empty lists, wheras `IN()` is a SQL syntax error
-    cursor.execute("""
-    INSERT INTO tag_with_articles (tag_id, article_id)
-    SELECT tags.id, %s FROM tags
-    WHERE tags.name = ANY(%s);
-    """,
-    (article_id, tags))
-
-def remove_tag_of_article(cursor, article_title, tag_name):
-    cursor.execute("""
-    SELECT tags.id, articles.id
-    FROM tags
-    INNER JOIN articles
-    ON (tags.name = %s AND articles.title = %s)
-    """)
-    tag_id, article_id = cursor.fetchone()
-    cursor.execute("""
-    DELETE FROM tag_with_articles
-    WHERE (tag_id = %s AND article_id = %s);
-    """,
-    (tag_id, article_id))
-
-def add_series_of_article(cursor, article_id, series_id, series_index):
-    cursor.execute("""
-    UPDATE articles
-    SET series_id = %s, series_index = %s
-    WHERE id = %s;
-    """,
-    (series_id, series_index, article_id))
+class Neo4jClient:
+    def __init__(self, config_file_path):
+        with open(config_file_path, 'r') as config_file:
+            config_str = config_file.read()
+            config = toml.loads(config_str)
+            self.url = f'http://{config["address"]}:{config["port"]}/db/{config["database_name"]}/tx/commit/'
+            self.authorization = str(base64.b64encode(f'{config["username"]}:{config["password"]}'.encode("utf-8")), "utf-8")
+            self.headers = {"Content-Type": "application/json", "Authorization": self.authorization}
+        self.create_with_series_statement = """
+        MERGE (article:Article {{title: $title}})
+        SET article.body = $body, article.publish_date = $publish_date, article.last_revise_date = $last_revise_date
+        MERGE (series:Series {{name: $series_name}})
+        CREATE (article)-[:IN_SERIES {{index: $series_index}}]->(series)
+        WITH article
+        UNWIND $tag_names AS tag_name
+        MERGE (tag:Tag {{name: tag_name}})
+        CREATE (article)-[:HAS_TAG]->(tag)
+        """
+        self.create_without_series_statement = """
+        MERGE (article:Article {{title: $title}})
+        SET article.body = $body, article.publish_date = $publish_date, article.last_revise_date = $last_revise_date
+        WITH article
+        UNWIND $tags AS tag_name
+        MERGE (tag:Tag {{name: tag_name}})
+        CREATE (article)-[:HAS_TAG]->(tag)
+        """
     
+    def post_article(self, article):
+        print(f'Posting {article["title"]}...')
+        if "series_name" in article:
+            statement = self.create_with_series_statement
+        else:
+            statement = self.create_without_series_statement
+        body = {"statements": [{"statement": statement, "parameters": article}]}
+        print("body: ")
+        print(body)
+        response = json.dumps(requests.post(self.url, data=body, headers=self.headers))
+        print("response: ")
+        print(response.content)
 
-# config = read_conf('config.toml')
-# connection = establish_connection(config)
-# try:
-#     with connection:
-#         with connection.cursor() as cursor:
-#             # add_tag(cursor, 'mac')
-#             # article_id = add_article_without_tag_and_series(cursor, "my-title", "my body", datetime.datetime.now())
-#             add_tags_of_article(cursor, 1, ['mac'])
-# finally:
-#     connection.close()
+    def create_indices(self):
+        print("Creating indices...")
+        # About index for ORDER BY, see https://github.com/neo4j/issues/6584
+        statement_list = [
+            "CREATE INDEX article_title FOR (article:Article) ON article.title",
+            "CREATE INDEX article_last_revise_date FOR (article:Article) ON article.last_revise_date"
+            "CREATE INDEX tag_name FOR (tag:Tag) ON tag.name"
+            "CREATE INDEX series_name FOR (series:Series) ON series.name"
+        ]
+        statements = list(map(lambda statement: {"statement": statement}, statement_list))
+        body = json.dumps({"statements": statements})
+        print("body: ")
+        print(body)
+        response = requests.post(self.url, data=body, headers=self.headers)
+        print("response: ")
+        print(response.content)

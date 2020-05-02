@@ -18,6 +18,7 @@ def save_article_info(base_url, raw_info, body):
     article_info = {}
     article_info['title'] = raw_info['title']
     article_info['publish_date'] = raw_info['created']
+    article_info['last_revise_date'] = raw_info['updated']
     with open(base_url + article_info['title'] + '.md', 'w+') as md_file:
         md_file.write(body)
     with open(base_url + article_info['title'] + '.json', 'w+') as json_file:
