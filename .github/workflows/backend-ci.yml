@@ -19,5 +19,5 @@ jobs:
               run: cargo build --verbose
               working-directory: ${{ env.working-directory }}
             - name: Run tests
-              run: cargo tests --verbose
+              run: cargo test --verbose
               working-directory: ${{ env.working-directory }}

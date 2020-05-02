@@ -1,10 +1,9 @@
-name: Backend-CI
+name: Backend-Deploy
 
 on:
-    push:
-        create:
-            tags:
-            - 'backend@v*'
+    create:
+        tags:
+        - 'backend@v*'
 
 env:
     IMAGE_NAME: blog_backend
