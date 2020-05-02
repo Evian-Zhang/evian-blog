@@ -24,6 +24,8 @@ jobs:
         needs: test
 
         runs-on: ubuntu-latest
+        env:
+            working-directory: ./backend
 
         steps:
             - uses: actions/checkout@v2
