@@ -14,10 +14,10 @@ class Neo4jClient:
         self.create_with_series_statement = """
         MERGE (article:Article {{title: $title}})
         SET article.body = $body, article.publish_date = $publish_date, article.last_revise_date = $last_revise_date
-        MERGE (series:Series {{name: $series_name}})
+        MERGE (series:Series {{name: $series}})
         CREATE (article)-[:IN_SERIES {{index: $series_index}}]->(series)
         WITH article
-        UNWIND $tag_names AS tag_name
+        UNWIND $tags AS tag_name
         MERGE (tag:Tag {{name: tag_name}})
         CREATE (article)-[:HAS_TAG]->(tag)
         """
@@ -32,7 +32,7 @@ class Neo4jClient:
     
     def post_article(self, article):
         print(f'Posting {article["title"]}...')
-        if "series_name" in article:
+        if "series" in article:
             statement = self.create_with_series_statement
         else:
             statement = self.create_without_series_statement
