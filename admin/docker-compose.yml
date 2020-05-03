@@ -2,14 +2,13 @@ version: "3.7"
 
 services:
     admin:
-        image: evianzhang1999/admin:latest
+        image: docker.pkg.github.com/evian-zhang/evian-blog/blog_admin:latest
         environment: 
             CONFIG_FILE: /app/config.toml
-        configs:
-            - source: admin_config
-              target: /app/config.toml
         volumes:
             - img:/img
+        networks:
+            blog:
 
 networks:
     blog:
@@ -20,8 +19,3 @@ volumes:
     img:
         external: true
         name: blog_img
-
-configs:
-    admin_config:
-        external: true
-        name: blog_admin_config
