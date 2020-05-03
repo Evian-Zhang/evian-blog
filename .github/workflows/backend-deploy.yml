@@ -33,7 +33,7 @@ jobs:
               run: docker build . --tag $IMAGE_NAME
               working-directory: ${{ env.working-directory }}
             - name: Log into Docker Hub
-              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }}
+              run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
             - name: Push image
               run: |
                 IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
