@@ -43,6 +43,7 @@ networks:
 
 volumes:
     database:
+    img:
 
 configs:
     backend_config:
