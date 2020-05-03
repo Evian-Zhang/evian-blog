@@ -20,7 +20,7 @@ def process_img(current_dir, target_dir, base_url):
             try:
                 shutil.copy(image_path, target_path)
                 print(f"Move {image_path} to {target_path}")
-                return f"{matchobj.group(1)}[{base_url}{uuid_name}{extension}]"
+                return f"{matchobj.group(1)}({base_url}{uuid_name}{extension})"
             except:
                 print(f"Can't move {image_path} to {target_path}")
                 raise Exception()
