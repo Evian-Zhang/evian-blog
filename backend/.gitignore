@@ -6,3 +6,5 @@ config.toml
 .env
 init.sh
 password
+Dockerfile-dev
+config

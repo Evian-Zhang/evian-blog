@@ -14,25 +14,33 @@ services:
             blog:
                 aliases:
                  - database
+        ports:
+            - "8080:8080"
 
     backend:
-        image: evianzhang1999/blog_backend:1.0
+        image: docker.pkg.github.com/evian-zhang/evian-blog/blog_backend:latest
         environment: 
-            CONFIG_FILE: /backend_config
+            CONFIG_FILE: /app/backend_config
             DATABASE_PASSWORD_FILE: /run/secrets/database_password
         configs:
-         - backend_config
+         - source: backend_config
+           target: /app/backend_config
         secrets:
          - database_password
         networks:
             blog:
+                aliases: 
+                    - backend
+        ports:
+            - "8080:8080"
     
     frontend:
-        image: evianzhang1999/blog_frontend:1.0
+        image: docker.pkg.github.com/evian-zhang/evian-blog/blog_frontend:latest
         environment:
-            CONFIG_FILE: /frontend_config
+            CONFIG_FILE: /app/frontend_config
         configs:
-         - frontend_config
+         - source: frontend_config
+           target: /app/frontend_config
         networks:
             blog:
 

@@ -39,9 +39,9 @@ class Neo4jClient:
         body = {"statements": [{"statement": statement, "parameters": article}]}
         print("body: ")
         print(body)
-        response = json.dumps(requests.post(self.url, data=body, headers=self.headers))
+        response = requests.post(self.url, data=body, headers=self.headers)
         print("response: ")
-        print(response.content)
+        print(response.text)
 
     def create_indices(self):
         print("Creating indices...")
@@ -58,4 +58,4 @@ class Neo4jClient:
         print(body)
         response = requests.post(self.url, data=body, headers=self.headers)
         print("response: ")
-        print(response.content)
+        print(response.text)
