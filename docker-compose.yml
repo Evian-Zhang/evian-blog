@@ -1,13 +1,12 @@
-version: "3.8"
+version: "3.7"
 
 services:
     database:
         image: neo4j:4.0
         environment:
-            NEO4J_AUTH: ${NEO4J_AUTH}
             NEO4J_dbms_default__database: blog
-        secrets:
-         - neo4j_auth
+        env_file:
+         - .env
         volumes:
          - database:/data
         networks:
@@ -29,18 +28,17 @@ services:
          - database_password
         networks:
             blog:
-                aliases: 
+                aliases:
                     - backend
         ports:
             - "8080:8080"
     
     frontend:
-        image: docker.pkg.github.com/evian-zhang/evian-blog/blog_frontend:latest
+        image: evianzhang1999/blog_frontend:1.0
         environment:
-            CONFIG_FILE: /app/frontend_config
+            CONFIG_FILE: /frontend_config
         configs:
-         - source: frontend_config
-           target: /app/frontend_config
+         - frontend_config
         networks:
             blog:
 
@@ -54,7 +52,7 @@ services:
         volumes:
          - img:/img
         ports:
-         - "80:80"
+            - "80:80"
 
 networks:
     blog:
@@ -69,12 +67,12 @@ configs:
     backend_config:
         external: true
         name: blog_backend_config
-    frontend_config:
-        external: true
-        name: blog_frontend_config
     nginx_config:
         external: true
         name: blog_nginx_config
+    frontend_config:
+        external: true
+        name: blog_frontend_config
 
 secrets:
     database_password:

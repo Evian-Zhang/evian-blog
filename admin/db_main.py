@@ -5,7 +5,7 @@ import json
 import toml
 
 if __name__ == '__main__':
-    config_file_path = os.getenv("CONFIG_FILE")
+    config_file_path = "config.toml"
     neo4j_client = action.Neo4jClient(config_file_path)
     neo4j_client.create_indices()
     config = toml.load(config_file_path)
