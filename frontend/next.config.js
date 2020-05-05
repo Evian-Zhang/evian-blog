@@ -8,6 +8,7 @@ const config = JSON.parse(fs.readFileSync(config_file, 'utf-8'));
 module.exports = {
     serverRuntimeConfig: {
         server_endpoint: config.server_endpoint,
-        browser_endpoint: config.browser_endpoint
+        browser_endpoint: config.browser_endpoint,
+        image_base_url: config.image_base_url
     }
 };

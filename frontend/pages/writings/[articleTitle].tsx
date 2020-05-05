@@ -3,10 +3,8 @@ import { Article } from '../../interfaces';
 import MyHead from '../../components/head';
 import { WritingsHeader } from '../../components/header';
 import MyFooter from '../../components/footer';
-import { ENDPOINT } from '../../utils/config';
+import { IMAGE_BASE_URL } from '../../utils/config';
 
-import sha256 from 'crypto-js/sha256';
-import Base64 from 'crypto-js/enc-base64';
 import marked, { Renderer } from 'marked';
 import { useState, useEffect } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -29,11 +27,12 @@ class MyRenderer extends Renderer {
 `;
     }
     image(href, title, text) {
-        if (title.startsWith("http")) {
-            return super.image(href, title, text);
+        if (href.startsWith("evian://")) {
+            const uuid = href.slice(8);
+            const newHref = `${IMAGE_BASE_URL}${uuid}`;
+            return super.image(newHref, title, text);
         } else {
-            const hashedHref = `${ENDPOINT}/img/` + Base64.stringify(sha256(href)).replace('+', '-').replace('/', '_');
-            return super.image(hashedHref, title, text);
+            return super.image(href, title, text);
         }
     }
 }
