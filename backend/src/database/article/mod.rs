@@ -20,11 +20,11 @@ pub struct ArticleDatabase {
 }
 
 impl ArticleDatabase {
-    pub fn new(config: &DatabaseConfig) -> ArticleDatabase {
+    pub fn new(config: &DatabaseConfig, authorization: String, client: Client) -> ArticleDatabase {
         ArticleDatabase {
             url: config.to_url(BlogDatabase::Article),
-            authorization: base64::encode(format!("{}:{}", config.username, config.password)),
-            client: Client::new()
+            authorization,
+            client
         }
     }
 
