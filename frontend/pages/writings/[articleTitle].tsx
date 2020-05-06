@@ -29,7 +29,7 @@ class MyRenderer extends Renderer {
     image(href, title, text) {
         if (href.startsWith("evian://")) {
             const uuid = href.slice(8);
-            const newHref = `${IMAGE_BASE_URL}${uuid}`;
+            const newHref = `${IMAGE_BASE_URL}/${uuid}`;
             return super.image(newHref, title, text);
         } else {
             return super.image(href, title, text);
