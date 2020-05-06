@@ -1,9 +1,9 @@
-import { getTags, getArticlesOfTag, getArticlesCountOfTag } from '../../../api/tag-api';
+import { getArticlesOfTag, getArticlesCountOfTag } from '../../../api/tag-api';
 import { ArticleMeta } from '../../../interfaces';
 import MyHead from '../../../components/head';
 import DetailPage from '../../../components/detailPage';
 
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 
 const PAGE_SIZE = 8;
@@ -35,20 +35,7 @@ const TagDetailPage = (props: TagDetailPageProps) => {
     );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const tags = await getTags();
-    const paths = tags.map(tag => ({
-        params: {
-            tagName: tag.name
-        }
-    }));
-    return {
-        paths,
-        fallback: false
-    };
-};
-
-export const getStaticProps: GetStaticProps = async context => {
+export const getServerSideProps: GetServerSideProps = async context => {
     const tagName = context.params.tagName as string;
     const totalCount = await getArticlesCountOfTag(tagName);
     const initialArticleMetas = await getArticlesOfTag(tagName, 0, PAGE_SIZE);
