@@ -3,3 +3,4 @@ init.sh
 password
 .github
 config.toml
+example.config.toml

@@ -30,7 +30,28 @@ struct RawDatabaseConfig {
     pub username: String,
     pub address: String,
     pub port: usize,
-    pub database_name: String,
+    pub database_name: BlogDatabaseName,
+}
+
+#[derive(Deserialize)]
+pub struct BlogDatabaseName {
+    article: String,
+    project: String
+}
+
+pub enum BlogDatabase {
+    Article,
+    Project
+}
+
+impl BlogDatabaseName {
+    fn get_name_by_database(&self, database: BlogDatabase) -> &String {
+        use BlogDatabase::*;
+        match database {
+            Article => &self.article,
+            Project => &self.project
+        }
+    }
 }
 
 pub struct AppConfig {
@@ -52,7 +73,7 @@ pub struct DatabaseConfig {
     pub password: String,
     pub address: String,
     pub port: usize,
-    pub database_name: String
+    pub database_name: BlogDatabaseName
 }
 
 impl DatabaseConfig {
@@ -66,11 +87,11 @@ impl DatabaseConfig {
         }
     }
 
-    pub fn to_url(&self) -> String {
+    pub fn to_url(&self, database: BlogDatabase) -> String {
         format!("http://{}:{}/db/{}/tx/commit/",
             self.address,
             self.port,
-            self.database_name
+            self.database_name.get_name_by_database(database)
         )
     }
 }

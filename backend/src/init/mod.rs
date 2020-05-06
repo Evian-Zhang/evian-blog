@@ -1,5 +1,5 @@
 mod config;
-pub use config::{AppConfig, read_config, DatabaseConfig};
+pub use config::{AppConfig, read_config, DatabaseConfig, BlogDatabase};
 
 use crate::database::Database;
 

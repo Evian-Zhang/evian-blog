@@ -13,7 +13,7 @@ fn map_to_internal_server_error<T: fmt::Display>(error: T) -> HttpResponse {
 
 #[get("/tags")]
 pub async fn get_all_tags(database: web::Data<Database>) -> Result<HttpResponse, HttpResponse> {
-    let tags = database.get_all_tags()
+    let tags = database.article.get_all_tags()
         .await
         .map_err(map_to_internal_server_error)?;
 
@@ -22,7 +22,7 @@ pub async fn get_all_tags(database: web::Data<Database>) -> Result<HttpResponse,
 
 #[get("/series")]
 pub async fn get_all_series(database: web::Data<Database>) -> Result<HttpResponse, HttpResponse> {
-    let series = database.get_all_series()
+    let series = database.article.get_all_series()
         .await
         .map_err(map_to_internal_server_error)?;
 
@@ -47,7 +47,7 @@ pub async fn get_all_articles_count_of_tag(
     database: web::Data<Database>,
     tag_name: web::Path<String>,
 ) -> Result<HttpResponse, HttpResponse> {
-    let count = database.get_all_articles_count_of_tag(&tag_name)
+    let count = database.article.get_all_articles_count_of_tag(&tag_name)
         .await
         .map_err(map_to_internal_server_error)?;
 
@@ -63,7 +63,7 @@ pub async fn get_all_articles_of_tag(
     if !page_info.check() {
         return Err(HttpResponse::BadRequest().finish());
     }
-    let articles = database.get_all_articles_of_tag(&tag_name, page_info.page_index, page_info.page_size)
+    let articles = database.article.get_all_articles_of_tag(&tag_name, page_info.page_index, page_info.page_size)
         .await
         .map_err(map_to_internal_server_error)?;
 
@@ -75,7 +75,7 @@ pub async fn get_all_articles_count_of_series(
     database: web::Data<Database>,
     series_name: web::Path<String>,
 ) -> Result<HttpResponse, HttpResponse> {
-    let count = database.get_all_articles_count_of_series(&series_name)
+    let count = database.article.get_all_articles_count_of_series(&series_name)
         .await
         .map_err(map_to_internal_server_error)?;
 
@@ -91,7 +91,7 @@ pub async fn get_all_articles_of_series(
     if !page_info.check() {
         return Err(HttpResponse::BadRequest().finish());
     }
-    let articles = database.get_all_articles_of_series(&series_name, page_info.page_index, page_info.page_size)
+    let articles = database.article.get_all_articles_of_series(&series_name, page_info.page_index, page_info.page_size)
         .await
         .map_err(map_to_internal_server_error)?;
 
@@ -100,7 +100,7 @@ pub async fn get_all_articles_of_series(
 
 #[get("/article/{article_title}")]
 pub async fn get_article_of_title(database: web::Data<Database>, article_title: web::Path<String>) -> Result<HttpResponse, HttpResponse> {
-    let article = database.get_article(&article_title)
+    let article = database.article.get_article(&article_title)
         .await
         .map_err(map_to_internal_server_error)?;
 
@@ -117,7 +117,7 @@ pub async fn get_article_of_title(database: web::Data<Database>, article_title: 
 pub async fn get_all_articles_count(
     database: web::Data<Database>,
 ) -> Result<HttpResponse, HttpResponse> {
-    let count = database.get_all_articles_count()
+    let count = database.article.get_all_articles_count()
         .await
         .map_err(map_to_internal_server_error)?;
 
@@ -132,7 +132,7 @@ pub async fn get_all_articles(
     if !page_info.check() {
         return Err(HttpResponse::BadRequest().finish());
     }
-    let articles = database.get_all_articles(page_info.page_index, page_info.page_size)
+    let articles = database.article.get_all_articles(page_info.page_index, page_info.page_size)
         .await
         .map_err(map_to_internal_server_error)?;
 
@@ -141,7 +141,7 @@ pub async fn get_all_articles(
 
 #[get("/articles/titles")]
 pub async fn get_all_article_titles(database: web::Data<Database>) -> Result<HttpResponse, HttpResponse> {
-    let article_titles = database.get_all_article_titles()
+    let article_titles = database.article.get_all_article_titles()
         .await
         .map_err(map_to_internal_server_error)?;
 

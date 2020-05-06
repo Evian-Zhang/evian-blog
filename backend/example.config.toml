@@ -1,0 +1,10 @@
+[server]
+address = "localhost"
+port = 8000
+[database]
+username = "neo4j"
+address = "localhost"
+port = 7474
+[database.database_name]
+article = "article"
+project = "project"
