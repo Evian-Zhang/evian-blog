@@ -5,5 +5,6 @@ WORKDIR /app
 COPY . .
 
 RUN npm install --production
+RUN chmod +x ./start.sh
 
-CMD ["npm", "run", "start"]
+CMD ["./start.sh"]
