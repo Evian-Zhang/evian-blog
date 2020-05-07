@@ -34,19 +34,21 @@ const TagList = (props: { tags: Tag[] }) => {
                 props.tags.map(tag => {
                     return (
                         <Col {...colResponsiveProps} key={tag.name}>
-                            <Link href={`/writings/tag/${tag.name}`}>
-                                <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
-                                    <Card
-                                        title={tag.name}
-                                        style={{minHeight: 200}}
-                                    >
-                                        <div>
-                                            共{tag.articleCount}篇文章<br/>
-                                            最后更新于{new Date(tag.lastReviseDate * 1000).toLocaleDateString()}
-                                        </div>
-                                    </Card>
-                                </a>
-                            </Link>
+                            <Card
+                                title={
+                                    <Link href={`/writings/tag/${tag.name}`}>
+                                        <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
+                                            {tag.name}
+                                        </a>
+                                    </Link>
+                                }
+                                style={{height: 200}}
+                            >
+                                <div style={{overflowY: "scroll"}}>
+                                    共{tag.articleCount}篇文章<br/>
+                                    最后更新于{new Date(tag.lastReviseDate * 1000).toLocaleDateString()}
+                                </div>
+                            </Card>
                         </Col>
                     );
                 })
