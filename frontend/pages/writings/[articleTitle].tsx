@@ -1,4 +1,4 @@
-import { getArticleTitles, getArticle } from '../../api/article-api';
+import { getArticleTitles, getArticle } from '../../api/writings/article-api';
 import { Article } from '../../interfaces';
 import MyHead from '../../components/head';
 import { WritingsHeader } from '../../components/header';

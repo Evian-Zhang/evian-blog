@@ -1,5 +1,5 @@
 import { Tag, FetchStatus } from '../../../interfaces';
-import { getTags } from '../../../api/tag-api';
+import { getTags } from '../../../api/writings/tag-api';
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 

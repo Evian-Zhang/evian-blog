@@ -1,4 +1,4 @@
-import { getSeries, getArticlesOfSeries, getArticlesCountOfSeries } from '../../../api/series-api';
+import { getSeries, getArticlesOfSeries, getArticlesCountOfSeries } from '../../../api/writings/series-api';
 import { ArticleMeta } from '../../../interfaces';
 import MyHead from '../../../components/head';
 import DetailPage from '../../../components/detailPage';

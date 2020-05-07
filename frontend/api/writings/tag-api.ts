@@ -1,10 +1,10 @@
-import { ENDPOINT } from '../utils/config';
-import { Tag, ArticleMeta } from '../interfaces';
+import { ENDPOINTS } from '../../utils/config';
+import { Tag, ArticleMeta } from '../../interfaces';
 
 import fetch from 'node-fetch';
 
 async function getTags(): Promise<Tag[]> {
-    const res = await fetch(ENDPOINT + '/api/v1/tags');
+    const res = await fetch(ENDPOINTS.writings.tag.getTags);
     if (res.status !== 200) {
         return Promise.reject(res.statusText);
     }
@@ -13,7 +13,7 @@ async function getTags(): Promise<Tag[]> {
 }
 
 async function getArticlesCountOfTag(tagName: string): Promise<number> {
-    const res = await fetch(ENDPOINT + `/api/v1/tag/${tagName}/count`);
+    const res = await fetch(ENDPOINTS.writings.tag.getArticlesCountOfTag(tagName));
     if (res.status !== 200) {
         return Promise.reject(res.statusText);
     }
@@ -22,7 +22,7 @@ async function getArticlesCountOfTag(tagName: string): Promise<number> {
 }
 
 async function getArticlesOfTag(tagName: string, pageIndex: number, pageSize: number): Promise<ArticleMeta[]> {
-    const res = await fetch(ENDPOINT + `/api/v1/tag/${tagName}?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+    const res = await fetch(ENDPOINTS.writings.tag.getArticlesOfTag(tagName, pageIndex, pageSize));
     if (res.status !== 200) {
         return Promise.reject(res.statusText);
     }

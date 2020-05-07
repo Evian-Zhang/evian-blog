@@ -35,10 +35,18 @@ type Article = {
     seriesIndex: number | null
 }
 
+type Project = {
+    name: string,
+    description: string,
+    languages: string[],
+    frameworks: string[],
+    url: string
+}
+
 export enum FetchStatus {
     Fetching,
     Success,
     Failure
 };
 
-export type { Tag, Series, ArticleMeta, Article };
+export type { Tag, Series, ArticleMeta, Article, Project };

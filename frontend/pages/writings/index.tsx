@@ -4,7 +4,7 @@ import { fetchArticles } from '../../redux/writings/article/articleSlice';
 import { selectPageIndex } from '../../redux/writings/article/pageIndexSlice';
 import { fetchTags } from '../../redux/writings/tag';
 import { fetchSeries } from '../../redux/writings/series';
-import { getArticleMetas, getArticlesCount } from '../../api/article-api';
+import { getArticleMetas, getArticlesCount } from '../../api/writings/article-api';
 import { ArticleMeta, FetchStatus } from '../../interfaces';
 import { ArticleListWithPagination } from '../../components/articleList';
 import TagList from '../../components/tagList';

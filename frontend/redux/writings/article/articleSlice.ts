@@ -1,5 +1,5 @@
 import { ArticleMeta, FetchStatus } from '../../../interfaces';
-import { getArticleMetas } from '../../../api/article-api';
+import { getArticleMetas } from '../../../api/writings/article-api';
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 

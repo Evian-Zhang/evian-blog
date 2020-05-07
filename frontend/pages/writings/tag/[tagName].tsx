@@ -1,4 +1,4 @@
-import { getArticlesOfTag, getArticlesCountOfTag } from '../../../api/tag-api';
+import { getArticlesOfTag, getArticlesCountOfTag } from '../../../api/writings/tag-api';
 import { ArticleMeta } from '../../../interfaces';
 import MyHead from '../../../components/head';
 import DetailPage from '../../../components/detailPage';
