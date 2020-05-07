@@ -36,20 +36,24 @@ struct RawDatabaseConfig {
 #[derive(Deserialize)]
 pub struct BlogDatabaseName {
     article: String,
-    project: String
+    project: String,
+    // ATTENTION! This field records the path of resume markdown file
+    resume: String,
 }
 
 pub enum BlogDatabase {
     Article,
-    Project
+    Project,
+    Resume
 }
 
 impl BlogDatabaseName {
-    fn get_name_by_database(&self, database: BlogDatabase) -> &String {
+    pub fn get_name_by_database(&self, database: BlogDatabase) -> &String {
         use BlogDatabase::*;
         match database {
             Article => &self.article,
-            Project => &self.project
+            Project => &self.project,
+            Resume => &self.resume
         }
     }
 }

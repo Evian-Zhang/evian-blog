@@ -46,13 +46,17 @@ async fn main() -> std::io::Result<()> {
                 .service(server::get_all_articles_count)
                 // project service
                 .service(server::get_all_projects)
+                // resume service
+                .service(server::get_resume)
             )
             .service(web::scope("/admin")
                 .data(database.clone())
                 // article service
                 .service(server::post_article)
-                //project service
+                // project service
                 .service(server::post_project)
+                // resume service
+                .service(server::post_resume)
             )
     })
     .bind(&server_socket)?

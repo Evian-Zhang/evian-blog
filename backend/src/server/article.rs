@@ -12,7 +12,7 @@ fn map_to_internal_server_error<T: fmt::Display>(error: T) -> HttpResponse {
 }
 
 // ---------------------------Visitor Methods---------------------------
-#[get("/tags")]
+#[get("/writings/tags")]
 pub async fn get_all_tags(database: web::Data<Database>) -> Result<HttpResponse, HttpResponse> {
     let tags = database.article.get_all_tags()
         .await
@@ -21,7 +21,7 @@ pub async fn get_all_tags(database: web::Data<Database>) -> Result<HttpResponse,
     Ok(HttpResponse::Ok().json(tags))
 }
 
-#[get("/series")]
+#[get("/writings/series")]
 pub async fn get_all_series(database: web::Data<Database>) -> Result<HttpResponse, HttpResponse> {
     let series = database.article.get_all_series()
         .await
@@ -43,7 +43,7 @@ impl PageInfo {
     }
 }
 
-#[get("/tag/{tag_name}/count")]
+#[get("/writings/tag/{tag_name}/count")]
 pub async fn get_all_articles_count_of_tag(
     database: web::Data<Database>,
     tag_name: web::Path<String>,
@@ -55,7 +55,7 @@ pub async fn get_all_articles_count_of_tag(
     Ok(HttpResponse::Ok().json(count))
 }
 
-#[get("/tag/{tag_name}")]
+#[get("/writings/tag/{tag_name}")]
 pub async fn get_all_articles_of_tag(
     database: web::Data<Database>,
     tag_name: web::Path<String>,
@@ -71,7 +71,7 @@ pub async fn get_all_articles_of_tag(
     Ok(HttpResponse::Ok().json(articles))
 }
 
-#[get("/tag/{series_name}/count")]
+#[get("/writings/tag/{series_name}/count")]
 pub async fn get_all_articles_count_of_series(
     database: web::Data<Database>,
     series_name: web::Path<String>,
@@ -83,7 +83,7 @@ pub async fn get_all_articles_count_of_series(
     Ok(HttpResponse::Ok().json(count))
 }
 
-#[get("/series/{series_name}")]
+#[get("/writings/series/{series_name}")]
 pub async fn get_all_articles_of_series(
     database: web::Data<Database>,
     series_name: web::Path<String>,
@@ -99,7 +99,7 @@ pub async fn get_all_articles_of_series(
     Ok(HttpResponse::Ok().json(articles))
 }
 
-#[get("/article/{article_title}")]
+#[get("/writings/article/{article_title}")]
 pub async fn get_article_of_title(database: web::Data<Database>, article_title: web::Path<String>) -> Result<HttpResponse, HttpResponse> {
     let article = database.article.get_article(&article_title)
         .await
@@ -114,7 +114,7 @@ pub async fn get_article_of_title(database: web::Data<Database>, article_title: 
     Ok(HttpResponse::Ok().json(article))
 }
 
-#[get("/articles/count")]
+#[get("/writings/articles/count")]
 pub async fn get_all_articles_count(
     database: web::Data<Database>,
 ) -> Result<HttpResponse, HttpResponse> {
@@ -125,7 +125,7 @@ pub async fn get_all_articles_count(
     Ok(HttpResponse::Ok().json(count))
 }
 
-#[get("/articles")]
+#[get("/writings/articles")]
 pub async fn get_all_articles(
     database: web::Data<Database>,
     web::Query(page_info): web::Query<PageInfo>
@@ -140,7 +140,7 @@ pub async fn get_all_articles(
     Ok(HttpResponse::Ok().json(articles))
 }
 
-#[get("/articles/titles")]
+#[get("/writings/articles/titles")]
 pub async fn get_all_article_titles(database: web::Data<Database>) -> Result<HttpResponse, HttpResponse> {
     let article_titles = database.article.get_all_article_titles()
         .await
@@ -150,7 +150,7 @@ pub async fn get_all_article_titles(database: web::Data<Database>) -> Result<Htt
 }
 
 // ---------------------------Admin Methods---------------------------
-#[post("/article")]
+#[post("/writings/article")]
 pub async fn post_article(database: web::Data<Database>, article: web::Json<Article>) -> Result<HttpResponse, HttpResponse>  {
     database.article.post_article(article.into_inner())
         .await

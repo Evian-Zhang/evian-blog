@@ -1,5 +1,6 @@
 pub mod article;
 pub mod project;
+pub mod resume;
 mod neo4j_ops;
 
 use crate::init::DatabaseConfig;
@@ -9,7 +10,8 @@ use reqwest::Client;
 #[derive(Clone)]
 pub struct Database {
     pub article: article::Database,
-    pub project: project::Database
+    pub project: project::Database,
+    pub resume: resume::Database,
 }
 
 impl Database {
@@ -19,7 +21,8 @@ impl Database {
         let client = Client::new();
         Database {
             article: article::Database::new(&config, authorization.clone(), client.clone()),
-            project: project::Database::new(&config, authorization.clone(), client.clone())
+            project: project::Database::new(&config, authorization.clone(), client.clone()),
+            resume: resume::Database::new(&config)
         }
     }
 }
