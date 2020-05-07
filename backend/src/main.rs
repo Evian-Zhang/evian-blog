@@ -44,6 +44,10 @@ async fn main() -> std::io::Result<()> {
                 .service(server::get_all_article_titles)
                 .service(server::get_all_articles_count)
             )
+            .service(web::scope("/admin")
+                .data(database.clone())
+                .service(server::post_article)
+            )
     })
     .bind(&server_socket)?
     .run()
