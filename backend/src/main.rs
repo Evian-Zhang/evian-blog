@@ -33,6 +33,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::scope("/api/v1")
                 // Application data does not need to be `Send` or `Sync`. Internally `Data` type uses `Arc`. If your data implements `Send` + `Sync` trait you can use `web::Data::new()` and avoid double `Arc`
                 .data(database.clone())
+                // article service
                 .service(server::get_all_tags)
                 .service(server::get_all_series)
                 .service(server::get_all_articles_count_of_tag)
@@ -43,10 +44,15 @@ async fn main() -> std::io::Result<()> {
                 .service(server::get_article_of_title)
                 .service(server::get_all_article_titles)
                 .service(server::get_all_articles_count)
+                // project service
+                .service(server::get_all_projects)
             )
             .service(web::scope("/admin")
                 .data(database.clone())
+                // article service
                 .service(server::post_article)
+                //project service
+                .service(server::post_project)
             )
     })
     .bind(&server_socket)?

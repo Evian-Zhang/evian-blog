@@ -16,7 +16,7 @@ pub struct Database {
 impl Database {
     pub fn new(config: &DatabaseConfig, authorization: String, client: Client) -> Database {
         Database {
-            url: config.to_url(BlogDatabase::Article),
+            url: config.to_url(BlogDatabase::Project),
             authorization,
             client
         }
