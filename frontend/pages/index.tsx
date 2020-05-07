@@ -63,19 +63,19 @@ const Home = () => {
                                 </Link>
                             </Col>
                             <Col {...colResponsiveProps}>
-                                <Link href="/writings">
+                                <Link href="/projects">
                                     <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
                                         <Card style={{minHeight: 200, textAlign: "center", zIndex: 3}}>
-                                            我的创作
+                                            我的编程
                                         </Card>
                                     </a>
                                 </Link>
                             </Col>
                             <Col {...colResponsiveProps}>
-                                <Link href="/writings">
+                                <Link href="/resume">
                                     <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
                                         <Card style={{minHeight: 200, textAlign: "center", zIndex: 3}}>
-                                            我的创作
+                                            个人简介
                                         </Card>
                                     </a>
                                 </Link>
