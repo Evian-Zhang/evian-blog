@@ -7,7 +7,7 @@ use reqwest::Client;
 
 #[derive(Clone)]
 pub struct Database {
-    pub article: article::ArticleDatabase
+    pub article: article::Database
 }
 
 impl Database {
@@ -16,7 +16,7 @@ impl Database {
         // `Client` already uses an `Arc` internally
         let client = Client::new();
         Database {
-            article: article::ArticleDatabase::new(&config, authorization.clone(), client.clone())
+            article: article::Database::new(&config, authorization.clone(), client.clone())
         }
     }
 }

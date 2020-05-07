@@ -30,11 +30,11 @@ pub struct ArticleMeta {
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all(serialize = "camelCase"))]
 pub struct Article {
-    title: String,
-    body: String,
-    publish_date: u64,
-    last_revise_date: u64,
-    tags: Vec<String>,
-    series: Option<String>,
-    series_index: Option<usize>
+    pub title: String,
+    pub body: String,
+    pub publish_date: u64,
+    pub last_revise_date: u64,
+    pub tags: Vec<String>,
+    pub series: Option<String>,
+    pub series_index: Option<usize>
 }

@@ -1,16 +1,17 @@
-use crate::database::Database;
+use crate::database::{Database, article::models::*};
 
 use log::error;
-use actix_web::{web, HttpResponse, get};
+use actix_web::{web, HttpResponse, get, post};
 use serde::Deserialize;
 
 use std::fmt;
 
 fn map_to_internal_server_error<T: fmt::Display>(error: T) -> HttpResponse {
     error!("{}", error);
-    HttpResponse::InternalServerError().finish()
+    HttpResponse::InternalServerError().body(format!("{}", error))
 }
 
+// ---------------------------Visitor Methods---------------------------
 #[get("/tags")]
 pub async fn get_all_tags(database: web::Data<Database>) -> Result<HttpResponse, HttpResponse> {
     let tags = database.article.get_all_tags()
@@ -146,4 +147,13 @@ pub async fn get_all_article_titles(database: web::Data<Database>) -> Result<Htt
         .map_err(map_to_internal_server_error)?;
 
     Ok(HttpResponse::Ok().json(article_titles))
+}
+
+// ---------------------------Admin Methods---------------------------
+#[post("/article")]
+pub async fn post_article(database: web::Data<Database>, article: web::Json<Article>) -> Result<HttpResponse, HttpResponse>  {
+    database.article.post_article(article.into_inner())
+        .await
+        .map_err(map_to_internal_server_error)?;
+    Ok(HttpResponse::Ok().finish())
 }

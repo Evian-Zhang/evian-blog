@@ -77,6 +77,38 @@ pub async fn query<T: serde::de::DeserializeOwned>(
     }
 }
 
+pub async fn mutate(
+    url: &str,
+    client: &Client,
+    authorization: &str,
+    neo4j_statement: Neo4jStatement
+) -> Result<()> {
+    let query = Neo4jQueryBody {
+        statements: vec![neo4j_statement]
+    };
+    let response = client
+        .post(url)
+        .header("Authorization", authorization)
+        .header("Content-Type", "application/json")
+        .body(serde_json::to_string(&query).unwrap())
+        .send()
+        .await
+        .or(Err(Error::SendError))?;
+    if response.status().is_success() {
+        let neo4j_response = response.json::<Neo4jResponse<()>>()
+            .await
+            .map_err(|deserialize_error| Error::Deserialize(deserialize_error))?;
+        if !neo4j_response.errors.is_empty() {
+            Err(Error::Api(neo4j_response.errors))
+        } else {
+            Ok(())
+        }
+    } else {
+        let status_code = response.status().as_u16();
+        Err(Error::BadResponse(status_code))
+    }
+}
+
 #[derive(Debug)]
 pub enum Error {
     SendError,
