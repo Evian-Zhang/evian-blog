@@ -6,7 +6,7 @@ def post(url: str, data: str):
     body = data
     print("body: ")
     print(body)
-    response = requests.post(url, data=body)
+    response = requests.post(url, data=body.encode('utf-8'), headers={'Content-Type': 'application/json'})
     print("response: ")
     print(response.text)
 
