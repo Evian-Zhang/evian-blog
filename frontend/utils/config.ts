@@ -4,8 +4,8 @@ const { serverRuntimeConfig } = getConfig();
 
 // Due to https://github.com/zeit/next.js/pull/7651, `process.browser` is deprecated
 const BASE_ENDPOINT = (typeof window === "undefined") ? serverRuntimeConfig.server_endpoint : serverRuntimeConfig.browser_endpoint;
-const API_ENDPOINT = new URL("api/v1", BASE_ENDPOINT);
-const WRITINGS_ENDPOINT = new URL("writings", API_ENDPOINT.href);
+const API_ENDPOINT = new URL("api/v1/", BASE_ENDPOINT);
+const WRITINGS_ENDPOINT = new URL("writings/", API_ENDPOINT.href);
 const PROJECTS_ENDPOINT = new URL("projects", API_ENDPOINT.href);
 const RESUME_ENDPOINT = new URL("resume", API_ENDPOINT.href);
 
