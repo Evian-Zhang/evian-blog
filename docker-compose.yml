@@ -32,6 +32,8 @@ services:
                     - backend
         ports:
             - "8080:8080"
+        volumes:
+            - resume:/app/resume
     
     frontend:
         image: evianzhang1999/blog_frontend:1.0
@@ -62,6 +64,7 @@ networks:
 volumes:
     database:
     img:
+    resume:
 
 configs:
     backend_config:

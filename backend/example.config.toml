@@ -8,3 +8,4 @@ port = 7474
 [database.database_name]
 article = "article"
 project = "project"
+resume = "/app/resume/resume.md"
