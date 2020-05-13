@@ -1,3 +1,4 @@
 node_modules
 .next
 frontend-config.json
+init.sh

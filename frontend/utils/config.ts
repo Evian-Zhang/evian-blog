@@ -4,39 +4,39 @@ const { serverRuntimeConfig } = getConfig();
 
 // Due to https://github.com/zeit/next.js/pull/7651, `process.browser` is deprecated
 const BASE_ENDPOINT = (typeof window === "undefined") ? serverRuntimeConfig.server_endpoint : serverRuntimeConfig.browser_endpoint;
-const API_ENDPOINT = new URL(BASE_ENDPOINT, "api/v1");
-const WRITINGS_ENDPOINT = new URL(API_ENDPOINT.href, "writings");
-const PROJECTS_ENDPOINT = new URL(API_ENDPOINT.href, "projects");
-const RESUME_ENDPOINT = new URL(API_ENDPOINT.href, "resume");
+const API_ENDPOINT = new URL("api/v1", BASE_ENDPOINT);
+const WRITINGS_ENDPOINT = new URL("writings", API_ENDPOINT.href);
+const PROJECTS_ENDPOINT = new URL("projects", API_ENDPOINT.href);
+const RESUME_ENDPOINT = new URL("resume", API_ENDPOINT.href);
 
 const ENDPOINTS = {
     writings: {
         article: {
-            getArticleCount: new URL(WRITINGS_ENDPOINT.href, "article/count"),
+            getArticleCount: new URL("article/count", WRITINGS_ENDPOINT.href),
             getArticleMetas: function (pageIndex: number, pageSize: number) {
-                return new URL(WRITINGS_ENDPOINT.href, `articles?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+                return new URL(`articles?pageIndex=${pageIndex}&pageSize=${pageSize}`, WRITINGS_ENDPOINT.href);
             },
             getArticle: function (articleTitle: string) {
-                return new URL(WRITINGS_ENDPOINT.href, `article/${articleTitle}`);
+                return new URL(`article/${articleTitle}`, WRITINGS_ENDPOINT.href);
             },
-            getArticleTitles: new URL(WRITINGS_ENDPOINT.href, "articles/titles")
+            getArticleTitles: new URL("articles/titles", WRITINGS_ENDPOINT.href)
         },
         tag: {
-            getTags: new URL(WRITINGS_ENDPOINT.href, "tags"),
+            getTags: new URL("tags", WRITINGS_ENDPOINT.href),
             getArticlesCountOfTag: function (tagName: string) {
-                return new URL(WRITINGS_ENDPOINT.href, `tag/${tagName}/count`);
+                return new URL(`tag/${tagName}/count`, WRITINGS_ENDPOINT.href);
             },
             getArticlesOfTag: function (tagName: string, pageIndex: number, pageSize: number) {
-                return new URL(WRITINGS_ENDPOINT.href, `tag/${tagName}?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+                return new URL(`tag/${tagName}?pageIndex=${pageIndex}&pageSize=${pageSize}`, WRITINGS_ENDPOINT.href);
             }
         },
         series: {
-            getSeries: new URL(WRITINGS_ENDPOINT.href, "series"),
+            getSeries: new URL("series", WRITINGS_ENDPOINT.href),
             getArticlesCountOfSeries: function (seriesName: string) {
-                return new URL(WRITINGS_ENDPOINT.href, `series/${seriesName}/count`)
+                return new URL(`series/${seriesName}/count`, WRITINGS_ENDPOINT.href)
             },
             getArticlesOfSeries: function (seriesName: string, pageIndex: number, pageSize: number) {
-                return new URL(WRITINGS_ENDPOINT.href, `series/${seriesName}?pageIndex=${pageIndex}&pageSize=${pageSize}`);
+                return new URL(`series/${seriesName}?pageIndex=${pageIndex}&pageSize=${pageSize}`, WRITINGS_ENDPOINT.href);
             }
         }
     },
