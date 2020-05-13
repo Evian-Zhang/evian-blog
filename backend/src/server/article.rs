@@ -71,7 +71,7 @@ pub async fn get_all_articles_of_tag(
     Ok(HttpResponse::Ok().json(articles))
 }
 
-#[get("/writings/tag/{series_name}/count")]
+#[get("/writings/series/{series_name}/count")]
 pub async fn get_all_articles_count_of_series(
     database: web::Data<Database>,
     series_name: web::Path<String>,

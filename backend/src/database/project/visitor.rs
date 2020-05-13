@@ -13,7 +13,7 @@ impl Database {
     pub async fn get_all_projects(&self) -> Result<Vec<Project>> {
         let query_str = "\
 MATCH (project:Project)
-RETURN {name: project.name, description: project.description, languages: project.languages, frameworks: language.frameworks, url: project.url} AS project_info
+RETURN {name: project.name, description: project.description, languages: project.languages, frameworks: project.frameworks, url: project.url} AS project_info
 ORDER BY project_info.name ASC";
         let query_statment = Neo4jStatement {
             statement: query_str,
