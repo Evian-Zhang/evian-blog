@@ -13,7 +13,7 @@ const RESUME_ENDPOINT = new URL("resume", API_ENDPOINT.href);
 const ENDPOINTS = {
     writings: {
         article: {
-            getArticleCount: new URL("article/count", WRITINGS_ENDPOINT.href),
+            getArticleCount: new URL("articles/count", WRITINGS_ENDPOINT.href),
             getArticleMetas: function (pageIndex: number, pageSize: number) {
                 return new URL(`articles?pageIndex=${pageIndex}&pageSize=${pageSize}`, WRITINGS_ENDPOINT.href);
             },
