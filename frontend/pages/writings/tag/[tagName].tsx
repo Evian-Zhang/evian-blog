@@ -1,7 +1,7 @@
-import { getArticlesOfTag, getArticlesCountOfTag } from '../../../api/writings/tag-api';
-import { ArticleMeta } from '../../../interfaces';
-import MyHead from '../../../components/head';
-import DetailPage from '../../../components/detailPage';
+import { getArticlesOfTag, getArticlesCountOfTag } from 'api/writings/tag-api';
+import { ArticleMeta } from 'interfaces';
+import MyHead from 'components/head';
+import DetailPage from 'components/detailPage';
 
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';

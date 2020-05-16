@@ -1,4 +1,4 @@
-import gameContent from '../utils/gameContent'
+import gameContent from 'utils/gameContent'
 
 import { useState, useEffect, useRef } from 'react';
 import { Button } from 'antd';

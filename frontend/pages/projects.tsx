@@ -1,8 +1,8 @@
-import { Project } from '../interfaces';
-import { ProjectsHeader } from '../components/header';
-import MyFooter from '../components/footer';
-import MyHead from '../components/head';
-import { getProjects } from '../api/projects/project-api';
+import { Project } from 'interfaces';
+import { ProjectsHeader } from 'components/header';
+import MyFooter from 'components/footer';
+import MyHead from 'components/head';
+import { getProjects } from 'api/projects/project-api';
 
 import { Layout, Row, Col, Card } from 'antd';
 import { GetStaticProps } from 'next';

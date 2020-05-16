@@ -1,5 +1,5 @@
-import { ENDPOINTS } from '../../utils/config';
-import { Tag, ArticleMeta } from '../../interfaces';
+import { ENDPOINTS } from 'utils/config';
+import { Tag, ArticleMeta } from 'interfaces';
 
 import fetch from 'node-fetch';
 

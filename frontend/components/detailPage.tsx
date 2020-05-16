@@ -1,8 +1,8 @@
-import { ArticleMeta } from "../interfaces";
-import { WritingsHeader } from '../components/header';
-import MyHead from '../components/head';
-import MyFooter from '../components/footer';
-import { ArticleListWithPagination } from '../components/articleList';
+import { ArticleMeta } from "interfaces";
+import { WritingsHeader } from 'components/header';
+import MyHead from 'components/head';
+import MyFooter from 'components/footer';
+import { ArticleListWithPagination } from 'components/articleList';
 
 import { useState } from 'react';
 import useSWR, { mutate } from 'swr';

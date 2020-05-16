@@ -1,8 +1,8 @@
-import { getResume } from '../api/resume/resume-api';
-import MyHead from '../components/head';
-import { ResumeHeader } from '../components/header';
-import MyFooter from '../components/footer';
-import { IMAGE_BASE_URL } from '../utils/config';
+import { getResume } from 'api/resume/resume-api';
+import MyHead from 'components/head';
+import { ResumeHeader } from 'components/header';
+import MyFooter from 'components/footer';
+import { IMAGE_BASE_URL } from 'utils/config';
 
 import marked, { Renderer } from 'marked';
 import { useState, useEffect } from 'react';

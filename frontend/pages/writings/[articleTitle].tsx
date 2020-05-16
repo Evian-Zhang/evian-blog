@@ -1,9 +1,9 @@
-import { getArticleTitles, getArticle } from '../../api/writings/article-api';
-import { Article } from '../../interfaces';
-import MyHead from '../../components/head';
-import { WritingsHeader } from '../../components/header';
-import MyFooter from '../../components/footer';
-import { IMAGE_BASE_URL } from '../../utils/config';
+import { getArticleTitles, getArticle } from 'api/writings/article-api';
+import { Article } from 'interfaces';
+import MyHead from 'components/head';
+import { WritingsHeader } from 'components/header';
+import MyFooter from 'components/footer';
+import { IMAGE_BASE_URL } from 'utils/config';
 
 import marked, { Renderer } from 'marked';
 import { useState, useEffect } from 'react';

@@ -1,7 +1,7 @@
-import { getSeries, getArticlesOfSeries, getArticlesCountOfSeries } from '../../../api/writings/series-api';
-import { ArticleMeta } from '../../../interfaces';
-import MyHead from '../../../components/head';
-import DetailPage from '../../../components/detailPage';
+import { getSeries, getArticlesOfSeries, getArticlesCountOfSeries } from 'api/writings/series-api';
+import { ArticleMeta } from 'interfaces';
+import MyHead from 'components/head';
+import DetailPage from 'components/detailPage';
 
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';

@@ -1,4 +1,4 @@
-import { Series, FetchStatus } from '../interfaces';
+import { Series, FetchStatus } from 'interfaces';
 
 import Link from 'next/link';
 import { List, Row, Col, Button, Spin, Divider } from 'antd';

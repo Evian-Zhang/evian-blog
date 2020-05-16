@@ -1,4 +1,4 @@
-import { Tag, FetchStatus } from '../interfaces';
+import { Tag, FetchStatus } from 'interfaces';
 
 import Link from 'next/link';
 import { Row, Col, Button, Spin, Card } from 'antd';

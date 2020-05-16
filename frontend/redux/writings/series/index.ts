@@ -1,5 +1,5 @@
-import { Series, FetchStatus } from '../../../interfaces';
-import { getSeries } from '../../../api/writings/series-api';
+import { Series, FetchStatus } from 'interfaces';
+import { getSeries } from 'api/writings/series-api';
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 

@@ -1,4 +1,4 @@
-import { ArticleMeta } from '../interfaces';
+import { ArticleMeta } from 'interfaces';
 
 import Link from 'next/link';
 import { List, Button, Pagination, Row, Col, Tag, Divider } from 'antd';

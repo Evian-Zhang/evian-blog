@@ -1,5 +1,5 @@
-import { ENDPOINTS } from '../../utils/config';
-import { Project } from '../../interfaces';
+import { ENDPOINTS } from 'utils/config';
+import { Project } from 'interfaces';
 
 import fetch from 'node-fetch';
 
