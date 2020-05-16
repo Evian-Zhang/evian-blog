@@ -45,7 +45,8 @@ const DetailPage = (props: DetailPageProps) => {
         articleMetas = data as ArticleMeta[];
     }
 
-    const onChange = (pageIndex: number) => {
+    const onChange = (pageIndexPlusOne: number) => {
+        const pageIndex = pageIndexPlusOne - 1;
         setPageIndex(pageIndex);
     };
 
