@@ -20,6 +20,8 @@ const initialState: SeriesState = {
     series: []
 };
 
+// see https://stackoveflow.com/questions/33828267
+// and https://redux-toolkit.js.org/api/createReducer#direct-state-mutation
 const seriesSlice = createSlice({
     name: 'series',
     initialState,
@@ -27,22 +29,22 @@ const seriesSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(fetchSeries.pending, (state, _) => {
-                state = {
+                return Object.assign({}, state, {
                     fetchStatus: FetchStatus.Fetching,
                     series: []
-                };
+                });
             })
             .addCase(fetchSeries.fulfilled, (state, action) => {
-                state = {
+                return Object.assign({}, state, {
                     fetchStatus: FetchStatus.Success,
                     series: action.payload
-                };
+                });
             })
             .addCase(fetchSeries.rejected, (state, _) => {
-                state = {
+                return Object.assign({}, state, {
                     fetchStatus: FetchStatus.Failure,
                     series: []
-                };
+                });
             });
     }
 });

@@ -20,6 +20,8 @@ const initialState: TagsState = {
     tags: []
 };
 
+// see https://stackoveflow.com/questions/33828267
+// and https://redux-toolkit.js.org/api/createReducer#direct-state-mutation
 const tagSlice = createSlice({
     name: 'tags',
     initialState,
@@ -27,22 +29,22 @@ const tagSlice = createSlice({
     extraReducers: builder => {
         builder
             .addCase(fetchTags.pending, (state, _) => {
-                state = {
+                return Object.assign({}, state, {
                     fetchStatus: FetchStatus.Fetching,
                     tags: []
-                };
+                });
             })
             .addCase(fetchTags.fulfilled, (state, action) => {
-                state = {
+                return Object.assign({}, state, {
                     fetchStatus: FetchStatus.Success,
                     tags: action.payload
-                };
+                });
             })
             .addCase(fetchTags.rejected, (state, _) => {
-                state = {
+                return Object.assign({}, state, {
                     fetchStatus: FetchStatus.Failure,
                     tags: []
-                };
+                });
             });
     }
 });
