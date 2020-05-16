@@ -19,7 +19,8 @@ const MyFooter = () => {
                 <div>
                     CSDN <a href="https://me.csdn.net/EvianZhang" rel="noopener noreferrer">EvianZhang</a>
                 </div>
-            </Space>
+            </Space><br/>
+            ICP备案号: <a href="//www.beian.miit.gov.cn" rel="noopener noreferrer">苏ICP备20025447号</a>
         </div>
     );
 };

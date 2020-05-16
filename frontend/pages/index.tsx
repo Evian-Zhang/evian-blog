@@ -4,10 +4,11 @@ import { Layout, Row, Col, Card, Space } from 'antd';
 import { GithubFilled, MailFilled } from '@ant-design/icons';
 
 import MyHead from '../components/head';
+import MyFooter from '../components/footer';
 import { HomeHeader } from '../components/header';
 import InfiniteScroller from '../components/infiniteScroller'
 
-const { Header, Content, Sider } = Layout;
+const { Header, Content, Sider, Footer } = Layout;
 
 const colResponsiveProps = {
     xs: 24,
@@ -88,6 +89,9 @@ const Home = () => {
                         </Row>
                     </Content>
                 </Layout>
+                <Footer style={{position: "fixed", width: "100%", bottom: 0}}>
+                    <MyFooter/>
+                </Footer>
             </Layout>
         </div>
     );

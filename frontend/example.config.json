@@ -1,5 +1,5 @@
 {
-    "server_endpoint": "http://backend:8080",
-    "browser_endpoint": "http://some-domain",
-    "image_base_url": "http://some-domain/img"
+    "serverEndpoint": "http://backend:8080",
+    "browserEndpoint": "http://some-domain",
+    "imageBaseUrl": "http://some-domain/img"
 }
