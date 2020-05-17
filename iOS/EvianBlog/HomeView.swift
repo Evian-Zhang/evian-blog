@@ -10,7 +10,23 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        Text("Hello, World!")
+		TabView {
+			Text("The First Tab")
+				.tabItem {
+					Image(systemName: "pencil")
+					Text("Writings")
+				}
+			Text("Another Tab")
+				.tabItem {
+					Image(systemName: "keyboard")
+					Text("Projects")
+				}
+			Text("The Last Tab")
+				.tabItem {
+					Image(systemName: "person")
+					Text("résumé")
+				}
+		}
     }
 }
 
