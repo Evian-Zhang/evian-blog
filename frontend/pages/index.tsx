@@ -1,14 +1,13 @@
 import Link from 'next/link';
 
-import { Layout, Row, Col, Card, Space } from 'antd';
-import { GithubFilled, MailFilled } from '@ant-design/icons';
+import { Layout, Row, Col, Card } from 'antd';
 
 import MyHead from 'components/head';
 import MyFooter from 'components/footer';
 import { HomeHeader } from 'components/header';
 import InfiniteScroller from 'components/infiniteScroller'
 
-const { Header, Content, Sider, Footer } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const colResponsiveProps = {
     xs: 24,
@@ -26,69 +25,42 @@ const Home = () => {
                 <Header style={{height: "auto"}}>
                     <HomeHeader/>
                 </Header>
-                <Layout>
-                    <Sider
-                        style={{width: "20%", zIndex: 4}}
-                        breakpoint="lg"
-                        collapsedWidth="0"
-                        collapsible
-                    >
-                        <div style={{marginLeft: "20%", color: "white"}}>
-                            Evian张的个人博客<br/>
-                            联系方式：<br/>
-                            <Space direction="vertical">
-                                <div style={{width: "100%"}}>
-                                    GitHub <a href="https://github.com/Evian-Zhang" rel="noopener noreferrer"><GithubFilled/></a>
-                                </div>
-                                <div style={{width: "100%"}}>
-                                    Gmail <a href="mailto:evianzhang1999@gmail.com"><MailFilled/></a>
-                                </div>
-                                <div style={{width: "100%"}}>
-                                    知乎 <a href="https://www.zhihu.com/people/Evian_Zhang" rel="noopener noreferrer">勥巭炛</a>
-                                </div>
-                                <div style={{width: "100%"}}>
-                                    CSDN <a href="https://me.csdn.net/EvianZhang" rel="noopener noreferrer">EvianZhang</a>
-                                </div>
-                            </Space>
-                        </div>
-                    </Sider>
-                    <Content>
-                        <Row justify="space-around" gutter={24}>
-                            <Col {...colResponsiveProps}>
-                                <Link href="/writings">
-                                    <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
-                                        <Card style={{minHeight: 200, textAlign: "center", zIndex: 3}}>
-                                            我的创作
-                                        </Card>
-                                    </a>
-                                </Link>
-                            </Col>
-                            <Col {...colResponsiveProps}>
-                                <Link href="/projects">
-                                    <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
-                                        <Card style={{minHeight: 200, textAlign: "center", zIndex: 3}}>
-                                            我的编程
-                                        </Card>
-                                    </a>
-                                </Link>
-                            </Col>
-                            <Col {...colResponsiveProps}>
-                                <Link href="/resume">
-                                    <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
-                                        <Card style={{minHeight: 200, textAlign: "center", zIndex: 3}}>
-                                            个人简介
-                                        </Card>
-                                    </a>
-                                </Link>
-                            </Col>
-                        </Row>
-                        <Row justify="center">
-                            <Col span={20}>
-                                <InfiniteScroller/>
-                            </Col>
-                        </Row>
-                    </Content>
-                </Layout>
+                <Content>
+                    <Row justify="space-around" gutter={24}>
+                        <Col {...colResponsiveProps}>
+                            <Link href="/writings">
+                                <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
+                                    <Card style={{minHeight: 200, textAlign: "center", zIndex: 3}}>
+                                        我的创作
+                                    </Card>
+                                </a>
+                            </Link>
+                        </Col>
+                        <Col {...colResponsiveProps}>
+                            <Link href="/projects">
+                                <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
+                                    <Card style={{minHeight: 200, textAlign: "center", zIndex: 3}}>
+                                        我的编程
+                                    </Card>
+                                </a>
+                            </Link>
+                        </Col>
+                        <Col {...colResponsiveProps}>
+                            <Link href="/resume">
+                                <a rel="noopener noreferrer" style={{textDecoration: "none"}}>
+                                    <Card style={{minHeight: 200, textAlign: "center", zIndex: 3}}>
+                                        个人简介
+                                    </Card>
+                                </a>
+                            </Link>
+                        </Col>
+                    </Row>
+                    <Row justify="center">
+                        <Col span={20}>
+                            <InfiniteScroller/>
+                        </Col>
+                    </Row>
+                </Content>
                 <Footer style={{position: "fixed", width: "100%", bottom: 0}}>
                     <MyFooter/>
                 </Footer>

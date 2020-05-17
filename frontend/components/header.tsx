@@ -71,7 +71,7 @@ const ResumeHeader = () => {
             subTitle={
                 <Link href="/resume">
                     <Button type="link">
-                        个人介绍
+                        个人简介
                     </Button>
                 </Link>
             }
