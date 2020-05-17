@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		56A924472470D8CF005DED4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A924462470D8CF005DED4E /* AppDelegate.swift */; };
 		56A924492470D8CF005DED4E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A924482470D8CF005DED4E /* SceneDelegate.swift */; };
-		56A9244B2470D8CF005DED4E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9244A2470D8CF005DED4E /* ContentView.swift */; };
+		56A9244B2470D8CF005DED4E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9244A2470D8CF005DED4E /* HomeView.swift */; };
 		56A9244D2470D8D3005DED4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A9244C2470D8D3005DED4E /* Assets.xcassets */; };
 		56A924502470D8D3005DED4E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A9244F2470D8D3005DED4E /* Preview Assets.xcassets */; };
 		56A924532470D8D3005DED4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A924512470D8D3005DED4E /* LaunchScreen.storyboard */; };
@@ -19,7 +19,7 @@
 		56A924432470D8CF005DED4E /* EvianBlog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EvianBlog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56A924462470D8CF005DED4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		56A924482470D8CF005DED4E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		56A9244A2470D8CF005DED4E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		56A9244A2470D8CF005DED4E /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		56A9244C2470D8D3005DED4E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		56A9244F2470D8D3005DED4E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		56A924522470D8D3005DED4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -60,7 +60,7 @@
 			children = (
 				56A924462470D8CF005DED4E /* AppDelegate.swift */,
 				56A924482470D8CF005DED4E /* SceneDelegate.swift */,
-				56A9244A2470D8CF005DED4E /* ContentView.swift */,
+				56A9244A2470D8CF005DED4E /* HomeView.swift */,
 				56A9244C2470D8D3005DED4E /* Assets.xcassets */,
 				56A924512470D8D3005DED4E /* LaunchScreen.storyboard */,
 				56A924542470D8D3005DED4E /* Info.plist */,
@@ -150,7 +150,7 @@
 			files = (
 				56A924472470D8CF005DED4E /* AppDelegate.swift in Sources */,
 				56A924492470D8CF005DED4E /* SceneDelegate.swift in Sources */,
-				56A9244B2470D8CF005DED4E /* ContentView.swift in Sources */,
+				56A9244B2470D8CF005DED4E /* HomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +291,7 @@
 				DEVELOPMENT_TEAM = C9474Z9GXV;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = EvianBlog/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -311,6 +312,7 @@
 				DEVELOPMENT_TEAM = C9474Z9GXV;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = EvianBlog/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
