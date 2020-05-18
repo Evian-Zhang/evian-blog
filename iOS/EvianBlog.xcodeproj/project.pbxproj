@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,15 @@
 		56A9244D2470D8D3005DED4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A9244C2470D8D3005DED4E /* Assets.xcassets */; };
 		56A924502470D8D3005DED4E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A9244F2470D8D3005DED4E /* Preview Assets.xcassets */; };
 		56A924532470D8D3005DED4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A924512470D8D3005DED4E /* LaunchScreen.storyboard */; };
+		56B7C3B924722B2400FB71C8 /* WritingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3B824722B2400FB71C8 /* WritingsView.swift */; };
+		56B7C3BD2472623700FB71C8 /* ArticleAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3BC2472623700FB71C8 /* ArticleAPI.swift */; };
+		56B7C3C0247262F100FB71C8 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 56B7C3BF247262F100FB71C8 /* Alamofire */; };
+		56B7C3C22472699A00FB71C8 /* types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3C12472699A00FB71C8 /* types.swift */; };
+		56B7C3C42472715900FB71C8 /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3C32472715900FB71C8 /* util.swift */; };
+		56B7C3C62472802000FB71C8 /* TagAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3C52472802000FB71C8 /* TagAPI.swift */; };
+		56B7C3C82472811100FB71C8 /* SeriesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3C72472811100FB71C8 /* SeriesAPI.swift */; };
+		56B7C3CB2472816600FB71C8 /* ProjectAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3CA2472816600FB71C8 /* ProjectAPI.swift */; };
+		56B7C3CE247281C000FB71C8 /* ResumeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3CD247281C000FB71C8 /* ResumeAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +34,14 @@
 		56A924522470D8D3005DED4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56A924542470D8D3005DED4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56A9245A2470D96F005DED4E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		56B7C3B824722B2400FB71C8 /* WritingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingsView.swift; sourceTree = "<group>"; };
+		56B7C3BC2472623700FB71C8 /* ArticleAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleAPI.swift; sourceTree = "<group>"; };
+		56B7C3C12472699A00FB71C8 /* types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = types.swift; sourceTree = "<group>"; };
+		56B7C3C32472715900FB71C8 /* util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
+		56B7C3C52472802000FB71C8 /* TagAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagAPI.swift; sourceTree = "<group>"; };
+		56B7C3C72472811100FB71C8 /* SeriesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeriesAPI.swift; sourceTree = "<group>"; };
+		56B7C3CA2472816600FB71C8 /* ProjectAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAPI.swift; sourceTree = "<group>"; };
+		56B7C3CD247281C000FB71C8 /* ResumeAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResumeAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56B7C3C0247262F100FB71C8 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +83,8 @@
 				56A924512470D8D3005DED4E /* LaunchScreen.storyboard */,
 				56A924542470D8D3005DED4E /* Info.plist */,
 				56A9244E2470D8D3005DED4E /* Preview Content */,
+				56B7C3B824722B2400FB71C8 /* WritingsView.swift */,
+				56B7C3BA247261FF00FB71C8 /* api */,
 			);
 			path = EvianBlog;
 			sourceTree = "<group>";
@@ -75,6 +95,44 @@
 				56A9244F2470D8D3005DED4E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		56B7C3BA247261FF00FB71C8 /* api */ = {
+			isa = PBXGroup;
+			children = (
+				56B7C3CC247281B400FB71C8 /* resume */,
+				56B7C3C92472815700FB71C8 /* projects */,
+				56B7C3BB2472620B00FB71C8 /* writings */,
+				56B7C3C12472699A00FB71C8 /* types.swift */,
+				56B7C3C32472715900FB71C8 /* util.swift */,
+			);
+			path = api;
+			sourceTree = "<group>";
+		};
+		56B7C3BB2472620B00FB71C8 /* writings */ = {
+			isa = PBXGroup;
+			children = (
+				56B7C3BC2472623700FB71C8 /* ArticleAPI.swift */,
+				56B7C3C52472802000FB71C8 /* TagAPI.swift */,
+				56B7C3C72472811100FB71C8 /* SeriesAPI.swift */,
+			);
+			path = writings;
+			sourceTree = "<group>";
+		};
+		56B7C3C92472815700FB71C8 /* projects */ = {
+			isa = PBXGroup;
+			children = (
+				56B7C3CA2472816600FB71C8 /* ProjectAPI.swift */,
+			);
+			path = projects;
+			sourceTree = "<group>";
+		};
+		56B7C3CC247281B400FB71C8 /* resume */ = {
+			isa = PBXGroup;
+			children = (
+				56B7C3CD247281C000FB71C8 /* ResumeAPI.swift */,
+			);
+			path = resume;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -93,6 +151,9 @@
 			dependencies = (
 			);
 			name = EvianBlog;
+			packageProductDependencies = (
+				56B7C3BF247262F100FB71C8 /* Alamofire */,
+			);
 			productName = EvianBlog;
 			productReference = 56A924432470D8CF005DED4E /* EvianBlog.app */;
 			productType = "com.apple.product-type.application";
@@ -121,6 +182,9 @@
 				Base,
 			);
 			mainGroup = 56A9243A2470D8CF005DED4E;
+			packageReferences = (
+				56B7C3BE247262F100FB71C8 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			productRefGroup = 56A924442470D8CF005DED4E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -148,9 +212,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56B7C3C42472715900FB71C8 /* util.swift in Sources */,
 				56A924472470D8CF005DED4E /* AppDelegate.swift in Sources */,
+				56B7C3CB2472816600FB71C8 /* ProjectAPI.swift in Sources */,
 				56A924492470D8CF005DED4E /* SceneDelegate.swift in Sources */,
+				56B7C3C82472811100FB71C8 /* SeriesAPI.swift in Sources */,
+				56B7C3BD2472623700FB71C8 /* ArticleAPI.swift in Sources */,
+				56B7C3CE247281C000FB71C8 /* ResumeAPI.swift in Sources */,
+				56B7C3C22472699A00FB71C8 /* types.swift in Sources */,
+				56B7C3C62472802000FB71C8 /* TagAPI.swift in Sources */,
 				56A9244B2470D8CF005DED4E /* HomeView.swift in Sources */,
+				56B7C3B924722B2400FB71C8 /* WritingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,6 +418,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		56B7C3BE247262F100FB71C8 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		56B7C3BF247262F100FB71C8 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 56B7C3BE247262F100FB71C8 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 56A9243B2470D8CF005DED4E /* Project object */;
 }

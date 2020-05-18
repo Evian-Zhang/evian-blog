@@ -11,7 +11,7 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
 		TabView {
-			Text("The First Tab")
+			WritingsView()
 				.tabItem {
 					Image(systemName: "pencil")
 					Text("Writings")
@@ -24,7 +24,7 @@ struct HomeView: View {
 			Text("The Last Tab")
 				.tabItem {
 					Image(systemName: "person")
-					Text("résumé")
+					Text("Résumé")
 				}
 		}
     }
