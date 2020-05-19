@@ -9,60 +9,52 @@
 import Foundation
 
 struct Endpoint {
-	static private let baseEndpoint = NSURL(string: "https://evian-zhang.top/")!
-	static private let apiEndpoint = NSURL(string: "api/v1/", relativeTo: baseEndpoint as URL)!
-	static private let writingsEndpoint = NSURL(string: "writings/", relativeTo: apiEndpoint as URL)!
-	static private let projectsEndpoint = NSURL(string: "projects", relativeTo: apiEndpoint as URL)!
-	static private let resumeEndpoint = NSURL(string: "resume", relativeTo: apiEndpoint as URL)!
-	
-	struct Article {
-		let getArticlesCount = NSURL(string: "articles/count", relativeTo: writingsEndpoint as URL)!
-		let getArticleMetas = { (pageIndex: UInt, pageSize: UInt) in
-			NSURL(string: "articles?pageIndex=\(pageIndex)&pageSize=\(pageSize)", relativeTo: writingsEndpoint as URL)!
-		}
-		let getArticle = { (title: String) in
-			NSURL(string: "article/\(title)", relativeTo: writingsEndpoint as URL)!
-		}
-		let getArticleTitles = NSURL(string: "articles/titles", relativeTo: writingsEndpoint as URL)!
-	}
-	
-	struct Tag {
-		let getTags = NSURL(string: "tags", relativeTo: writingsEndpoint as URL)!
-		let getArticlesCountOfTag = { (name: String) in
-			NSURL(string: "tag/\(name)/count", relativeTo: writingsEndpoint as URL)!
-		}
-		let getArticlesOfTag = { (name: String, pageIndex: UInt, pageSize: UInt) in
-			NSURL(string: "tag/\(name)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
-		}
-	}
-	
-	struct Series {
-		let getSeries = NSURL(string: "series", relativeTo: writingsEndpoint as URL)!
-		let getArticlesCountOfSeries = { (name: String) in
-			NSURL(string: "series/\(name)/count", relativeTo: writingsEndpoint as URL)!
-		}
-		let getArticlesOfSeries = { (name: String, pageIndex: UInt, pageSize: UInt) in
-			NSURL(string: "series/\(name)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
-		}
-	}
+	static private let baseEndpoint = URL(string: "https://evian-zhang.top/")!
+	static private let apiEndpoint = URL(string: "api/v1/", relativeTo: baseEndpoint)!
 	
 	struct Writings {
-		let article = Article()
-		let tag = Tag()
-		let series = Series()
+		static private let writingsEndpoint = URL(string: "writings/", relativeTo: apiEndpoint)!
+		struct Article {
+			static let getArticlesCount = URL(string: "articles/count", relativeTo: writingsEndpoint)!
+			static let getArticleMetas = { (pageIndex: UInt, pageSize: UInt) in
+				URL(string: "articles?pageIndex=\(pageIndex)&pageSize=\(pageSize)", relativeTo: writingsEndpoint)!
+			}
+			static let getArticle = { (title: String) in
+				URL(string: "article/\(title)", relativeTo: writingsEndpoint)!
+			}
+			static let getArticleTitles = URL(string: "articles/titles", relativeTo: writingsEndpoint)!
+		}
+		
+		struct Tag {
+			static let getTags = URL(string: "tags", relativeTo: writingsEndpoint)!
+			static let getArticlesCountOfTag = { (name: String) in
+				URL(string: "tag/\(name)/count", relativeTo: writingsEndpoint)!
+			}
+			static let getArticlesOfTag = { (name: String, pageIndex: UInt, pageSize: UInt) in
+				URL(string: "tag/\(name)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
+			}
+		}
+		
+		struct Series {
+			static let getSeries = URL(string: "series", relativeTo: writingsEndpoint)!
+			static let getArticlesCountOfSeries = { (name: String) in
+				URL(string: "series/\(name)/count", relativeTo: writingsEndpoint)!
+			}
+			static let getArticlesOfSeries = { (name: String, pageIndex: UInt, pageSize: UInt) in
+				URL(string: "series/\(name)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
+			}
+		}
 	}
 	
 	struct Projects {
-		let getProjects = projectsEndpoint
+		static private let projectsEndpoint = URL(string: "projects", relativeTo: apiEndpoint)!
+		static let getProjects = projectsEndpoint
 	}
 	
 	struct Resume {
-		let getResume = resumeEndpoint
+		static private let resumeEndpoint = URL(string: "resume", relativeTo: apiEndpoint)!
+		static let getResume = resumeEndpoint
 	}
 	
-	static let writings = Writings()
-	static let projects = Projects()
-	static let resume = Resume()
-	
-	static let imageBaseUrl = NSURL(string: "https://evian-zhang.top/img/")!
+	static let imageBaseUrl = URL(string: "https://evian-zhang.top/img/")!
 }

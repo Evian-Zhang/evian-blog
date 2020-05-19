@@ -11,17 +11,17 @@ import Alamofire
 
 struct SeriesAPI {
 	static func getSeries(completionHandler: @escaping (DataResponse<[Tag], AFError>) -> Void) {
-		AF.request(Endpoint.writings.series.getSeries as URL)
+		AF.request(Endpoint.Writings.Series.getSeries)
 			.responseDecodable(completionHandler: completionHandler)
 	}
 	
 	static func getArticlesCountOfSeries(name: String, completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.writings.series.getArticlesCountOfSeries(name) as URL)
+		AF.request(Endpoint.Writings.Series.getArticlesCountOfSeries(name))
 			.responseDecodable(completionHandler: completionHandler)
 	}
 	
 	static func getArticlesOfSeries(name: String, pageIndex: UInt, pageSize: UInt, completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.writings.series.getArticlesOfSeries(name, pageIndex, pageSize) as URL)
+		AF.request(Endpoint.Writings.Series.getArticlesOfSeries(name, pageIndex, pageSize))
 			.responseDecodable(completionHandler: completionHandler)
 	}
 }

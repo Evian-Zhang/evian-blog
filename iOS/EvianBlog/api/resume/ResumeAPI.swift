@@ -11,7 +11,7 @@ import Alamofire
 
 struct ResumeAPI {
 	static func getResume(completionHandler: @escaping (DataResponse<String, AFError>) -> Void) {
-		AF.request(Endpoint.resume.getResume as URL)
+		AF.request(Endpoint.Resume.getResume)
 			.responseDecodable(completionHandler: completionHandler)
 	}
 }

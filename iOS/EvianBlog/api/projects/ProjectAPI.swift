@@ -11,7 +11,7 @@ import Alamofire
 
 struct ProjectAPI {
 	static func getProjects(completionHandler: @escaping (DataResponse<[Project], AFError>) -> Void) {
-		AF.request(Endpoint.projects.getProjects as URL)
+		AF.request(Endpoint.Projects.getProjects)
 			.responseDecodable(completionHandler: completionHandler)
 	}
 }

@@ -11,17 +11,17 @@ import Alamofire
 
 struct TagAPI {
 	static func getTags(completionHandler: @escaping (DataResponse<[Tag], AFError>) -> Void) {
-		AF.request(Endpoint.writings.tag.getTags as URL)
+		AF.request(Endpoint.Writings.Tag.getTags)
 			.responseDecodable(completionHandler: completionHandler)
 	}
 	
 	static func getArticlesCountOfTag(name: String, completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.writings.tag.getArticlesCountOfTag(name) as URL)
+		AF.request(Endpoint.Writings.Tag.getArticlesCountOfTag(name))
 			.responseDecodable(completionHandler: completionHandler)
 	}
 	
 	static func getArticlesOfTag(name: String, pageIndex: UInt, pageSize: UInt, completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.writings.tag.getArticlesOfTag(name, pageIndex, pageSize) as URL)
+		AF.request(Endpoint.Writings.Tag.getArticlesOfTag(name, pageIndex, pageSize))
 			.responseDecodable(completionHandler: completionHandler)
 	}
 }

@@ -11,22 +11,22 @@ import Alamofire
 
 struct ArticleAPI {
 	static func getArticlesCount(completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.writings.article.getArticlesCount as URL)
+		AF.request(Endpoint.Writings.Article.getArticlesCount)
 			.responseDecodable(completionHandler: completionHandler)
 	}
 
 	static func getArticleMetas(pageIndex: UInt, pageSize: UInt, completionHandler: @escaping (DataResponse<[ArticleMeta], AFError>) -> Void) {
-		AF.request(Endpoint.writings.article.getArticleMetas(pageIndex, pageSize) as URL)
+		AF.request(Endpoint.Writings.Article.getArticleMetas(pageIndex, pageSize))
 			.responseDecodable(completionHandler: completionHandler)
 	}
 
 	static func getArticle(title: String, completionHandler: @escaping (DataResponse<Article, AFError>) -> Void) {
-		AF.request(Endpoint.writings.article.getArticle(title) as URL)
+		AF.request(Endpoint.Writings.Article.getArticle(title))
 			.responseDecodable(completionHandler: completionHandler)
 	}
 
 	static func getArticleTitles(completionHandler: @escaping (DataResponse<[String], AFError>) -> Void) {
-		AF.request(Endpoint.writings.article.getArticleTitles as URL)
+		AF.request(Endpoint.Writings.Article.getArticleTitles)
 			.responseDecodable(completionHandler: completionHandler)
 	}
 }
