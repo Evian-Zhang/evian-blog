@@ -9,24 +9,20 @@
 import Foundation
 import Alamofire
 
-struct ArticleAPI {
-	static func getArticlesCount(completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Article.getArticlesCount)
-			.responseDecodable(completionHandler: completionHandler)
+extension BlogAPI {
+	func getArticlesCount() -> DataResponsePublisher<UInt> {
+		self.session.request(Endpoint.Writings.Article.getArticlesCount).publishDecodable()
 	}
 
-	static func getArticleMetas(pageIndex: UInt, pageSize: UInt, completionHandler: @escaping (DataResponse<[ArticleMeta], AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Article.getArticleMetas(pageIndex, pageSize))
-			.responseDecodable(completionHandler: completionHandler)
+	func getArticleMetas(pageIndex: UInt, pageSize: UInt) -> DataResponsePublisher<[ArticleMeta]> {
+		self.session.request(Endpoint.Writings.Article.getArticleMetas(pageIndex, pageSize)).publishDecodable()
 	}
 
-	static func getArticle(title: String, completionHandler: @escaping (DataResponse<Article, AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Article.getArticle(title))
-			.responseDecodable(completionHandler: completionHandler)
+	func getArticle(title: String) -> DataResponsePublisher<Article> {
+		AF.request(Endpoint.Writings.Article.getArticle(title)).publishDecodable()
 	}
 
-	static func getArticleTitles(completionHandler: @escaping (DataResponse<[String], AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Article.getArticleTitles)
-			.responseDecodable(completionHandler: completionHandler)
+	func getArticleTitles() -> DataResponsePublisher<[String]> {
+		AF.request(Endpoint.Writings.Article.getArticleTitles).publishDecodable()
 	}
 }

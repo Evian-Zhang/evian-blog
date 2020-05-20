@@ -16,7 +16,3 @@ struct BlogAPI {
 		self.session = session
 	}
 }
-
-enum BlogAPIError: Error {
-	case network(AFError)
-}

@@ -9,19 +9,16 @@
 import Foundation
 import Alamofire
 
-struct TagAPI {
-	static func getTags(completionHandler: @escaping (DataResponse<[Tag], AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Tag.getTags)
-			.responseDecodable(completionHandler: completionHandler)
+extension BlogAPI {
+	func getTags() -> DataResponsePublisher<[Tag]> {
+		self.session.request(Endpoint.Writings.Tag.getTags).publishDecodable()
 	}
 	
-	static func getArticlesCountOfTag(name: String, completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Tag.getArticlesCountOfTag(name))
-			.responseDecodable(completionHandler: completionHandler)
+	func getArticlesCountOfTag(name: String) -> DataResponsePublisher<UInt> {
+		self.session.request(Endpoint.Writings.Tag.getArticlesCountOfTag(name)).publishDecodable()
 	}
 	
-	static func getArticlesOfTag(name: String, pageIndex: UInt, pageSize: UInt, completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Tag.getArticlesOfTag(name, pageIndex, pageSize))
-			.responseDecodable(completionHandler: completionHandler)
+	func getArticlesOfTag(name: String, pageIndex: UInt, pageSize: UInt) -> DataResponsePublisher<[Article]> {
+		self.session.request(Endpoint.Writings.Tag.getArticlesOfTag(name, pageIndex, pageSize)).publishDecodable()
 	}
 }

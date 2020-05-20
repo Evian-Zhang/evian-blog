@@ -9,19 +9,16 @@
 import Foundation
 import Alamofire
 
-struct SeriesAPI {
-	static func getSeries(completionHandler: @escaping (DataResponse<[Tag], AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Series.getSeries)
-			.responseDecodable(completionHandler: completionHandler)
+extension BlogAPI {
+	func getSeries() -> DataResponsePublisher<Series> {
+		self.session.request(Endpoint.Writings.Series.getSeries).publishDecodable()
 	}
 	
-	static func getArticlesCountOfSeries(name: String, completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Series.getArticlesCountOfSeries(name))
-			.responseDecodable(completionHandler: completionHandler)
+	func getArticlesCountOfSeries(name: String) -> DataResponsePublisher<UInt> {
+		self.session.request(Endpoint.Writings.Series.getArticlesCountOfSeries(name)).publishDecodable()
 	}
 	
-	static func getArticlesOfSeries(name: String, pageIndex: UInt, pageSize: UInt, completionHandler: @escaping (DataResponse<UInt, AFError>) -> Void) {
-		AF.request(Endpoint.Writings.Series.getArticlesOfSeries(name, pageIndex, pageSize))
-			.responseDecodable(completionHandler: completionHandler)
+	func getArticlesOfSeries(name: String, pageIndex: UInt, pageSize: UInt) -> DataResponsePublisher<[Article]> {
+		self.session.request(Endpoint.Writings.Series.getArticlesOfSeries(name, pageIndex, pageSize)).publishDecodable()
 	}
 }

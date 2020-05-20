@@ -9,9 +9,8 @@
 import Foundation
 import Alamofire
 
-struct ProjectAPI {
-	static func getProjects(completionHandler: @escaping (DataResponse<[Project], AFError>) -> Void) {
-		AF.request(Endpoint.Projects.getProjects)
-			.responseDecodable(completionHandler: completionHandler)
+extension BlogAPI {
+	func getProjects() -> DataResponsePublisher<[Project]> {
+		self.session.request(Endpoint.Projects.getProjects).publishDecodable()
 	}
 }
