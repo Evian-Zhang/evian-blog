@@ -6,19 +6,21 @@
 //  Copyright © 2020 Evian张. All rights reserved.
 //
 
-import Foundation
 import Alamofire
 
+import Foundation
+import Combine
+
 extension BlogAPI {
-	func getSeries() -> DataResponsePublisher<Series> {
-		self.session.request(Endpoint.Writings.Series.getSeries).publishDecodable()
+	func getSeries() -> AnyPublisher<Series, BlogAPIError> {
+		self.fetch(url: Endpoint.Writings.Series.getSeries)
 	}
 	
-	func getArticlesCountOfSeries(name: String) -> DataResponsePublisher<UInt> {
-		self.session.request(Endpoint.Writings.Series.getArticlesCountOfSeries(name)).publishDecodable()
+	func getArticlesCountOfSeries(name: String) -> AnyPublisher<UInt, BlogAPIError> {
+		self.fetch(url: Endpoint.Writings.Series.getArticlesCountOfSeries(name))
 	}
 	
-	func getArticlesOfSeries(name: String, pageIndex: UInt, pageSize: UInt) -> DataResponsePublisher<[Article]> {
-		self.session.request(Endpoint.Writings.Series.getArticlesOfSeries(name, pageIndex, pageSize)).publishDecodable()
+	func getArticlesOfSeries(name: String, pageIndex: UInt, pageSize: UInt) -> AnyPublisher<[Article], BlogAPIError> {
+		self.fetch(url: Endpoint.Writings.Series.getArticlesOfSeries(name, pageIndex, pageSize))
 	}
 }

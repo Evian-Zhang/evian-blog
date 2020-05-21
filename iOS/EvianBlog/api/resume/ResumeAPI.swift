@@ -12,7 +12,7 @@ import Foundation
 import Combine
 
 extension BlogAPI {
-	func getResume() -> DataResponsePublisher<String> {
-		self.session.request(Endpoint.Resume.getResume).publishDecodable()
+	func getResume() -> AnyPublisher<String, BlogAPIError> {
+		self.fetch(url: Endpoint.Resume.getResume)
 	}
 }

@@ -6,11 +6,13 @@
 //  Copyright © 2020 Evian张. All rights reserved.
 //
 
-import Foundation
 import Alamofire
 
+import Foundation
+import Combine
+
 extension BlogAPI {
-	func getProjects() -> DataResponsePublisher<[Project]> {
-		self.session.request(Endpoint.Projects.getProjects).publishDecodable()
+	func getProjects() -> AnyPublisher<[Project], BlogAPIError> {
+		self.fetch(url: Endpoint.Projects.getProjects)
 	}
 }

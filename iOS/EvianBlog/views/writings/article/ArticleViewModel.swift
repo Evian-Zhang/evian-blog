@@ -7,3 +7,12 @@
 //
 
 import Foundation
+import Combine
+
+class ArticleViewModel: ObservableObject {
+	private let blogAPI: BlogAPI
+	
+	init(blogAPI: BlogAPI) {
+		self.blogAPI = blogAPI
+	}
+}
