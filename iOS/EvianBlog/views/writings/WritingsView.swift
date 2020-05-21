@@ -27,12 +27,19 @@ enum Writings: CaseIterable, CustomStringConvertible {
 struct WritingsView: View {
 	@State private var selectedWritings = Writings.article
 	
-	private let articleView = ArticleView()
+	private let blogAPI: BlogAPI
+	
+	private let articleView: ArticleView
+	
+	init() {
+		self.blogAPI = BlogAPI()
+		self.articleView = ArticleView(viewModel: ArticleViewModel(blogAPI: self.blogAPI))
+	}
 	
 	func contentOf(selectedWritings: Writings) -> AnyView {
 		switch selectedWritings {
 			case .article: return AnyView(self.articleView)
-			case .tag: return AnyView(Image(systemName: "1.square.filled"))
+			case .tag: return AnyView(Text("tags"))
 			case .series: return AnyView(Text("series"))
 		}
 	}

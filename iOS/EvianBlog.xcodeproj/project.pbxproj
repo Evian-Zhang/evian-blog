@@ -13,6 +13,7 @@
 		56A9244D2470D8D3005DED4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A9244C2470D8D3005DED4E /* Assets.xcassets */; };
 		56A924502470D8D3005DED4E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 56A9244F2470D8D3005DED4E /* Preview Assets.xcassets */; };
 		56A924532470D8D3005DED4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56A924512470D8D3005DED4E /* LaunchScreen.storyboard */; };
+		56B5D46F2476501E00184784 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56B5D46E2476501E00184784 /* ExternalAccessory.framework */; };
 		56B7C3B924722B2400FB71C8 /* WritingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3B824722B2400FB71C8 /* WritingsView.swift */; };
 		56B7C3BD2472623700FB71C8 /* ArticleAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56B7C3BC2472623700FB71C8 /* ArticleAPI.swift */; };
 		56B7C3C0247262F100FB71C8 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 56B7C3BF247262F100FB71C8 /* Alamofire */; };
@@ -37,6 +38,8 @@
 		56A924522470D8D3005DED4E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		56A924542470D8D3005DED4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		56A9245A2470D96F005DED4E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		56B5D46C2476501E00184784 /* EvianBlog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EvianBlog.entitlements; sourceTree = "<group>"; };
+		56B5D46E2476501E00184784 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		56B7C3B824722B2400FB71C8 /* WritingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingsView.swift; sourceTree = "<group>"; };
 		56B7C3BC2472623700FB71C8 /* ArticleAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleAPI.swift; sourceTree = "<group>"; };
 		56B7C3C12472699A00FB71C8 /* types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = types.swift; sourceTree = "<group>"; };
@@ -55,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56B5D46F2476501E00184784 /* ExternalAccessory.framework in Frameworks */,
 				56B7C3C0247262F100FB71C8 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,6 +72,7 @@
 				56A9245A2470D96F005DED4E /* .gitignore */,
 				56A924452470D8CF005DED4E /* EvianBlog */,
 				56A924442470D8CF005DED4E /* Products */,
+				56B5D46D2476501E00184784 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -82,6 +87,7 @@
 		56A924452470D8CF005DED4E /* EvianBlog */ = {
 			isa = PBXGroup;
 			children = (
+				56B5D46C2476501E00184784 /* EvianBlog.entitlements */,
 				56DDC2322474BD370010D166 /* views */,
 				56A924462470D8CF005DED4E /* AppDelegate.swift */,
 				56A924482470D8CF005DED4E /* SceneDelegate.swift */,
@@ -100,6 +106,14 @@
 				56A9244F2470D8D3005DED4E /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		56B5D46D2476501E00184784 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				56B5D46E2476501E00184784 /* ExternalAccessory.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		56B7C3BA247261FF00FB71C8 /* api */ = {
@@ -394,6 +408,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = EvianBlog/EvianBlog.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"EvianBlog/Preview Content\"";
 				DEVELOPMENT_TEAM = C9474Z9GXV;
@@ -415,6 +430,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = EvianBlog/EvianBlog.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"EvianBlog/Preview Content\"";
 				DEVELOPMENT_TEAM = C9474Z9GXV;

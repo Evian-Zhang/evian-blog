@@ -11,7 +11,7 @@ import Alamofire
 import Foundation
 import Combine
 
-struct BlogAPI {
+class BlogAPI {
 	let session: Session
 	
 	// default `Session` uses `DispatchQueue(label: "org.alamofire.session.rootQueue")` as `rootQueue`
