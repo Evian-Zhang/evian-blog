@@ -8,35 +8,19 @@
 
 import SwiftUI
 
-enum Writings: CaseIterable, CustomStringConvertible {
-	case article
-	case tag
-	case series
-	
-	var description: String {
-		get {
-			switch self {
-				case .article: return "Articles"
-				case .tag: return "Tags"
-				case .series: return "Series"
-			}
-		}
-	}
-}
-
 struct WritingsView: View {
-	@State private var selectedWritings = Writings.article
+	@ObservedObject private var viewModel: WritingsViewModel
 	
-	private let blogAPI: BlogAPI
-	
+	private let delegate: WritingsViewDelegate
 	private let articleView: ArticleView
 	
-	init() {
-		self.blogAPI = BlogAPI()
-		self.articleView = ArticleView(viewModel: ArticleViewModel(blogAPI: self.blogAPI))
+	init(writingsViewModel: WritingsViewModel) {
+		self.viewModel = writingsViewModel
+		self.delegate = writingsViewModel
+		self.articleView = ArticleView(articleViewModel: ArticleViewModel(blogAPI: writingsViewModel.blogAPI, writingsViewDelegate: writingsViewModel))
 	}
 	
-	func contentOf(selectedWritings: Writings) -> AnyView {
+	func contentOf(selectedWritings: WritingsSegment) -> AnyView {
 		switch selectedWritings {
 			case .article: return AnyView(self.articleView)
 			case .tag: return AnyView(Text("tags"))
@@ -46,12 +30,12 @@ struct WritingsView: View {
 
     var body: some View {
 		NavigationView {
-			self.contentOf(selectedWritings: self.selectedWritings)
+			self.contentOf(selectedWritings: self.viewModel.selectedWritingsSegment)
 				.navigationBarItems(leading:
-					Picker("Writings", selection: $selectedWritings) {
-						ForEach(Writings.allCases, id: \.self) { writingsKey in
-							Text(String(describing: writingsKey))
-								.tag(writingsKey)
+					Picker("Writings", selection: self.$viewModel.selectedWritingsSegment) {
+						ForEach(WritingsSegment.allCases, id: \.self) { writingsSegment in
+							Text(String(describing: writingsSegment))
+								.tag(writingsSegment)
 						}
 					}
 						.pickerStyle(SegmentedPickerStyle())
@@ -61,7 +45,8 @@ struct WritingsView: View {
 }
 
 struct WritingsView_Previews: PreviewProvider {
+	static let writingsViewModel = WritingsViewModel(blogAPI: BlogAPI())
     static var previews: some View {
-        WritingsView()
+        WritingsView(writingsViewModel: writingsViewModel)
     }
 }

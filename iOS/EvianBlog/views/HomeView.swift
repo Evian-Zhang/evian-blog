@@ -11,7 +11,7 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
 		TabView {
-			WritingsView()
+			WritingsView(writingsViewModel: WritingsViewModel(blogAPI: BlogAPI()))
 				.tabItem {
 					Image(systemName: "pencil")
 					Text("Writings")
