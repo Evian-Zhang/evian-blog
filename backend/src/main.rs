@@ -59,6 +59,7 @@ async fn main() -> std::io::Result<()> {
                 .service(server::post_resume)
             )
     })
+    .workers(4)
     .bind(&server_socket)?
     .run()
     .await
