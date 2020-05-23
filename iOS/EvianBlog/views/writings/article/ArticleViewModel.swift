@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class ArticleViewModel: ObservableObject {
+class ArticleViewModel: ObservableObject, WritingsSubviewDelegate {
 	@Published var articles: [ArticleMeta] = []
 	@Published var fetchStatus: FetchStatus = .success
 	
@@ -22,16 +22,14 @@ class ArticleViewModel: ObservableObject {
 	private static let PAGE_SIZE: UInt = 20
 	
 	private let blogAPI: BlogAPI
-	let writingsViewDelegate: WritingsViewDelegate
 	// used to store `AnyCancellable`,  without keeping this reference alive, the network publisher will terminate immediately
 	private var disposables = Set<AnyCancellable>()
 	// page index of NEXT page index
 	private var pageIndex: UInt = 0
 	private var reachEnd = false
 	
-	init(blogAPI: BlogAPI, writingsViewDelegate: WritingsViewDelegate) {
+	init(blogAPI: BlogAPI) {
 		self.blogAPI = blogAPI
-		self.writingsViewDelegate = writingsViewDelegate
 	}
 	
 	func fetchMoreArticles() {

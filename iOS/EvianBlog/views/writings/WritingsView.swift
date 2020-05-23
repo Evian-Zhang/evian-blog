@@ -11,13 +11,11 @@ import SwiftUI
 struct WritingsView: View {
 	@ObservedObject private var viewModel: WritingsViewModel
 	
-	private let delegate: WritingsViewDelegate
 	private let articleView: ArticleView
 	
 	init(writingsViewModel: WritingsViewModel) {
 		self.viewModel = writingsViewModel
-		self.delegate = writingsViewModel
-		self.articleView = ArticleView(articleViewModel: ArticleViewModel(blogAPI: writingsViewModel.blogAPI, writingsViewDelegate: writingsViewModel))
+		self.articleView = ArticleView(articleViewModel: ArticleViewModel(blogAPI: writingsViewModel.blogAPI))
 	}
 	
 	func contentOf(selectedWritings: WritingsSegment) -> AnyView {

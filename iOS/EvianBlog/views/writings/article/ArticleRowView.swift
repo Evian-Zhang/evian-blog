@@ -19,7 +19,10 @@ struct ArticleRowView: View {
 		if case let (.some(series), .some(seriesIndex)) = (series, seriesIndex) {
 			return AnyView(
 				HStack {
-					Button(series, action: {})
+					Button(series, action: {
+						self.viewModel.onSeriesPressed(seriesName: series)
+					})
+						.buttonStyle(BorderlessButtonStyle())
 					Text("series[\(seriesIndex + 1)]")
 				}
 					.font(.subheadline)
@@ -41,7 +44,10 @@ struct ArticleRowView: View {
 			ScrollView([.horizontal], showsIndicators: false) {
 				HStack {
 					ForEach(self.viewModel.tags, id: \.self) { tag in
-					  	Button(tag, action: {})
+						Button(tag, action: {
+							self.viewModel.onTagPressed(tagName: tag)
+						})
+							.buttonStyle(BorderlessButtonStyle())
 							.font(.subheadline)
 				  	}
 				}
@@ -60,6 +66,6 @@ struct ArticleRowView_Previews: PreviewProvider {
 		return dateFormatter
 	}()
     static var previews: some View {
-		ArticleRowView(articleRowViewModel: ArticleRowViewModel(articleMeta: article, dateFormatter: dateFormatter, writingsViewDelegate: WritingsViewModel(blogAPI: BlogAPI())))
+		ArticleRowView(articleRowViewModel: ArticleRowViewModel(articleMeta: article, dateFormatter: dateFormatter))
     }
 }

@@ -25,23 +25,60 @@ enum WritingsSegment: CaseIterable, CustomStringConvertible {
 	}
 }
 
-class WritingsViewModel: ObservableObject, WritingsViewDelegate {
+class WritingsViewModel: ObservableObject {
 	@Published var selectedWritingsSegment: WritingsSegment = .article
+	
 	let blogAPI: BlogAPI
+	// used to store `AnyCancellable`,  without keeping this reference alive, the publisher will terminate immediately
+	private var disposables = Set<AnyCancellable>()
 	
 	init(blogAPI: BlogAPI) {
 		self.blogAPI = blogAPI
+		
+		self.observeArticleTitlePressed()
+		self.observeTagNamePressed()
+		self.observeSeriesNamePressed()
 	}
 	
-	func onNavigateToTag(tagName: String) {
-		
+	func observeArticleTitlePressed() {
+		NotificationCenter.default.publisher(for: Notification.EBWritingsArticleTitleDidPressed)
+			.map { notification in
+				notification.userInfo!["title"] as! String
+			}
+			.sink { articleTitle in
+				self.selectedWritingsSegment = .article
+				
+			}
+			.store(in: &self.disposables)
 	}
 	
-	func onNavigateToSeries(seriesName: String) {
-		
+	func observeTagNamePressed() {
+		NotificationCenter.default.publisher(for: Notification.EBWritingsTagNameDidPressed)
+			.map { notification in
+				notification.userInfo!["name"] as! String
+			}
+			.sink { tagName in
+				self.selectedWritingsSegment = .tag
+			  
+			}
+			.store(in: &self.disposables)
 	}
 	
-	func onNavigateToArticle(articleTitle: String) {
-		
+	func observeSeriesNamePressed() {
+		NotificationCenter.default.publisher(for: Notification.EBWritingsSeriesNameDidPressed)
+			.map { notification in
+				notification.userInfo!["name"] as! String
+			}
+			.sink { seriesName in
+				self.selectedWritingsSegment = .series
+				
+			}
+			.store(in: &self.disposables)
 	}
+}
+
+extension Notification {
+	static let EBWritingsArticleTitleDidPressed = Notification.Name(rawValue: "EBWritingsArticleTitleDidPressed")
+	static let EBWritingsTagNameDidPressed = Notification.Name(rawValue: "EBWritingsTagNameDidPressed")
+	static let EBWritingsSeriesNameDidPressed = Notification.Name(rawValue: "EBWritingsSeriesNameDidPressed")
 }

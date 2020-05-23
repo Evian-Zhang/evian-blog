@@ -11,12 +11,10 @@ import Foundation
 struct ArticleRowViewModel {
 	private let articleMeta: ArticleMeta
 	private let dateFormatter: DateFormatter
-	let writingsViewDelegate: WritingsViewDelegate
 	
-	init(articleMeta: ArticleMeta, dateFormatter: DateFormatter, writingsViewDelegate: WritingsViewDelegate) {
+	init(articleMeta: ArticleMeta, dateFormatter: DateFormatter) {
 		self.articleMeta = articleMeta
 		self.dateFormatter = dateFormatter
-		self.writingsViewDelegate = writingsViewDelegate
 	}
 	
 	var title: String { self.articleMeta.title }
@@ -28,11 +26,11 @@ struct ArticleRowViewModel {
 		return dateFormatter.string(from: lastReviseDate)
 	}
 	
-	func onSeriesPressed(series: String) {
-		
+	func onSeriesPressed(seriesName: String) {
+		NotificationCenter.default.post(name: Notification.EBWritingsSeriesNameDidPressed, object: nil, userInfo: ["name": seriesName])
 	}
 	
-	func onTagPressed(tag: String) {
-		
+	func onTagPressed(tagName: String) {
+		NotificationCenter.default.post(name: Notification.EBWritingsTagNameDidPressed, object: nil, userInfo: ["name": tagName])
 	}
 }
