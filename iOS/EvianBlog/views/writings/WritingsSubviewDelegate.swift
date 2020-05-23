@@ -14,5 +14,6 @@ enum WritingsSubviewLevel {
 }
 
 protocol WritingsSubviewDelegate {
-	func changeLevel()
+	func currentLevel() -> WritingsSubviewLevel
+	func changeLevel(to writingsSubviewLevel: WritingsSubviewLevel)
 }

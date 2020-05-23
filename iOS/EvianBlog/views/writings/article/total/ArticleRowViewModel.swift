@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ArticleRowViewModel {
+class ArticleRowViewModel {
 	private let articleMeta: ArticleMeta
 	private let dateFormatter: DateFormatter
 	

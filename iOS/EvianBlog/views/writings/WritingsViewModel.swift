@@ -75,6 +75,15 @@ class WritingsViewModel: ObservableObject {
 			}
 			.store(in: &self.disposables)
 	}
+	
+	func switchLevel(subviewDelegate: WritingsSubviewDelegate) {
+		var targetLevel: WritingsSubviewLevel
+		switch subviewDelegate.currentLevel() {
+			case .total: targetLevel = .detail
+			case .detail: targetLevel = .total
+		}
+		subviewDelegate.changeLevel(to: targetLevel)
+	}
 }
 
 extension Notification {

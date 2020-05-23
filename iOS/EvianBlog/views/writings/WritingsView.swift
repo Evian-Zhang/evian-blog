@@ -25,18 +25,37 @@ struct WritingsView: View {
 			case .series: return AnyView(Text("series"))
 		}
 	}
+	
+	func subviewDelegateOf(selectedWritings: WritingsSegment) -> WritingsSubviewDelegate {
+		switch selectedWritings {
+			case .article: return self.articleView.viewModel
+			default: return self.articleView.viewModel
+		}
+	}
 
     var body: some View {
 		NavigationView {
 			self.contentOf(selectedWritings: self.viewModel.selectedWritingsSegment)
-				.navigationBarItems(leading:
-					Picker("Writings", selection: self.$viewModel.selectedWritingsSegment) {
+				.navigationBarItems(
+					leading: Picker("Writings", selection: self.$viewModel.selectedWritingsSegment) {
 						ForEach(WritingsSegment.allCases, id: \.self) { writingsSegment in
 							Text(String(describing: writingsSegment))
 								.tag(writingsSegment)
 						}
 					}
-						.pickerStyle(SegmentedPickerStyle())
+						.pickerStyle(SegmentedPickerStyle()),
+					trailing: Button(action: {
+						self.viewModel.switchLevel(subviewDelegate: self.subviewDelegateOf(selectedWritings: self.viewModel.selectedWritingsSegment))
+					}) {
+//						Image(systemName: "list.bullet")
+						Stepper(onIncrement: {
+							
+						}, onDecrement: {
+							
+						}) {
+							Text("zs")
+						}
+					}
 				)
 		}
     }
