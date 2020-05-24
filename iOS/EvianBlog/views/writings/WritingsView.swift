@@ -15,7 +15,7 @@ struct WritingsView: View {
 	
 	init(writingsViewModel: WritingsViewModel) {
 		self.viewModel = writingsViewModel
-		self.articleView = ArticleView(articleViewModel: ArticleViewModel(blogAPI: writingsViewModel.blogAPI))
+		self.articleView = ArticleView(articleViewModel: writingsViewModel.articleViewModel)
 	}
 	
 	func contentOf(selectedWritings: WritingsSegment) -> AnyView {
@@ -23,13 +23,6 @@ struct WritingsView: View {
 			case .article: return AnyView(self.articleView)
 			case .tag: return AnyView(Text("tags"))
 			case .series: return AnyView(Text("series"))
-		}
-	}
-	
-	func subviewDelegateOf(selectedWritings: WritingsSegment) -> WritingsSubviewDelegate {
-		switch selectedWritings {
-			case .article: return self.articleView.viewModel
-			default: return self.articleView.viewModel
 		}
 	}
 
@@ -45,16 +38,9 @@ struct WritingsView: View {
 					}
 						.pickerStyle(SegmentedPickerStyle()),
 					trailing: Button(action: {
-						self.viewModel.switchLevel(subviewDelegate: self.subviewDelegateOf(selectedWritings: self.viewModel.selectedWritingsSegment))
+						self.viewModel.switchLevel(subviewDelegate: self.viewModel.subviewDelegate)
 					}) {
-//						Image(systemName: "list.bullet")
-						Stepper(onIncrement: {
-							
-						}, onDecrement: {
-							
-						}) {
-							Text("zs")
-						}
+						Image(systemName: "list.bullet")
 					}
 				)
 		}

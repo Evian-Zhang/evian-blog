@@ -13,19 +13,13 @@ class ArticleViewModel: ObservableObject, WritingsSubviewDelegate {
 	@Published var currentDetailViewIndex = 0
 	
 	private let blogAPI: BlogAPI
-	weak var totalViewModel: ArticleTotalViewModel? = nil
-	weak var detailViewModel: ArticleDetailViewModel? = nil
+	var totalViewModel: ArticleTotalViewModel
+	var detailViewModel: DetailPageViewModel<ArticleDetailView>
 	
 	init(blogAPI: BlogAPI) {
 		self.blogAPI = blogAPI
-	}
-	
-	func generateTotalViewModel() -> ArticleTotalViewModel {
-		ArticleTotalViewModel(blogAPI: self.blogAPI)
-	}
-	
-	func generateDetailViewModel(articleTitle: String) -> ArticleDetailViewModel {
-		ArticleDetailViewModel(blogAPI: self.blogAPI, articleTitle: articleTitle)
+		self.totalViewModel = ArticleTotalViewModel(blogAPI: self.blogAPI)
+		self.detailViewModel = DetailPageViewModel([])
 	}
 	
 	func currentLevel() -> WritingsSubviewLevel {
@@ -34,5 +28,15 @@ class ArticleViewModel: ObservableObject, WritingsSubviewDelegate {
 	
 	func changeLevel(to writingsSubviewLevel: WritingsSubviewLevel) {
 		self.level = writingsSubviewLevel
+	}
+	
+	func navigateToDetailPage(name: String) {
+		if let targetPage = self.detailViewModel.hasView(where: { articleDetailView in
+			return articleDetailView.viewModel.articleTitle == name
+		}) {
+			self.detailViewModel.currentPage = targetPage
+		} else {
+			self.detailViewModel.addView(ArticleDetailView(articleDetailViewModel: ArticleDetailViewModel(blogAPI: self.blogAPI, articleTitle: name)))
+		}
 	}
 }

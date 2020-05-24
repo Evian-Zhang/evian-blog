@@ -20,6 +20,10 @@ struct DetailPageControl: UIViewRepresentable {
 	
 	func makeUIView(context: Context) -> UIPageControl {
 		let control = UIPageControl()
+		
+		control.pageIndicatorTintColor = UIColor.label.withAlphaComponent(0.4)
+		control.currentPageIndicatorTintColor = UIColor.label
+		
 		control.numberOfPages = numberOfPages
 		control.addTarget(context.coordinator, action: #selector(Coordinator.updateCurrentPage(sender:)), for: .valueChanged)
 		

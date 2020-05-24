@@ -31,13 +31,22 @@ class WritingsViewModel: ObservableObject {
 	let blogAPI: BlogAPI
 	// used to store `AnyCancellable`,  without keeping this reference alive, the publisher will terminate immediately
 	private var disposables = Set<AnyCancellable>()
+	let articleViewModel: ArticleViewModel
 	
 	init(blogAPI: BlogAPI) {
 		self.blogAPI = blogAPI
+		self.articleViewModel = ArticleViewModel(blogAPI: blogAPI)
 		
 		self.observeArticleTitlePressed()
 		self.observeTagNamePressed()
 		self.observeSeriesNamePressed()
+	}
+	
+	var subviewDelegate: WritingsSubviewDelegate {
+		switch self.selectedWritingsSegment {
+			case .article: return self.articleViewModel
+			default: return self.articleViewModel
+		}
 	}
 	
 	func observeArticleTitlePressed() {
@@ -47,7 +56,8 @@ class WritingsViewModel: ObservableObject {
 			}
 			.sink { articleTitle in
 				self.selectedWritingsSegment = .article
-				
+				self.subviewDelegate.changeLevel(to: .detail)
+				self.subviewDelegate.navigateToDetailPage(name: articleTitle)
 			}
 			.store(in: &self.disposables)
 	}

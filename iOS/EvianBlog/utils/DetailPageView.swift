@@ -10,23 +10,29 @@
 import SwiftUI
 
 struct DetailPageView<Page: View>: View {
-	var viewControllers: [UIHostingController<Page>]
-	@State var currentPage = 0
+	@ObservedObject private var viewModel: DetailPageViewModel<Page>
 	
-	init(_ views: [Page]) {
-		self.viewControllers = views.map { UIHostingController(rootView: $0) }
+	init(detailPageViewModel: DetailPageViewModel<Page>) {
+		self.viewModel = detailPageViewModel
 	}
 	
-	func addView(_ view: Page) -> Int {
-		self.viewControllers.append(UIHostingController(rootView: view))
-		return self.viewControllers.count
+	var detailBody: some View {
+		ZStack(alignment: .bottomTrailing) {
+			DetailPageViewController(controllers: self.viewModel.viewControllers, currentPage: self.$viewModel.currentPage)
+			DetailPageControl(numberOfPages: self.viewModel.viewControllers.count, currentPage: self.$viewModel.currentPage)
+				.padding(.trailing)
+		}
+	}
+	
+	func content() -> AnyView {
+		if self.viewModel.viewControllers.isEmpty {
+			return AnyView(Text("No detail view").font(.largeTitle))
+		} else {
+			return AnyView(self.detailBody)
+		}
 	}
 	
 	var body: some View {
-		ZStack(alignment: .bottomTrailing) {
-			DetailPageViewController(controllers: viewControllers, currentPage: $currentPage)
-			DetailPageControl(numberOfPages: viewControllers.count, currentPage: $currentPage)
-				.padding(.trailing)
-		}
+		self.content()
 	}
 }

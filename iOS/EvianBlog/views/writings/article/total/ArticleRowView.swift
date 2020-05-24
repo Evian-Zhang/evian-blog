@@ -34,10 +34,14 @@ struct ArticleRowView: View {
 	
     var body: some View {
 		VStack(alignment: HorizontalAlignment.leading) {
-			Text(self.viewModel.title)
-				.font(.headline)
-				// https://stackoverflow.com/a/59277022/10005095
-				.fixedSize(horizontal: false, vertical: true)
+			Button(action: {
+				self.viewModel.onArticlePressed(articleTitle: self.viewModel.title)
+			}) {
+				Text(self.viewModel.title)
+					.font(.headline)
+					// https://stackoverflow.com/a/59277022/10005095
+					.fixedSize(horizontal: false, vertical: true)
+			}
 			self.contentOfSeries(series: self.viewModel.series, seriesIndex: self.viewModel.seriesIndex)
 			Text("Last revised at \(self.viewModel.lastReviseDateString)")
 				.font(.subheadline)

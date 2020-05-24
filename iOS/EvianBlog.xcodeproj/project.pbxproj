@@ -36,6 +36,7 @@
 		56DDC2362474CC750010D166 /* ArticleTotalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DDC2352474CC750010D166 /* ArticleTotalView.swift */; };
 		56DDC2382474CC830010D166 /* ArticleTotalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DDC2372474CC830010D166 /* ArticleTotalViewModel.swift */; };
 		56DDC23A2474D1200010D166 /* BlogAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56DDC2392474D11F0010D166 /* BlogAPI.swift */; };
+		56FAFD0E247A1B000050C45B /* DetailPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56FAFD0D247A1B000050C45B /* DetailPageViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,6 +72,7 @@
 		56DDC2352474CC750010D166 /* ArticleTotalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTotalView.swift; sourceTree = "<group>"; };
 		56DDC2372474CC830010D166 /* ArticleTotalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleTotalViewModel.swift; sourceTree = "<group>"; };
 		56DDC2392474D11F0010D166 /* BlogAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogAPI.swift; sourceTree = "<group>"; };
+		56FAFD0D247A1B000050C45B /* DetailPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPageViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +201,7 @@
 			children = (
 				56D3D469247906AF002FE52A /* DetailPageViewController.swift */,
 				56D3D46B24790765002FE52A /* DetailPageView.swift */,
+				56FAFD0D247A1B000050C45B /* DetailPageViewModel.swift */,
 				56D3D46E24790C45002FE52A /* DetailPageControl.swift */,
 			);
 			path = utils;
@@ -332,6 +335,7 @@
 				56D3D4632478C317002FE52A /* ArticleViewModel.swift in Sources */,
 				562CEF502477BCD7002806DF /* ArticleRowViewModel.swift in Sources */,
 				56B7C3C62472802000FB71C8 /* TagAPI.swift in Sources */,
+				56FAFD0E247A1B000050C45B /* DetailPageViewModel.swift in Sources */,
 				56D3D4612478C2F2002FE52A /* ArticleView.swift in Sources */,
 				56D3D45E2478BF57002FE52A /* WritingsSubviewDelegate.swift in Sources */,
 				56A9244B2470D8CF005DED4E /* HomeView.swift in Sources */,

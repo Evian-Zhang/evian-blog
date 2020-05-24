@@ -33,4 +33,8 @@ class ArticleRowViewModel {
 	func onTagPressed(tagName: String) {
 		NotificationCenter.default.post(name: Notification.EBWritingsTagNameDidPressed, object: nil, userInfo: ["name": tagName])
 	}
+	
+	func onArticlePressed(articleTitle: String) {
+		NotificationCenter.default.post(name: Notification.EBWritingsArticleTitleDidPressed, object: nil, userInfo: ["title": articleTitle])
+	}
 }

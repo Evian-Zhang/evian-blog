@@ -11,32 +11,29 @@ import SwiftUI
 struct ArticleView: View {
 	@ObservedObject var viewModel: ArticleViewModel
 	
-	private var totalView: ArticleTotalView
-	private var detailViews: [ArticleDetailView]
+	var totalView: ArticleTotalView
+	var detailView: DetailPageView<ArticleDetailView>
 	
 	init(articleViewModel: ArticleViewModel) {
 		self.viewModel = articleViewModel
-		let totalViewModel = articleViewModel.generateTotalViewModel()
-		self.totalView = ArticleTotalView(articleTotalViewModel: articleViewModel.generateTotalViewModel())
-		articleViewModel.totalViewModel = totalViewModel
-		self.detailViews = []
+		self.totalView = ArticleTotalView(articleTotalViewModel: articleViewModel.totalViewModel)
+		self.detailView = DetailPageView(detailPageViewModel: articleViewModel.detailViewModel)
 	}
 	
 	func content() -> AnyView {
 		switch self.viewModel.level {
 			case .total: return AnyView(self.totalView)
-			case .detail:
-				if self.detailViews.isEmpty {
-					return AnyView(Text("No detail view").font(.largeTitle))
-				} else {
-					return AnyView(self.detailViews[self.viewModel.currentDetailViewIndex])
-				}
+			case .detail: return AnyView(self.detailView)
 		}
 	}
 	
     var body: some View {
 		self.content()
     }
+	
+//	static func == (lhs: ArticleView, rhs: ArticleView) -> Bool {
+//		return lhs.viewModel.level == rhs.viewModel.level && lhs.totalView.viewModel.articles.count == rhs.totalView.viewModel.articles.count && lhs.detailView.viewControllers.count == rhs.detailView.viewControllers.count && lhs.detailView.currentPage == rhs.detailView.currentPage
+//	}
 }
 
 struct ArticleView_Previews: PreviewProvider {
