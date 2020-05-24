@@ -31,6 +31,8 @@ struct DetailPageControl: UIViewRepresentable {
 	}
 	
 	func updateUIView(_ uiView: UIPageControl, context: Context) {
+		// Important! `uiView.numberOfPages` will be the previous one if `makeUIView` is not called
+		uiView.numberOfPages = numberOfPages
 		uiView.currentPage = currentPage
 	}
 	

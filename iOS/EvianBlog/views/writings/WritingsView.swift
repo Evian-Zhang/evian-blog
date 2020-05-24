@@ -37,10 +37,20 @@ struct WritingsView: View {
 						}
 					}
 						.pickerStyle(SegmentedPickerStyle()),
-					trailing: Button(action: {
-						self.viewModel.switchLevel(subviewDelegate: self.viewModel.subviewDelegate)
-					}) {
-						Image(systemName: "list.bullet")
+					trailing: HStack {
+						if self.viewModel.isCurrentViewClosable {
+							Button(action: {
+								self.viewModel.closeCurrentView()
+							}) {
+								Text("Close")
+							}
+								.buttonStyle(BorderlessButtonStyle())
+						}
+						Button(action: {
+							self.viewModel.switchLevel()
+						}) {
+							Image(systemName: "list.bullet")
+						}
 					}
 				)
 		}

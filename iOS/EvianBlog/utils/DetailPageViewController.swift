@@ -28,6 +28,8 @@ struct DetailPageViewController: UIViewControllerRepresentable {
 	}
 	
 	func updateUIViewController(_ pageViewController: UIPageViewController, context: Context) {
+		// Important! `context.coordinator.parent` will be the previous one if `makeUIViewController` is not called
+		context.coordinator.parent = self
 		pageViewController.setViewControllers([controllers[currentPage]], direction: .forward, animated: true)
 	}
 	

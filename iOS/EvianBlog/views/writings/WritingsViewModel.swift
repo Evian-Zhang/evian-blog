@@ -86,13 +86,21 @@ class WritingsViewModel: ObservableObject {
 			.store(in: &self.disposables)
 	}
 	
-	func switchLevel(subviewDelegate: WritingsSubviewDelegate) {
+	func switchLevel() {
 		var targetLevel: WritingsSubviewLevel
-		switch subviewDelegate.currentLevel() {
+		switch self.subviewDelegate.currentLevel() {
 			case .total: targetLevel = .detail
 			case .detail: targetLevel = .total
 		}
-		subviewDelegate.changeLevel(to: targetLevel)
+		self.subviewDelegate.changeLevel(to: targetLevel)
+	}
+	
+	var isCurrentViewClosable: Bool {
+		self.subviewDelegate.isCurrentViewClosable()
+	}
+	
+	func closeCurrentView() {
+		self.subviewDelegate.closeCurrentView()
 	}
 }
 
