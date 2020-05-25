@@ -29,7 +29,7 @@ class WritingsViewModel: ObservableObject {
 	@Published var selectedWritingsSegment: WritingsSegment = .article
 	
 	private let blogAPI: BlogAPI
-	// used to store `AnyCancellable`,  without keeping this reference alive, the publisher will terminate immediately
+	// used to store `AnyCancellable`, without keeping this reference alive, the publisher will terminate immediately
 	private var disposables = Set<AnyCancellable>()
 	let articleViewModel: ArticleViewModel
 	
@@ -93,14 +93,6 @@ class WritingsViewModel: ObservableObject {
 			case .detail: targetLevel = .total
 		}
 		self.subviewDelegate.changeLevel(to: targetLevel)
-	}
-	
-	var isCurrentViewClosable: Bool {
-		self.subviewDelegate.isCurrentViewClosable()
-	}
-	
-	func closeCurrentView() {
-		self.subviewDelegate.closeCurrentView()
 	}
 }
 

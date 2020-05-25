@@ -20,7 +20,7 @@ struct Endpoint {
 				URL(string: "articles?pageIndex=\(pageIndex)&pageSize=\(pageSize)", relativeTo: writingsEndpoint)!
 			}
 			static let getArticle = { (title: String) in
-				URL(string: "article/\(title)", relativeTo: writingsEndpoint)!
+				URL(string: "article/\(title.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)", relativeTo: writingsEndpoint)!
 			}
 			static let getArticleTitles = URL(string: "articles/titles", relativeTo: writingsEndpoint)!
 		}
@@ -28,20 +28,20 @@ struct Endpoint {
 		struct Tag {
 			static let getTags = URL(string: "tags", relativeTo: writingsEndpoint)!
 			static let getArticlesCountOfTag = { (name: String) in
-				URL(string: "tag/\(name)/count", relativeTo: writingsEndpoint)!
+				URL(string: "tag/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)/count", relativeTo: writingsEndpoint)!
 			}
 			static let getArticlesOfTag = { (name: String, pageIndex: UInt, pageSize: UInt) in
-				URL(string: "tag/\(name)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
+				URL(string: "tag/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
 			}
 		}
 		
 		struct Series {
 			static let getSeries = URL(string: "series", relativeTo: writingsEndpoint)!
 			static let getArticlesCountOfSeries = { (name: String) in
-				URL(string: "series/\(name)/count", relativeTo: writingsEndpoint)!
+				URL(string: "series/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)/count", relativeTo: writingsEndpoint)!
 			}
 			static let getArticlesOfSeries = { (name: String, pageIndex: UInt, pageSize: UInt) in
-				URL(string: "series/\(name)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
+				URL(string: "series/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
 			}
 		}
 	}

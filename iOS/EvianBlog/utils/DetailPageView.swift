@@ -18,7 +18,16 @@ struct DetailPageView<Page: View>: View {
 	
 	var detailBody: some View {
 		ZStack(alignment: .bottomTrailing) {
-			DetailPageViewController(controllers: self.viewModel.viewControllers, currentPage: self.$viewModel.currentPage)
+			VStack(alignment: .leading) {
+				Button(action: self.viewModel.deleteCurrentView) {
+					HStack {
+						Image(systemName: "xmark.circle.fill")
+						Text("Close this page")
+					}
+				}
+				Spacer()
+				DetailPageViewController(controllers: self.viewModel.viewControllers, currentPage: self.$viewModel.currentPage)
+			}
 			DetailPageControl(numberOfPages: self.viewModel.viewControllers.count, currentPage: self.$viewModel.currentPage)
 				.padding(.trailing)
 		}

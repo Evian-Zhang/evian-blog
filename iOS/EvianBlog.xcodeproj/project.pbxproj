@@ -10,6 +10,7 @@
 		562CEF4E24779B5F002806DF /* ArticleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562CEF4D24779B5F002806DF /* ArticleRowView.swift */; };
 		562CEF502477BCD7002806DF /* ArticleRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562CEF4F2477BCD7002806DF /* ArticleRowViewModel.swift */; };
 		562CEF562477C2CE002806DF /* WritingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 562CEF552477C2CE002806DF /* WritingsViewModel.swift */; };
+		56904BA9247B5EBB0080142A /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = 56904BA8247B5EBB0080142A /* SwiftyMarkdown */; };
 		56A924472470D8CF005DED4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A924462470D8CF005DED4E /* AppDelegate.swift */; };
 		56A924492470D8CF005DED4E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A924482470D8CF005DED4E /* SceneDelegate.swift */; };
 		56A9244B2470D8CF005DED4E /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A9244A2470D8CF005DED4E /* HomeView.swift */; };
@@ -81,6 +82,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				56B7C3C0247262F100FB71C8 /* Alamofire in Frameworks */,
+				56904BA9247B5EBB0080142A /* SwiftyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +258,7 @@
 			name = EvianBlog;
 			packageProductDependencies = (
 				56B7C3BF247262F100FB71C8 /* Alamofire */,
+				56904BA8247B5EBB0080142A /* SwiftyMarkdown */,
 			);
 			productName = EvianBlog;
 			productReference = 56A924432470D8CF005DED4E /* EvianBlog.app */;
@@ -287,6 +290,7 @@
 			mainGroup = 56A9243A2470D8CF005DED4E;
 			packageReferences = (
 				56B7C3BE247262F100FB71C8 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				56904BA7247B5EBB0080142A /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
 			);
 			productRefGroup = 56A924442470D8CF005DED4E /* Products */;
 			projectDirPath = "";
@@ -540,6 +544,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		56904BA7247B5EBB0080142A /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimonFairbairn/SwiftyMarkdown.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.1;
+			};
+		};
 		56B7C3BE247262F100FB71C8 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -551,6 +563,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		56904BA8247B5EBB0080142A /* SwiftyMarkdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 56904BA7247B5EBB0080142A /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */;
+			productName = SwiftyMarkdown;
+		};
 		56B7C3BF247262F100FB71C8 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 56B7C3BE247262F100FB71C8 /* XCRemoteSwiftPackageReference "Alamofire" */;

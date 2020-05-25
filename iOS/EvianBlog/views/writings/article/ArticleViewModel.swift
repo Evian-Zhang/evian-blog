@@ -40,14 +40,4 @@ class ArticleViewModel: ObservableObject, WritingsSubviewDelegate {
 			self.detailViewModel.addView(ArticleDetailView(articleDetailViewModel: ArticleDetailViewModel(blogAPI: self.blogAPI, articleTitle: name)))
 		}
 	}
-	
-	func isCurrentViewClosable() -> Bool {
-		self.level == .detail && !self.detailViewModel.viewControllers.isEmpty
-	}
-	
-	func closeCurrentView() {
-		if isCurrentViewClosable() {
-			self.detailViewModel.deleteCurrentView()
-		}
-	}
 }

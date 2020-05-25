@@ -17,6 +17,4 @@ protocol WritingsSubviewDelegate {
 	func currentLevel() -> WritingsSubviewLevel
 	func changeLevel(to writingsSubviewLevel: WritingsSubviewLevel)
 	func navigateToDetailPage(name: String)
-	func isCurrentViewClosable() -> Bool
-	func closeCurrentView()
 }
