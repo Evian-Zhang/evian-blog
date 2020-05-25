@@ -28,7 +28,7 @@ enum WritingsSegment: CaseIterable, CustomStringConvertible {
 class WritingsViewModel: ObservableObject {
 	@Published var selectedWritingsSegment: WritingsSegment = .article
 	
-	let blogAPI: BlogAPI
+	private let blogAPI: BlogAPI
 	// used to store `AnyCancellable`,  without keeping this reference alive, the publisher will terminate immediately
 	private var disposables = Set<AnyCancellable>()
 	let articleViewModel: ArticleViewModel

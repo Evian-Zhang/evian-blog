@@ -22,6 +22,7 @@ class ArticleViewModel: ObservableObject, WritingsSubviewDelegate {
 		self.detailViewModel = DetailPageViewModel([])
 	}
 	
+	// MARK: WritingsSubviewDelegate conformity
 	func currentLevel() -> WritingsSubviewLevel {
 		self.level
 	}

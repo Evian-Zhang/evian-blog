@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct ArticleView: View {
-	@ObservedObject var viewModel: ArticleViewModel
+	@ObservedObject private var viewModel: ArticleViewModel
 	
-	var totalView: ArticleTotalView
-	var detailView: DetailPageView<ArticleDetailView>
+	private let totalView: ArticleTotalView
+	private let detailView: DetailPageView<ArticleDetailView>
 	
 	init(articleViewModel: ArticleViewModel) {
 		self.viewModel = articleViewModel
@@ -30,10 +30,6 @@ struct ArticleView: View {
     var body: some View {
 		self.content()
     }
-	
-//	static func == (lhs: ArticleView, rhs: ArticleView) -> Bool {
-//		return lhs.viewModel.level == rhs.viewModel.level && lhs.totalView.viewModel.articles.count == rhs.totalView.viewModel.articles.count && lhs.detailView.viewControllers.count == rhs.detailView.viewControllers.count && lhs.detailView.currentPage == rhs.detailView.currentPage
-//	}
 }
 
 struct ArticleView_Previews: PreviewProvider {

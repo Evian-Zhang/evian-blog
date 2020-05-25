@@ -22,7 +22,7 @@ struct ArticleTotalView: View {
 		self.viewModel.fetchMoreArticles()
 	}
 	
-	func indicatorOfFetchStatus(fetchStatus: ArticleTotalViewModel.FetchStatus) -> AnyView {
+	func indicatorOf(fetchStatus: ArticleTotalViewModel.FetchStatus) -> AnyView {
 		switch fetchStatus {
 			case .fetching: return AnyView(Text("Loading..."))
 			case .success: return AnyView(EmptyView())
@@ -44,7 +44,7 @@ struct ArticleTotalView: View {
 						}
 					})
 			}
-			self.indicatorOfFetchStatus(fetchStatus: self.viewModel.fetchStatus)
+			self.indicatorOf(fetchStatus: self.viewModel.fetchStatus)
 		}
 	}
 }
