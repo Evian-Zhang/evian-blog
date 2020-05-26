@@ -52,7 +52,12 @@ struct ArticleDetailView: View {
 						}
 					}
 				}
-				Text(self.viewModel.body).font(.body)
+				VStack(alignment: .center) {
+					Text("Published at \(self.viewModel.publishDateString)")
+					Text("Last revised at \(self.viewModel.lastReviseDateString)")
+				}
+					.font(.subheadline)
+				ArticleBodyView(body: self.viewModel.body).font(.body)
 			}
 		}
 	}

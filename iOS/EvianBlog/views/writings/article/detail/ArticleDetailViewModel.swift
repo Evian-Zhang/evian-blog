@@ -5,6 +5,7 @@
 //  Created by Evian张 on 2020/5/23.
 //  Copyright © 2020 Evian张. All rights reserved.
 //
+import SwiftyMarkdown
 
 import Foundation
 import Combine
@@ -19,13 +20,17 @@ class ArticleDetailViewModel: ObservableObject {
 	}
 	
 	private let blogAPI: BlogAPI
+	private let dateFormatter = DateFormatter()
 	let articleTitle: String
 	var article: Article?
-	var body: String {
-		self.article?.body ?? ""
+	var body = NSAttributedString()
+	var publishDateString: String {
+		let publishDate = Date(timeIntervalSince1970: TimeInterval(self.article?.publishDate ?? 0))
+		return dateFormatter.string(from: publishDate)
 	}
-	var lastReviseDate: UInt {
-		self.article?.lastReviseDate ?? 0
+	var lastReviseDateString: String {
+		let lastReviseDate = Date(timeIntervalSince1970: TimeInterval(self.article?.lastReviseDate ?? 0))
+		return dateFormatter.string(from: lastReviseDate)
 	}
 	var tags: [String] {
 		self.article?.tags ?? []
@@ -40,6 +45,10 @@ class ArticleDetailViewModel: ObservableObject {
 	private var disposables = Set<AnyCancellable>()
 	
 	init(blogAPI: BlogAPI, articleTitle: String) {
+		self.dateFormatter.dateStyle = .long
+		self.dateFormatter.timeStyle = .none
+		self.dateFormatter.locale = Locale.current
+		
 		self.blogAPI = blogAPI
 		self.articleTitle = articleTitle
 		self.article = nil
@@ -62,7 +71,9 @@ class ArticleDetailViewModel: ObservableObject {
 				}
 			}) { [weak self] article in
 				guard let self = self else { return }
+				// TODO: replace image starts with "evian://"
 				self.article = article
+				self.body = SwiftyMarkdown.init(string: article.body).attributedString()
 			}
 			.store(in: &self.disposables)
 	}
