@@ -9,20 +9,21 @@
 import SwiftUI
 
 struct HomeView: View {
+	let blogAPI = BlogAPI()
 	// Currently switching between tabs can't reserve scrolling position of one tab. see https://stackoverflow.com/q/57772137/10005095 and https://stackoverflow.com/q/59295676/10005095
     var body: some View {
 		TabView {
-			WritingsView(writingsViewModel: WritingsViewModel(blogAPI: BlogAPI()))
+			WritingsView(writingsViewModel: WritingsViewModel(blogAPI: self.blogAPI))
 				.tabItem {
 					Image(systemName: "pencil")
 					Text("Writings")
 				}
-			Text("Another Tab")
+			ProjectsView(projectsViewModel: ProjectsViewModel(blogAPI: self.blogAPI))
 				.tabItem {
 					Image(systemName: "keyboard")
 					Text("Projects")
 				}
-			Text("The Last Tab")
+			ResumeView(resumeViewModel: ResumeViewModel(blogAPI: self.blogAPI))
 				.tabItem {
 					Image(systemName: "person")
 					Text("Résumé")

@@ -44,5 +44,5 @@ struct Project: Decodable {
 	let description: String
 	let languages: [String]
 	let frameworks: [String]
-	let url: String
+	let url: URL
 }
