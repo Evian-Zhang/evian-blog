@@ -1,0 +1,20 @@
+name: iOS-CI
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - 'iOS/**'
+
+jobs:
+    build:
+        runs-on: macOS-latest
+        env:
+            working-directory: ./iOS
+
+        steps:
+            - uses: actions/checkout@v2
+            - name: Build
+              run: xcodebuild -scheme EvianBlog -configuration Release build
+              working-directory: ${{ env.working-directory }}
