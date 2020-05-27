@@ -12,7 +12,7 @@ import Foundation
 import Combine
 
 extension BlogAPI {
-	func getSeries() -> AnyPublisher<Series, BlogAPIError> {
+	func getSeries() -> AnyPublisher<[Series], BlogAPIError> {
 		self.fetch(url: Endpoint.Writings.Series.getSeries)
 	}
 	
@@ -20,7 +20,7 @@ extension BlogAPI {
 		self.fetch(url: Endpoint.Writings.Series.getArticlesCountOfSeries(name))
 	}
 	
-	func getArticlesOfSeries(name: String, pageIndex: UInt, pageSize: UInt) -> AnyPublisher<[Article], BlogAPIError> {
+	func getArticlesOfSeries(name: String, pageIndex: UInt, pageSize: UInt) -> AnyPublisher<[ArticleMeta], BlogAPIError> {
 		self.fetch(url: Endpoint.Writings.Series.getArticlesOfSeries(name, pageIndex, pageSize))
 	}
 }

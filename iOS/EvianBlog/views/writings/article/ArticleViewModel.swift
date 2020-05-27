@@ -10,15 +10,14 @@ import Foundation
 
 class ArticleViewModel: ObservableObject, WritingsSubviewDelegate {
 	@Published var level: WritingsSubviewLevel = .total
-	@Published var currentDetailViewIndex = 0
 	
 	private let blogAPI: BlogAPI
-	var totalViewModel: ArticleTotalViewModel
+	var totalViewModel: ArticleListViewModel
 	var detailViewModel: DetailPageViewModel<ArticleDetailView>
 	
 	init(blogAPI: BlogAPI) {
 		self.blogAPI = blogAPI
-		self.totalViewModel = ArticleTotalViewModel(blogAPI: self.blogAPI)
+		self.totalViewModel = ArticleListViewModel(articleFetcher: self.blogAPI.getArticleMetas)
 		self.detailViewModel = DetailPageViewModel([])
 	}
 	
@@ -33,7 +32,7 @@ class ArticleViewModel: ObservableObject, WritingsSubviewDelegate {
 	
 	func navigateToDetailPage(name: String) {
 		if let targetPage = self.detailViewModel.hasView(where: { articleDetailView in
-			return articleDetailView.viewModel.articleTitle == name
+			articleDetailView.viewModel.articleTitle == name
 		}) {
 			self.detailViewModel.currentPage = targetPage
 		} else {

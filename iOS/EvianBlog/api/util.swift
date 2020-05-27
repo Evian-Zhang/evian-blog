@@ -31,7 +31,7 @@ struct Endpoint {
 				URL(string: "tag/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)/count", relativeTo: writingsEndpoint)!
 			}
 			static let getArticlesOfTag = { (name: String, pageIndex: UInt, pageSize: UInt) in
-				URL(string: "tag/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
+				URL(string: "tag/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)?pageIndex=\(pageIndex)&pageSize=\(pageSize)", relativeTo: writingsEndpoint)!
 			}
 		}
 		
@@ -41,7 +41,7 @@ struct Endpoint {
 				URL(string: "series/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)/count", relativeTo: writingsEndpoint)!
 			}
 			static let getArticlesOfSeries = { (name: String, pageIndex: UInt, pageSize: UInt) in
-				URL(string: "series/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)?pageIndex=\(pageIndex)&pageSize=\(pageSize)")!
+				URL(string: "series/\(name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!)?pageIndex=\(pageIndex)&pageSize=\(pageSize)", relativeTo: writingsEndpoint)!
 			}
 		}
 	}

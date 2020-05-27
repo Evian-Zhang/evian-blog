@@ -12,17 +12,21 @@ struct WritingsView: View {
 	@ObservedObject private var viewModel: WritingsViewModel
 	
 	private let articleView: ArticleView
+	private let tagView: TagView
+	private let seriesView: SeriesView
 	
 	init(writingsViewModel: WritingsViewModel) {
 		self.viewModel = writingsViewModel
 		self.articleView = ArticleView(articleViewModel: writingsViewModel.articleViewModel)
+		self.tagView = TagView(tagViewModel: writingsViewModel.tagViewModel)
+		self.seriesView = SeriesView(seriesViewModel: writingsViewModel.seriesViewModel)
 	}
 	
 	func contentOf(selectedWritings: WritingsSegment) -> AnyView {
 		switch selectedWritings {
 			case .article: return AnyView(self.articleView)
-			case .tag: return AnyView(Text("tags"))
-			case .series: return AnyView(Text("series"))
+			case .tag: return AnyView(self.tagView)
+			case .series: return AnyView(self.seriesView)
 		}
 	}
 

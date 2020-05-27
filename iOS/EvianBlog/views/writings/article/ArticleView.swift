@@ -11,12 +11,12 @@ import SwiftUI
 struct ArticleView: View {
 	@ObservedObject private var viewModel: ArticleViewModel
 	
-	private let totalView: ArticleTotalView
+	private let totalView: ArticleListView
 	private let detailView: DetailPageView<ArticleDetailView>
 	
 	init(articleViewModel: ArticleViewModel) {
 		self.viewModel = articleViewModel
-		self.totalView = ArticleTotalView(articleTotalViewModel: articleViewModel.totalViewModel)
+		self.totalView = ArticleListView(articleListViewModel: articleViewModel.totalViewModel)
 		self.detailView = DetailPageView(detailPageViewModel: articleViewModel.detailViewModel)
 	}
 	

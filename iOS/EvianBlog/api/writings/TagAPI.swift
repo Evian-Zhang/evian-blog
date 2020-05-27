@@ -20,7 +20,7 @@ extension BlogAPI {
 		self.fetch(url: Endpoint.Writings.Tag.getArticlesCountOfTag(name))
 	}
 	
-	func getArticlesOfTag(name: String, pageIndex: UInt, pageSize: UInt) -> AnyPublisher<[Article], BlogAPIError> {
+	func getArticlesOfTag(name: String, pageIndex: UInt, pageSize: UInt) -> AnyPublisher<[ArticleMeta], BlogAPIError> {
 		self.fetch(url: Endpoint.Writings.Tag.getArticlesOfTag(name, pageIndex, pageSize))
 	}
 }

@@ -1,5 +1,5 @@
 //
-//  ArticleTotalViewModel.swift
+//  ArticleListViewModel.swift
 //  EvianBlog
 //
 //  Created by Evian张 on 2020/5/20.
@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class ArticleTotalViewModel: ObservableObject {
+class ArticleListViewModel: ObservableObject {
 	@Published var articles: [ArticleMeta] = []
 	@Published var fetchStatus: FetchStatus = .success
 	
@@ -21,15 +21,18 @@ class ArticleTotalViewModel: ObservableObject {
 	
 	private static let PAGE_SIZE: UInt = 20
 	
-	private let blogAPI: BlogAPI
+	private let articleFetcher: (_ pageIndex: UInt, _ pageSize: UInt) -> AnyPublisher<[ArticleMeta], BlogAPIError>
+	// For article total list, accessory is `""`; for tags and series' article list, accessory is tag or series' name
+	let accessory: String
 	// used to store `AnyCancellable`, without keeping this reference alive, the network publisher will terminate immediately
 	private var disposables = Set<AnyCancellable>()
 	// page index of NEXT page index
 	private var pageIndex: UInt = 0
 	private var reachEnd = false
 	
-	init(blogAPI: BlogAPI) {
-		self.blogAPI = blogAPI
+	init(articleFetcher: @escaping (_ pageIndex: UInt, _ pageSize: UInt) -> AnyPublisher<[ArticleMeta], BlogAPIError>, accessory: String = "") {
+		self.articleFetcher = articleFetcher
+		self.accessory = accessory
 	}
 	
 	func fetchMoreArticles() {
@@ -37,7 +40,7 @@ class ArticleTotalViewModel: ObservableObject {
 		guard !self.reachEnd && self.fetchStatus != .fetching else { return }
 		
 		self.fetchStatus = .fetching
-		self.blogAPI.getArticleMetas(pageIndex: self.pageIndex, pageSize: ArticleTotalViewModel.PAGE_SIZE)
+		self.articleFetcher(self.pageIndex, ArticleListViewModel.PAGE_SIZE)
 			.receive(on: DispatchQueue.main)
 			.sink(receiveCompletion: { [weak self] completion in
 				guard let self = self else { return }
