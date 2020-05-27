@@ -14,7 +14,7 @@ import Combine
 class BlogAPI {
 	let session: Session
 	
-	// default `Session` uses `DispatchQueue(label: "org.alamofire.session.rootQueue")` as `rootQueue`
+	// Default `Session` uses `DispatchQueue(label: "org.alamofire.session.rootQueue")` as `rootQueue`
 	init(session: Session = .default) {
 		self.session = session
 	}
