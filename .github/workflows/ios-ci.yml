@@ -16,5 +16,5 @@ jobs:
         steps:
             - uses: actions/checkout@v2
             - name: Build
-              run: xcodebuild -scheme EvianBlog -configuration Release build
+              run: xcodebuild -scheme EvianBlog -configuration Release -allowProvisioningUpdates build
               working-directory: ${{ env.working-directory }}
