@@ -1,0 +1,38 @@
+/* 
+  Localizable.strings
+  EvianBlog
+
+  Created by Evian张 on 2020/5/28.
+  Copyright © 2020 Evian张. All rights reserved.
+*/
+
+// HomeView
+"Writings" = "创作";
+"Projects" = "编程";
+"Résumé" = "简介";
+
+// WritingsViewModel
+"Articles" = "文章";
+"Tags" = "标签";
+"Series" = "系列";
+
+// ArticleDetailView
+// Cannot localize this one, don't know reason
+"series[%lu]" = "系列[%lu]";
+"Published at %@" = "发表于%@";
+"Last revised at %@" = "最后修改于%@";
+"Loading..." = "加载中...";
+"Failed to request." = "加载失败";
+"Reload" = "重试";
+
+// TagTotalView
+// Cannot localize this one, don't know reason
+"%lu articles" = "共%lu篇文章";
+
+// ProjectsView
+"Languages: %@" = "语言：%@";
+"Frameworks: %@" = "框架：%@";
+
+// DetailPageView
+"Close this page" = "关闭本页";
+"No detail view" = "无详情页";

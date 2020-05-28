@@ -36,7 +36,7 @@ struct WritingsView: View {
 				.navigationBarItems(
 					leading: Picker("Writings", selection: self.$viewModel.selectedWritingsSegment) {
 						ForEach(WritingsSegment.allCases, id: \.self) { writingsSegment in
-							Text(String(describing: writingsSegment))
+							Text(writingsSegment.description)
 								.tag(writingsSegment)
 						}
 					}

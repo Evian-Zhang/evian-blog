@@ -7,14 +7,15 @@
 //
 
 import Foundation
+import SwiftUI
 import Combine
 
-enum WritingsSegment: CaseIterable, CustomStringConvertible {
+enum WritingsSegment: CaseIterable {
 	case article
 	case tag
 	case series
 	
-	var description: String {
+	var description: LocalizedStringKey {
 		get {
 			switch self {
 				case .article: return "Articles"
