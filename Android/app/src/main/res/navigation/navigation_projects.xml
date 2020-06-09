@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_projects"
+    app:startDestination="@id/projectsFragment">
+
+    <fragment
+        android:id="@+id/projectsFragment"
+        android:name="top.evian_zhang.evianblog.views.projects.ProjectsFragment"
+        android:label="fragment_projects"
+        tools:layout="@layout/fragment_projects" />
+</navigation>

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">EvianBlog</string>
+    <string name="bottom_navigation_view_writings">Writings</string>
+    <string name="bottom_navigation_view_projects">Projects</string>
+    <string name="bottom_navigation_view_resume">Résumé</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
