@@ -3,18 +3,30 @@
 buildscript {
     ext.kotlin_version = '1.3.72'
     repositories {
-//        google()
-//        jcenter()
         // see https://help.aliyun.com/document_detail/102512.html
         maven {
-            url 'https://maven.aliyun.com/repository/google/'
+            url 'https://maven.aliyun.com/repository/centeral/'
         }
         maven {
             url 'https://maven.aliyun.com/repository/jcenter/'
         }
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/google/'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/gradle-plugin/'
+        }
+        maven {
+            url 'https://mirrors.huaweicloud.com/repository/maven/'
+        }
+        google()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.0.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -24,15 +36,27 @@ buildscript {
 
 allprojects {
     repositories {
-//        google()
-//        jcenter()
         // see https://help.aliyun.com/document_detail/102512.html
         maven {
-            url 'https://maven.aliyun.com/repository/google/'
+            url 'https://maven.aliyun.com/repository/centeral/'
         }
         maven {
             url 'https://maven.aliyun.com/repository/jcenter/'
         }
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/google/'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/gradle-plugin/'
+        }
+        maven {
+            url 'https://mirrors.huaweicloud.com/repository/maven/'
+        }
+        google()
+        jcenter()
     }
 }
 
