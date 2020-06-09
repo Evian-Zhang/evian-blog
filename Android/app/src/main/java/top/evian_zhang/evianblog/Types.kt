@@ -104,7 +104,7 @@ data class Project(
         if (description != other.description) return false
         if (!language.contentEquals(other.language)) return false
         if (!frameworks.contentEquals(other.frameworks)) return false
-        if (url.toString() != other.toString()) return false
+        if (url != other) return false
 
         return true
     }
