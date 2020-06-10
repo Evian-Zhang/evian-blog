@@ -3,6 +3,9 @@
     <string name="bottom_navigation_view_writings">Writings</string>
     <string name="bottom_navigation_view_projects">Projects</string>
     <string name="bottom_navigation_view_resume">Résumé</string>
+    <string name="writings_tabs_article">Article</string>
+    <string name="writings_tabs_tag">Tag</string>
+    <string name="writings_tabs_series">Series</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

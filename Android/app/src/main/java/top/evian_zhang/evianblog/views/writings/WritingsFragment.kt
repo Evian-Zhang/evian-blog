@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import top.evian_zhang.evianblog.R
 
 class WritingsFragment : Fragment() {

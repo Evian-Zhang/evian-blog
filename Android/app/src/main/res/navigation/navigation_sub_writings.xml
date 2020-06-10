@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_sub_writings"
+    app:startDestination="@id/articleTotalFragment">
+
+    <fragment
+        android:id="@+id/articleTotalFragment"
+        android:name="top.evian_zhang.evianblog.views.writings.article.ArticleTotalFragment"
+        android:label="fragment_article_total"
+        tools:layout="@layout/fragment_article_total" />
+</navigation>
