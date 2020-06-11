@@ -13,6 +13,6 @@ suspend fun BlogAPI.getArticlesCountOfSeries(name: String): Int {
     return this.fetch(Endpoint.Writings.Series.getArticlesCountOfSeries(name))
 }
 
-suspend fun BlogAPI.getArticlesOfSeries(name: String, pageIndex: Int, pageSize: Int): Array<ArticleMeta> {
+suspend fun BlogAPI.getArticlesOfSeries(name: String, pageIndex: Int, pageSize: Int): List<ArticleMeta> {
     return this.fetch(Endpoint.Writings.Series.getArticlesOfSeries(name, pageIndex, pageSize))
 }

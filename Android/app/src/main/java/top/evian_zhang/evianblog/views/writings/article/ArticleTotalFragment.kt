@@ -5,24 +5,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 
 import top.evian_zhang.evianblog.R
 import top.evian_zhang.evianblog.ArticleMeta
-import top.evian_zhang.evianblog.api.BlogAPI
-import top.evian_zhang.evianblog.api.writings.getArticleMetas
+import top.evian_zhang.evianblog.utils.ArticleMetaAdapter
 
 class ArticleTotalFragment : Fragment() {
-    private var articles: MutableList<ArticleMeta> = mutableListOf()
-    private var nextPageIndex = 0
-    private val PAGE_SIZE = 10
-    private val blogAPI = BlogAPI()
-
+    private val adapter = ArticleMetaAdapter();
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
 
-    private fun fetchArticles() {
-        this.blogAPI.getArticleMetas(this.nextPageIndex, this.PAGE_SIZE)
+        val viewModel: ArticleTotalViewModel by viewModels()
+//        model.getFetchingStatus().observe(this, Observer { fetchingStatus ->
+//            when (fetchingStatus) {
+//                ArticleTotalViewModel.FetchingStatus.FETCHING -> {
+//
+//                }
+//                ArticleTotalViewModel.FetchingStatus.SUCCEEDED ->
+//                ArticleTotalViewModel.FetchingStatus.FAILED ->
+//            }
+//        })
+//        model.getArticles().observe(this, Observer { articles ->
+//
+//        })
+        viewModel.getArticles().observe(this, Observer { pagedArticleMetaList ->
+            this.adapter.submitList(pagedArticleMetaList)
+        })
     }
 
     override fun onCreateView(

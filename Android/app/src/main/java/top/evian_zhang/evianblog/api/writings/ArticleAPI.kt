@@ -9,7 +9,7 @@ suspend fun BlogAPI.getArticlesCount(): Int {
     return this.fetch(Endpoint.Writings.Article.getArticleCount)
 }
 
-suspend fun BlogAPI.getArticleMetas(pageIndex: Int, pageSize: Int): Array<ArticleMeta> {
+suspend fun BlogAPI.getArticleMetas(pageIndex: Int, pageSize: Int): List<ArticleMeta> {
     return this.fetch(Endpoint.Writings.Article.getArticleMetas(pageIndex, pageSize))
 }
 
