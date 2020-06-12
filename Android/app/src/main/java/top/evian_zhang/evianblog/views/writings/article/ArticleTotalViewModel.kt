@@ -3,11 +3,9 @@ package top.evian_zhang.evianblog.views.writings.article
 import androidx.lifecycle.*
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-import top.evian_zhang.evianblog.ArticleMeta
-import top.evian_zhang.evianblog.api.ArticleMetaDataSource
+import top.evian_zhang.evianblog.api.ArticleMeta
 import top.evian_zhang.evianblog.api.ArticleMetaDataSourceFactory
 import top.evian_zhang.evianblog.api.BlogAPI
 import top.evian_zhang.evianblog.api.writings.getArticleMetas
@@ -19,7 +17,7 @@ class ArticleTotalViewModel : ViewModel() {
         FAILED
     }
 
-    private val PAGE_SZIE = 10
+    private val PAGE_SZIE = 8
     private val articles: LiveData<PagedList<ArticleMeta>> = LivePagedListBuilder(
         ArticleMetaDataSourceFactory { pageIndex, pageSize ->
             runBlocking {
@@ -30,7 +28,7 @@ class ArticleTotalViewModel : ViewModel() {
             .setPageSize(this.PAGE_SZIE)
             .setEnablePlaceholders(false)
             .setPrefetchDistance(2)
-            .setInitialLoadSizeHint(PAGE_SZIE)
+            .setInitialLoadSizeHint(this.PAGE_SZIE)
             .build()
     )
         .setInitialLoadKey(0)

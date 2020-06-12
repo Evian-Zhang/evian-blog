@@ -3,11 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <TextView
         android:id="@+id/article_meta_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="start"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+    <TextView
+        android:id="@+id/article_meta_series"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+    <TextView
+        android:id="@+id/article_meta_last_revise_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/article_meta_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

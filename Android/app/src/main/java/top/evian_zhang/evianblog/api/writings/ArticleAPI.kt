@@ -1,7 +1,7 @@
 package top.evian_zhang.evianblog.api.writings
 
-import top.evian_zhang.evianblog.Article
-import top.evian_zhang.evianblog.ArticleMeta
+import top.evian_zhang.evianblog.api.Article
+import top.evian_zhang.evianblog.api.ArticleMeta
 import top.evian_zhang.evianblog.api.BlogAPI
 import top.evian_zhang.evianblog.api.Endpoint
 
