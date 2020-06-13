@@ -21,16 +21,13 @@ class ArticleListFragment : Fragment() {
 
     private val adapter = ArticleMetaAdapter()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val fetcher = this.args.fetcherType.getFetcher(this.args.key, BlogAPI())
 
         val viewModel: ArticleTotalViewModel by viewModels {
-            ArticleListViewModelFactory(
-                fetcher
-            )
+            ArticleListViewModelFactory(fetcher)
         }
         viewModel.getArticles().observe(this, Observer { pagedArticleMetaList ->
             this.adapter.submitList(pagedArticleMetaList)

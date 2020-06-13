@@ -18,5 +18,18 @@
             android:name="key"
             app:argType="string"
             android:defaultValue="" />
+        <action
+            android:id="@+id/action_articleListFragment_to_articleDetailsFragment"
+            app:destination="@id/articleDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/articleDetailsFragment"
+        android:name="top.evian_zhang.evianblog.views.writings.article.ArticleDetailsFragment"
+        android:label="fragment_article_details"
+        tools:layout="@layout/fragment_article_details" >
+        <argument
+            android:name="title"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>
