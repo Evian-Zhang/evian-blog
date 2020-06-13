@@ -1,10 +1,9 @@
-package top.evian_zhang.evianblog.utils
+package top.evian_zhang.evianblog.utils.articlelistview
 
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.core.view.marginRight
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,7 +45,10 @@ class ArticleMetaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             this.seriesView.visibility = View.GONE
         }
         this.lastReviseDateView.text = this.dateFormatter.format(Date(articleMeta.lastReviseDate * 1000))
-        this.tagsView.adapter = TagsAdapter(articleMeta.tags)
+        this.tagsView.adapter =
+            TagsAdapter(
+                articleMeta.tags
+            )
         this.tagsView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
     }
 }
@@ -68,7 +70,9 @@ class TagsAdapter(private val tags: List<String>) : RecyclerView.Adapter<TagsAda
         layoutParams.setMargins(5, 0, 5, 0)
         textView.layoutParams = layoutParams
         textView.setTextAppearance(R.style.TextAppearance_AppCompat_Subhead)
-        return ViewHolder(textView)
+        return ViewHolder(
+            textView
+        )
     }
 
     override fun getItemCount(): Int {

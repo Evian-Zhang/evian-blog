@@ -1,6 +1,5 @@
 package top.evian_zhang.evianblog.api
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.PositionalDataSource

@@ -1,6 +1,5 @@
-package top.evian_zhang.evianblog.utils
+package top.evian_zhang.evianblog.utils.articlelistview
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
@@ -21,7 +20,9 @@ class ArticleMetaAdapter : PagedListAdapter<ArticleMeta, ArticleMetaViewHolder>(
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleMetaViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_article_item, parent, false)
-        return ArticleMetaViewHolder(view)
+        return ArticleMetaViewHolder(
+            view
+        )
     }
 
     override fun onBindViewHolder(holder: ArticleMetaViewHolder, position: Int) {

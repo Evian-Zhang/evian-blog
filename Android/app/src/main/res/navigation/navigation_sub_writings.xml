@@ -3,11 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_sub_writings"
-    app:startDestination="@id/articleTotalFragment">
+    app:startDestination="@id/articleListFragment">
 
     <fragment
-        android:id="@+id/articleTotalFragment"
-        android:name="top.evian_zhang.evianblog.views.writings.article.ArticleTotalFragment"
+        android:id="@+id/articleListFragment"
+        android:name="top.evian_zhang.evianblog.utils.articlelistview.ArticleListFragment"
         android:label="fragment_article_total"
-        tools:layout="@layout/fragment_article_total" />
+        tools:layout="@layout/fragment_article_list" >
+        <argument
+            android:name="fetcherType"
+            app:argType="top.evian_zhang.evianblog.api.ArticleMetasFetcher"
+            android:defaultValue="ArticleTotal" />
+        <argument
+            android:name="key"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
 </navigation>
