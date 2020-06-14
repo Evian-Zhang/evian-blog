@@ -15,18 +15,25 @@ import androidx.recyclerview.widget.RecyclerView
 
 import top.evian_zhang.evianblog.R
 import top.evian_zhang.evianblog.api.BlogAPI
+import top.evian_zhang.evianblog.views.writings.WritingsViewModel
 
 class ArticleListFragment : Fragment() {
     private val args: ArticleListFragmentArgs by navArgs()
 
     private val onArticleTitlePressed = { title: String ->
+        val viewModel: WritingsViewModel by activityViewModels()
+        viewModel.toSubview(WritingsViewModel.WritingsSubview.Article)
         val navController = this.findNavController()
         navController.navigate(ArticleListFragmentDirections.actionArticleListFragmentToArticleDetailsFragment(title))
     }
     private val onTagNamePressed = { name: String ->
+        val viewModel: WritingsViewModel by activityViewModels()
+        viewModel.toSubview(WritingsViewModel.WritingsSubview.Tag)
 
     }
     private val onSeriesNamePressed = { name: String ->
+        val viewModel: WritingsViewModel by activityViewModels()
+        viewModel.toSubview(WritingsViewModel.WritingsSubview.Series)
 
     }
 
@@ -49,11 +56,30 @@ class ArticleListFragment : Fragment() {
 
         val fetcher = this.args.fetcherType.getFetcher(this.args.key, BlogAPI())
 
-        val viewModel: ArticleTotalViewModel by activityViewModels {
+        val viewModel: ArticleListViewModel by activityViewModels {
             ArticleListViewModelFactory(fetcher)
         }
         viewModel.getArticles().observe(this, Observer { pagedArticleMetaList ->
             this.adapter.submitList(pagedArticleMetaList)
+        })
+
+
+        val writingsViewModel: WritingsViewModel by activityViewModels()
+        writingsViewModel.getCurrentSubview().observe(this, Observer { subview ->
+            if (!writingsViewModel.programmatically && !subview.isCompatibleWithArticleFetcher(this.args.fetcherType)) {
+                val navController = this.findNavController()
+                when (subview) {
+                    WritingsViewModel.WritingsSubview.Article -> {
+                        navController.navigate(ArticleListFragmentDirections.actionArticleListFragmentSelf())
+                    }
+                    WritingsViewModel.WritingsSubview.Tag -> {
+                        navController.navigate(ArticleListFragmentDirections.actionArticleListFragmentToTagTotalFragment())
+                    }
+                    WritingsViewModel.WritingsSubview.Series -> {
+
+                    }
+                }
+            }
         })
     }
 

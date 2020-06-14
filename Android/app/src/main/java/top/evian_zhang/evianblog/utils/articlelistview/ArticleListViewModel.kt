@@ -7,7 +7,7 @@ import androidx.paging.PagedList
 import top.evian_zhang.evianblog.api.ArticleMeta
 import top.evian_zhang.evianblog.api.ArticleMetaDataSourceFactory
 
-class ArticleTotalViewModel(private val fetcher: (pageIndex: Int, pageSize: Int) -> List<ArticleMeta>) : ViewModel() {
+class ArticleListViewModel(private val fetcher: (pageIndex: Int, pageSize: Int) -> List<ArticleMeta>) : ViewModel() {
     private val PAGE_SZIE = 8
     private val articles: LiveData<PagedList<ArticleMeta>> = LivePagedListBuilder(
         ArticleMetaDataSourceFactory(this.fetcher),
@@ -28,6 +28,6 @@ class ArticleTotalViewModel(private val fetcher: (pageIndex: Int, pageSize: Int)
 
 class ArticleListViewModelFactory(private val fetcher: (pageIndex: Int, pageSize: Int) -> List<ArticleMeta>) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ArticleTotalViewModel(this.fetcher) as T
+        return ArticleListViewModel(this.fetcher) as T
     }
 }

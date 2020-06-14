@@ -5,7 +5,7 @@ import top.evian_zhang.evianblog.api.Series
 import top.evian_zhang.evianblog.api.BlogAPI
 import top.evian_zhang.evianblog.api.Endpoint
 
-suspend fun BlogAPI.getSeries(): Array<Series> {
+suspend fun BlogAPI.getSeries(): List<Series> {
     return this.fetch(Endpoint.Writings.Series.getSeries)
 }
 

@@ -34,7 +34,6 @@ class ArticleDetailFragment(private val title: String, private val viewModel: Ar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchArticle()
 
         val seriesView: TextView = view.findViewById(R.id.article_detail_series)
         val titleView: TextView = view.findViewById(R.id.article_detail_title)
@@ -67,6 +66,11 @@ class ArticleDetailFragment(private val title: String, private val viewModel: Ar
             }
         })
 
+        val failedText: TextView = view.findViewById(R.id.article_detail_fail_text)
+        failedText.setOnClickListener {
+            viewModel.fetchArticle()
+        }
+
         val onTagNamePressed = { name: String ->
 
         }
@@ -97,5 +101,7 @@ class ArticleDetailFragment(private val title: String, private val viewModel: Ar
                 bodyView.text = article.body
             }
         })
+
+        viewModel.fetchArticle()
     }
 }

@@ -5,7 +5,7 @@ import top.evian_zhang.evianblog.api.Tag
 import top.evian_zhang.evianblog.api.BlogAPI
 import top.evian_zhang.evianblog.api.Endpoint
 
-suspend fun BlogAPI.getTags(): Array<Tag> {
+suspend fun BlogAPI.getTags(): List<Tag> {
     return this.fetch(Endpoint.Writings.Tag.getTags)
 }
 

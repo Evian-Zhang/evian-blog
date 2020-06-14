@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import top.evian_zhang.evianblog.R
+import top.evian_zhang.evianblog.views.writings.WritingsViewModel
 
 class ArticleDetailsFragment : Fragment() {
     private var pager: ViewPager2? = null
@@ -47,6 +50,20 @@ class ArticleDetailsFragment : Fragment() {
         floatingButton.setOnClickListener {
             navController.navigate(ArticleDetailsFragmentDirections.actionArticleDetailsFragmentToArticleListFragment())
         }
+
+        val writingsViewModel: WritingsViewModel by activityViewModels()
+        writingsViewModel.getCurrentSubview().observe(viewLifecycleOwner, Observer { subview ->
+            if (!writingsViewModel.programmatically) {
+                val navController = this.findNavController()
+                when (subview) {
+                    WritingsViewModel.WritingsSubview.Article -> { }
+                    WritingsViewModel.WritingsSubview.Tag -> {
+                        navController.navigate(ArticleDetailsFragmentDirections.actionArticleDetailsFragmentToTagTotalFragment())
+                    }
+                    WritingsViewModel.WritingsSubview.Series -> TODO()
+                }
+            }
+        })
     }
 
     private fun toArticleDetailPage(title: String) {

@@ -20,7 +20,17 @@
             android:defaultValue="" />
         <action
             android:id="@+id/action_articleListFragment_to_articleDetailsFragment"
-            app:destination="@id/articleDetailsFragment" />
+            app:destination="@id/articleDetailsFragment"
+            app:popUpTo="@id/articleDetailsFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_articleListFragment_self"
+            app:destination="@id/articleListFragment"/>
+        <action
+            android:id="@+id/action_articleListFragment_to_tagTotalFragment"
+            app:destination="@id/tagTotalFragment"
+            app:popUpTo="@id/tagTotalFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/articleDetailsFragment"
@@ -36,5 +46,19 @@
             app:destination="@id/articleListFragment"
             app:popUpTo="@id/articleListFragment"
             app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_articleDetailsFragment_to_tagTotalFragment"
+            app:destination="@id/tagTotalFragment"
+            app:popUpTo="@id/tagTotalFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/tagTotalFragment"
+        android:name="top.evian_zhang.evianblog.views.writings.tag.TagTotalFragment"
+        android:label="fragment_tag_total"
+        tools:layout="@layout/fragment_tag_total" >
+        <action
+            android:id="@+id/action_tagTotalFragment_to_articleListFragment"
+            app:destination="@id/articleListFragment" />
     </fragment>
 </navigation>

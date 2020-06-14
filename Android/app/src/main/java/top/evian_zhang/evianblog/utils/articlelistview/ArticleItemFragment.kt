@@ -11,7 +11,7 @@ import top.evian_zhang.evianblog.api.ArticleMeta
 import top.evian_zhang.evianblog.R
 import top.evian_zhang.evianblog.utils.TagsAdapter
 
-class ArticleMetaViewHolder(
+class ArticleItemFragment(
     itemView: View,
     private val onArticleTitlePressed: (title: String) -> Unit,
     private val onTagNamePressed: (name: String) -> Unit,

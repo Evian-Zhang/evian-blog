@@ -12,7 +12,7 @@ class ArticleMetaAdapter(
     private val onArticleTitlePressed: (title: String) -> Unit,
     private val onTagNamePressed: (name: String) -> Unit,
     private val onSeriesNamePressed: (name: String) -> Unit
-) : PagedListAdapter<ArticleMeta, ArticleMetaViewHolder>(
+) : PagedListAdapter<ArticleMeta, ArticleItemFragment>(
     object: DiffUtil.ItemCallback<ArticleMeta>() {
         override fun areItemsTheSame(oldItem: ArticleMeta, newItem: ArticleMeta): Boolean {
             return oldItem.title == newItem.title
@@ -23,9 +23,9 @@ class ArticleMetaAdapter(
         }
     }
 ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleMetaViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleItemFragment {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_article_item, parent, false)
-        return ArticleMetaViewHolder(
+        return ArticleItemFragment(
             view,
             this.onArticleTitlePressed,
             this.onTagNamePressed,
@@ -33,7 +33,7 @@ class ArticleMetaAdapter(
         )
     }
 
-    override fun onBindViewHolder(holder: ArticleMetaViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ArticleItemFragment, position: Int) {
         val articleMeta = getItem(position)
         if (articleMeta != null) {
             holder.bindTo(articleMeta)
