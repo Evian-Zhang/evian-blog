@@ -8,20 +8,16 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import top.evian_zhang.evianblog.R
-import top.evian_zhang.evianblog.utils.TagsAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ArticleDetailFragment(private val title: String) : Fragment() {
-    private val viewModel: ArticleDetailViewModel by viewModels {
-        ArticleDetailViewModelFactory(title)
-    }
+import top.evian_zhang.evianblog.R
+import top.evian_zhang.evianblog.utils.TagsAdapter
 
+class ArticleDetailFragment(private val title: String, private val viewModel: ArticleDetailViewModel) : Fragment() {
     private val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +34,7 @@ class ArticleDetailFragment(private val title: String) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        this.viewModel.fetchArticle()
+        viewModel.fetchArticle()
 
         val seriesView: TextView = view.findViewById(R.id.article_detail_series)
         val titleView: TextView = view.findViewById(R.id.article_detail_title)
@@ -72,6 +67,10 @@ class ArticleDetailFragment(private val title: String) : Fragment() {
             }
         })
 
+        val onTagNamePressed = { name: String ->
+
+        }
+
         viewModel.getArticle().observe(viewLifecycleOwner, Observer { article ->
             article?.let { article ->
                 var hasSeriesView = false
@@ -93,7 +92,7 @@ class ArticleDetailFragment(private val title: String) : Fragment() {
                 titleView.text = article.title
                 publishDateView.text = dateFormatter.format(Date(article.publishDate * 1000))
                 lastReviseDateView.text = dateFormatter.format(Date(article.lastReviseDate * 1000))
-                tagsView.adapter = TagsAdapter(article.tags)
+                tagsView.adapter = TagsAdapter(article.tags, onTagNamePressed)
                 tagsView.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
                 bodyView.text = article.body
             }

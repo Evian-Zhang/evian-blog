@@ -5,17 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 import top.evian_zhang.evianblog.R
-import top.evian_zhang.evianblog.api.Article
 
 class ArticleDetailsFragment : Fragment() {
     private var pager: ViewPager2? = null
 
-    private val viewModel: ArticleDetailsViewModel by viewModels()
+    private val viewModel: ArticleDetailsViewModel by activityViewModels()
     private val args: ArticleDetailsFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +41,15 @@ class ArticleDetailsFragment : Fragment() {
         this.args.title?.let { title ->
             toArticleDetailPage(title)
         }
+
+        val navController = view.findNavController()
+        val floatingButton: FloatingActionButton = view.findViewById(R.id.writings_floating_button)
+        floatingButton.setOnClickListener {
+            navController.navigate(ArticleDetailsFragmentDirections.actionArticleDetailsFragmentToArticleListFragment())
+        }
     }
 
-    fun toArticleDetailPage(title: String) {
+    private fun toArticleDetailPage(title: String) {
         val targetIndex = this.viewModel.detailViewModels.indexOfFirst { detailViewModel ->
             detailViewModel.title == title
         }
@@ -60,6 +68,6 @@ class ArticleDetailsAdapter(fragment: Fragment, private val articleDetailViewMod
     }
 
     override fun createFragment(position: Int): Fragment {
-        return ArticleDetailFragment(this.articleDetailViewModels[position].title)
+        return ArticleDetailFragment(this.articleDetailViewModels[position].title, this.articleDetailViewModels[position])
     }
 }

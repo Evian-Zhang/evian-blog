@@ -8,13 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 
 import top.evian_zhang.evianblog.R
 
-class TagsAdapter(private val tags: List<String>) : RecyclerView.Adapter<TagsAdapter.ViewHolder>() {
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class TagsAdapter(
+    private val tags: List<String>,
+    private val onTagNamePressed: (name: String) -> Unit
+) : RecyclerView.Adapter<TagsAdapter.ViewHolder>() {
+    class ViewHolder(
+        itemView: View,
+        private val onTagNamePressed: (name: String) -> Unit
+    ) : RecyclerView.ViewHolder(itemView) {
         fun onBind(tag: String) {
             val textView = this.itemView as TextView
             textView.text = tag
             textView.setOnClickListener {
-
+                onTagNamePressed(tag)
             }
         }
     }
@@ -26,7 +32,8 @@ class TagsAdapter(private val tags: List<String>) : RecyclerView.Adapter<TagsAda
         textView.layoutParams = layoutParams
         textView.setTextAppearance(R.style.TextAppearance_AppCompat_Subhead)
         return ViewHolder(
-            textView
+            textView,
+            onTagNamePressed
         )
     }
 

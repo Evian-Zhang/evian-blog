@@ -2,6 +2,7 @@ package top.evian_zhang.evianblog.views.writings.article
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+
 import top.evian_zhang.evianblog.api.Article
 import top.evian_zhang.evianblog.api.BlogAPI
 import top.evian_zhang.evianblog.api.writings.getArticle
@@ -40,11 +41,4 @@ class ArticleDetailViewModel(val title: String) : ViewModel() {
             }
         }
     }
-}
-
-class ArticleDetailViewModelFactory(private val title: String) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ArticleDetailViewModel(this.title) as T
-    }
-
 }

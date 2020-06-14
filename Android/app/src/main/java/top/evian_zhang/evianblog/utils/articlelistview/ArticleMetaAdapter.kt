@@ -4,10 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+
 import top.evian_zhang.evianblog.api.ArticleMeta
 import top.evian_zhang.evianblog.R
 
-class ArticleMetaAdapter : PagedListAdapter<ArticleMeta, ArticleMetaViewHolder>(
+class ArticleMetaAdapter(
+    private val onArticleTitlePressed: (title: String) -> Unit,
+    private val onTagNamePressed: (name: String) -> Unit,
+    private val onSeriesNamePressed: (name: String) -> Unit
+) : PagedListAdapter<ArticleMeta, ArticleMetaViewHolder>(
     object: DiffUtil.ItemCallback<ArticleMeta>() {
         override fun areItemsTheSame(oldItem: ArticleMeta, newItem: ArticleMeta): Boolean {
             return oldItem.title == newItem.title
@@ -21,7 +26,10 @@ class ArticleMetaAdapter : PagedListAdapter<ArticleMeta, ArticleMetaViewHolder>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleMetaViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_article_item, parent, false)
         return ArticleMetaViewHolder(
-            view
+            view,
+            this.onArticleTitlePressed,
+            this.onTagNamePressed,
+            this.onSeriesNamePressed
         )
     }
 

@@ -4,13 +4,16 @@
     <item
         android:id="@id/navigation_writings"
         android:enabled="true"
+        android:icon="@drawable/ic_baseline_brush_24"
         android:title="@string/bottom_navigation_view_writings"/>
     <item
         android:id="@id/navigation_projects"
         android:enabled="true"
+        android:icon="@drawable/ic_baseline_keyboard_24"
         android:title="@string/bottom_navigation_view_projects"/>
     <item
         android:id="@id/navigation_resume"
         android:enabled="true"
+        android:icon="@drawable/ic_baseline_person_24"
         android:title="@string/bottom_navigation_view_resume"/>
 </menu>

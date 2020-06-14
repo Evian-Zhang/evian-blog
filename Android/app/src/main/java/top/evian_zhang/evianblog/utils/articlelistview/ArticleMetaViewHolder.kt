@@ -1,20 +1,22 @@
 package top.evian_zhang.evianblog.utils.articlelistview
 
 import android.view.View
-import android.view.ViewGroup
-import android.widget.RelativeLayout
 import android.widget.TextView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.*
 
 import top.evian_zhang.evianblog.api.ArticleMeta
 import top.evian_zhang.evianblog.R
 import top.evian_zhang.evianblog.utils.TagsAdapter
-import java.text.SimpleDateFormat
-import java.util.*
 
-class ArticleMetaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ArticleMetaViewHolder(
+    itemView: View,
+    private val onArticleTitlePressed: (title: String) -> Unit,
+    private val onTagNamePressed: (name: String) -> Unit,
+    private val onSeriesNamePressed: (name: String) -> Unit
+) : RecyclerView.ViewHolder(itemView) {
     private var articleMeta: ArticleMeta? = null
 
     private val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -25,12 +27,11 @@ class ArticleMetaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     private val tagsView: RecyclerView = itemView.findViewById(R.id.article_meta_tags)
 
     fun bindTo(articleMeta: ArticleMeta) {
-        val navController = itemView.findNavController()
 
         this.articleMeta = articleMeta
         this.titleView.text = articleMeta.title
         this.titleView.setOnClickListener {
-            navController.navigate(ArticleListFragmentDirections.actionArticleListFragmentToArticleDetailsFragment(articleMeta.title))
+            onArticleTitlePressed(articleMeta.title)
         }
         var hasSeriesView = false
         articleMeta.series?.let { series ->
@@ -38,7 +39,7 @@ class ArticleMetaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
                 hasSeriesView = true
                 this.seriesView.text = itemView.context.getString(R.string.series_text, series, seriesIndex)
                 this.seriesView.setOnClickListener {
-
+                    onSeriesNamePressed(series)
                 }
             }
         }
@@ -50,7 +51,8 @@ class ArticleMetaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         this.lastReviseDateView.text = this.dateFormatter.format(Date(articleMeta.lastReviseDate * 1000))
         this.tagsView.adapter =
             TagsAdapter(
-                articleMeta.tags
+                articleMeta.tags,
+                onTagNamePressed
             )
         this.tagsView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
     }

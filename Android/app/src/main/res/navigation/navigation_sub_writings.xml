@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/articleListFragment"
         android:name="top.evian_zhang.evianblog.utils.articlelistview.ArticleListFragment"
-        android:label="fragment_article_total"
+        android:label="fragment_article_list"
         tools:layout="@layout/fragment_article_list" >
         <argument
             android:name="fetcherType"
@@ -31,5 +31,10 @@
             android:name="title"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_articleDetailsFragment_to_articleListFragment"
+            app:destination="@id/articleListFragment"
+            app:popUpTo="@id/articleListFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
