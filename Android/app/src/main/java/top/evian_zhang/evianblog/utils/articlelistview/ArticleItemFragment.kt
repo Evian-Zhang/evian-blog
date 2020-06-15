@@ -47,7 +47,7 @@ class ArticleItemFragment(
         } else {
             this.seriesView.visibility = View.GONE
         }
-        this.lastReviseDateView.text = this.dateFormatter.format(Date(articleMeta.lastReviseDate * 1000))
+        this.lastReviseDateView.text = itemView.context.getString(R.string.last_revise_date_text, this.dateFormatter.format(Date(articleMeta.lastReviseDate * 1000)))
         this.tagsView.adapter = TagsAdapter(articleMeta.tags, onTagNamePressed)
         this.tagsView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
     }

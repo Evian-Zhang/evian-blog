@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/articleListFragment"
         android:name="top.evian_zhang.evianblog.utils.articlelistview.ArticleListFragment"
-        android:label="fragment_article_list"
+        android:label="@string/writings_tabs_article"
         tools:layout="@layout/fragment_article_list" >
         <argument
             android:name="fetcherType"
@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/articleDetailsFragment"
         android:name="top.evian_zhang.evianblog.views.writings.article.ArticleDetailsFragment"
-        android:label="fragment_article_details"
+        android:label="@string/writings_tabs_article"
         tools:layout="@layout/fragment_article_details" >
         <argument
             android:name="title"
@@ -82,7 +82,7 @@
     <fragment
         android:id="@+id/tagTotalFragment"
         android:name="top.evian_zhang.evianblog.views.writings.tag.TagTotalFragment"
-        android:label="fragment_tag_total"
+        android:label="@string/writings_tabs_tag"
         tools:layout="@layout/fragment_tag_total" >
         <action
             android:id="@+id/action_tagTotalFragment_to_articleListFragment"
@@ -103,7 +103,7 @@
     <fragment
         android:id="@+id/tagDetailsFragment"
         android:name="top.evian_zhang.evianblog.views.writings.tag.TagDetailsFragment"
-        android:label="fragment_tag_details"
+        android:label="@string/writings_tabs_tag"
         tools:layout="@layout/fragment_tag_details" >
         <argument
             android:name="name"
@@ -138,7 +138,7 @@
     <fragment
         android:id="@+id/seriesTotalFragment"
         android:name="top.evian_zhang.evianblog.views.writings.series.SeriesTotalFragment"
-        android:label="fragment_series_total"
+        android:label="@string/writings_tabs_series"
         tools:layout="@layout/fragment_series_total" >
         <action
             android:id="@+id/action_seriesTotalFragment_to_tagTotalFragment"
@@ -159,7 +159,7 @@
     <fragment
         android:id="@+id/seriesDetailsFragment"
         android:name="top.evian_zhang.evianblog.views.writings.series.SeriesDetailsFragment"
-        android:label="fragment_series_details"
+        android:label="@string/writings_tabs_series"
         tools:layout="@layout/fragment_series_details" >
         <argument
             android:name="name"

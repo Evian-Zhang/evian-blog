@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/writingsFragment"
         android:name="top.evian_zhang.evianblog.views.writings.WritingsFragment"
-        android:label="fragment_writings"
+        android:label="@string/bottom_navigation_view_writings"
         tools:layout="@layout/fragment_writings" />
 </navigation>

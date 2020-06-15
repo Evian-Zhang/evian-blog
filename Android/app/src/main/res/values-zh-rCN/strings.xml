@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EvianBlog</string>
+    <string name="bottom_navigation_view_writings">创作</string>
+    <string name="bottom_navigation_view_projects">编程</string>
+    <string name="bottom_navigation_view_resume">简介</string>
+    <string name="writings_tabs_article">文章</string>
+    <string name="writings_tabs_tag">标签</string>
+    <string name="writings_tabs_series">系列</string>
+    <string name="series_text">%1$s 系列[%2$d]</string>
+    <string name="fetch_fail_text">请求失败。轻触以重试</string>
+    <string name="last_revise_date_text">最后修改于: %1$s</string>
+    <string name="article_count_text">共%1$d篇文章</string>
+    <string name="project_languages_text">语言: %1$s</string>
+    <string name="project_frameworks_text">框架: %1$s</string>
+</resources>

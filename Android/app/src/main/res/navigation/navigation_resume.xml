@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/resumeFragment"
         android:name="top.evian_zhang.evianblog.views.resume.ResumeFragment"
-        android:label="fragment_resume"
+        android:label="@string/bottom_navigation_view_resume"
         tools:layout="@layout/fragment_resume" />
 </navigation>

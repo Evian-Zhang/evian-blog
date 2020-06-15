@@ -12,6 +12,4 @@
     <string name="article_count_text">Total articles: %1$d</string>
     <string name="project_languages_text">Languages: %1$s</string>
     <string name="project_frameworks_text">Frameworks: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
