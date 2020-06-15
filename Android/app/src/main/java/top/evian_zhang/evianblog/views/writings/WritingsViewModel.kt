@@ -3,7 +3,6 @@ package top.evian_zhang.evianblog.views.writings
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import top.evian_zhang.evianblog.api.ArticleMetasFetcher
 
 class WritingsViewModel : ViewModel() {
     enum class WritingsSubview {
@@ -12,19 +11,23 @@ class WritingsViewModel : ViewModel() {
         Series
     }
 
-    private val currentSubview: MutableLiveData<WritingsSubview> = MutableLiveData(WritingsSubview.Article)
-    var programmatically = false
+    data class SubviewState(
+        val subview: WritingsSubview,
+        // To show the writings subview tab is selected by user, or by changing selection programmatically
+        val programmatically: Boolean
+    )
 
-    fun getCurrentSubview(): LiveData<WritingsSubview> {
+    private val currentSubview: MutableLiveData<SubviewState> = MutableLiveData(SubviewState(WritingsSubview.Article, false))
+
+    fun getCurrentSubview(): LiveData<SubviewState> {
         return this.currentSubview
     }
 
-    fun setCurrentSubview(subview: WritingsSubview) {
-        this.currentSubview.value = subview
+    fun toSubviewProgrammatically(subview: WritingsSubview) {
+        this.currentSubview.value = SubviewState(subview, true)
     }
 
-    fun toSubview(subview: WritingsSubview) {
-        this.programmatically = true
-        this.currentSubview.value = subview
+    fun toSubviewManually(subview: WritingsSubview) {
+        this.currentSubview.value = SubviewState(subview, false)
     }
 }

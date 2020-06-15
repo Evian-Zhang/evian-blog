@@ -51,10 +51,10 @@ class ArticleDetailsFragment : Fragment() {
         }
 
         val writingsViewModel: WritingsViewModel by activityViewModels()
-        writingsViewModel.getCurrentSubview().observe(viewLifecycleOwner, Observer { subview ->
-            if (!writingsViewModel.programmatically) {
+        writingsViewModel.getCurrentSubview().observe(viewLifecycleOwner, Observer { subviewState ->
+            if (!subviewState.programmatically) {
                 val navController = this.findNavController()
-                when (subview) {
+                when (subviewState.subview) {
                     WritingsViewModel.WritingsSubview.Article -> { }
                     WritingsViewModel.WritingsSubview.Tag -> {
                         navController.navigate(ArticleDetailsFragmentDirections.actionArticleDetailsFragmentToTagTotalFragment())

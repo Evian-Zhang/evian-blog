@@ -25,14 +25,18 @@ class WritingsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_writings, container, false)
     }
 
+    // used for TabLayout's onTabSelected method to determine
+    private var isTabSelectedManually = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel: WritingsViewModel by activityViewModels()
         val writingsTabs: TabLayout = view.findViewById(R.id.writings_tabs)
-        viewModel.getCurrentSubview().observe(viewLifecycleOwner, Observer { subview ->
-            if (viewModel.programmatically) {
-                when (subview) {
+        viewModel.getCurrentSubview().observe(viewLifecycleOwner, Observer { subviewState ->
+            if (subviewState.programmatically) {
+                this.isTabSelectedManually = false
+                when (subviewState.subview) {
                     WritingsViewModel.WritingsSubview.Article -> writingsTabs.selectTab(
                         writingsTabs.getTabAt(0)
                     )
@@ -43,24 +47,24 @@ class WritingsFragment : Fragment() {
                         writingsTabs.getTabAt(2)
                     )
                 }
-                viewModel.programmatically = false
             }
         })
         writingsTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (!viewModel.programmatically) {
+                if (this@WritingsFragment.isTabSelectedManually) {
                     when (tab?.position ?: 0) {
                         0 -> {
-                            viewModel.setCurrentSubview(WritingsViewModel.WritingsSubview.Article)
+                            viewModel.toSubviewManually(WritingsViewModel.WritingsSubview.Article)
                         }
                         1 -> {
-                            viewModel.setCurrentSubview(WritingsViewModel.WritingsSubview.Tag)
+                            viewModel.toSubviewManually(WritingsViewModel.WritingsSubview.Tag)
                         }
                         2 -> {
-                            viewModel.setCurrentSubview(WritingsViewModel.WritingsSubview.Series)
+                            viewModel.toSubviewManually(WritingsViewModel.WritingsSubview.Series)
                         }
                     }
                 }
+                this@WritingsFragment.isTabSelectedManually = true
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {

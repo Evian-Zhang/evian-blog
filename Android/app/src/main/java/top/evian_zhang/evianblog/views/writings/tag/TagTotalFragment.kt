@@ -9,10 +9,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import top.evian_zhang.evianblog.R
 import top.evian_zhang.evianblog.api.Tag
+import top.evian_zhang.evianblog.views.writings.WritingsViewModel
 
 class TagTotalFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +66,22 @@ class TagTotalFragment : Fragment() {
         failureText.setOnClickListener {
             viewModel.fetchTags()
         }
+
+        val writingsViewModel: WritingsViewModel by activityViewModels()
+        writingsViewModel.getCurrentSubview().observe(viewLifecycleOwner, Observer { subviewState ->
+            if (!subviewState.programmatically) {
+                val navController = this.findNavController()
+                when (subviewState.subview) {
+                    WritingsViewModel.WritingsSubview.Article -> {
+                        navController.navigate(TagTotalFragmentDirections.actionTagTotalFragmentToArticleListFragment())
+                    }
+                    WritingsViewModel.WritingsSubview.Tag -> { }
+                    WritingsViewModel.WritingsSubview.Series -> {
+                        navController.navigate(TagTotalFragmentDirections.actionTagTotalFragmentToSeriesTotalFragment())
+                    }
+                }
+            }
+        })
 
         viewModel.fetchTags()
     }
