@@ -10,6 +10,8 @@
     <string name="fetch_fail_text">Fetch failed. Tap to retry.</string>
     <string name="last_revise_date_text">Last revise date: %1$s</string>
     <string name="article_count_text">Total articles: %1$d</string>
+    <string name="project_languages_text">Languages: %1$s</string>
+    <string name="project_frameworks_text">Frameworks: %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

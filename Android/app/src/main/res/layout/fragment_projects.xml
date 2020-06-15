@@ -5,10 +5,32 @@
     android:layout_height="match_parent"
     tools:context=".views.projects.ProjectsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/project_fetching"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Projects" />
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="Splash" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/project_failed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/project_fail_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fetch_fail_text"
+            />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/project_succeeded_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
