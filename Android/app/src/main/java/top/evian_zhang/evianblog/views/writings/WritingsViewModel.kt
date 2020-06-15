@@ -9,15 +9,7 @@ class WritingsViewModel : ViewModel() {
     enum class WritingsSubview {
         Article,
         Tag,
-        Series;
-
-        fun isCompatibleWithArticleFetcher(articleFetcher: ArticleMetasFetcher): Boolean {
-            return when (this) {
-                Article -> articleFetcher == ArticleMetasFetcher.ArticleTotal
-                Tag -> articleFetcher == ArticleMetasFetcher.TagsDetail
-                Series -> articleFetcher == ArticleMetasFetcher.SeriesDetail
-            }
-        }
+        Series
     }
 
     private val currentSubview: MutableLiveData<WritingsSubview> = MutableLiveData(WritingsSubview.Article)

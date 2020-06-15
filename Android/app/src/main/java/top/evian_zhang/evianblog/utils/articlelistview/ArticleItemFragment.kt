@@ -27,7 +27,6 @@ class ArticleItemFragment(
     private val tagsView: RecyclerView = itemView.findViewById(R.id.article_meta_tags)
 
     fun bindTo(articleMeta: ArticleMeta) {
-
         this.articleMeta = articleMeta
         this.titleView.text = articleMeta.title
         this.titleView.setOnClickListener {
@@ -49,11 +48,7 @@ class ArticleItemFragment(
             this.seriesView.visibility = View.GONE
         }
         this.lastReviseDateView.text = this.dateFormatter.format(Date(articleMeta.lastReviseDate * 1000))
-        this.tagsView.adapter =
-            TagsAdapter(
-                articleMeta.tags,
-                onTagNamePressed
-            )
+        this.tagsView.adapter = TagsAdapter(articleMeta.tags, onTagNamePressed)
         this.tagsView.layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
     }
 }

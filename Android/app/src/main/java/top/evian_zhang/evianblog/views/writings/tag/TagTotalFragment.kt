@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import top.evian_zhang.evianblog.R
 import top.evian_zhang.evianblog.api.Tag
@@ -32,11 +33,12 @@ class TagTotalFragment : Fragment() {
         val fetchingView: LinearLayout = view.findViewById(R.id.tag_total_fetching)
         val failureView: LinearLayout = view.findViewById(R.id.tag_total_failed)
         val tagsListView: RecyclerView = view.findViewById(R.id.tag_total_succeeded_list)
+        tagsListView.layoutManager = LinearLayoutManager(context)
 
         val viewModel: TagTotalViewModel by activityViewModels()
 
         viewModel.getTags().observe(viewLifecycleOwner, Observer { tags ->
-
+            tagsListView.adapter = TagListAdapter(tags)
         })
         viewModel.getFetchStatus().observe(viewLifecycleOwner, Observer { fetchStatus ->
             when (fetchStatus) {
@@ -69,7 +71,7 @@ class TagTotalFragment : Fragment() {
 
 class TagListAdapter(private val tags: List<Tag>) : RecyclerView.Adapter<TagItemFragment>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagItemFragment {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_article_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.fragment_tag_item, parent, false)
         return TagItemFragment(view)
     }
 

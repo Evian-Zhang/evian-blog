@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
@@ -72,7 +73,8 @@ class ArticleDetailFragment(private val title: String, private val viewModel: Ar
         }
 
         val onTagNamePressed = { name: String ->
-
+            val navController = view.findNavController()
+            navController.navigate(ArticleDetailsFragmentDirections.actionArticleDetailsFragmentToTagDetailsFragment(name))
         }
 
         viewModel.getArticle().observe(viewLifecycleOwner, Observer { article ->

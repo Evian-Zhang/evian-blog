@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.writings.article.ArticleDetailsFragment">
+    tools:context=".views.writings.tag.TagDetailsFragment">
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/article_details_view_pager"
+        android:id="@+id/tag_details_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/writings_article_floating_button"
+        android:id="@+id/writings_tag_floating_button"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:src="@drawable/ic_baseline_format_list_bulleted_24"

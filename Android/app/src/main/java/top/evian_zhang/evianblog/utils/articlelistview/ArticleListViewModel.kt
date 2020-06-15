@@ -6,9 +6,17 @@ import androidx.paging.PagedList
 
 import top.evian_zhang.evianblog.api.ArticleMeta
 import top.evian_zhang.evianblog.api.ArticleMetaDataSourceFactory
+import top.evian_zhang.evianblog.api.ArticleMetasFetcher
+import top.evian_zhang.evianblog.api.BlogAPI
 
-class ArticleListViewModel(private val fetcher: (pageIndex: Int, pageSize: Int) -> List<ArticleMeta>) : ViewModel() {
+class ArticleListViewModel(
+    val fetcherType: ArticleMetasFetcher,
+    val key: String,
+    private val blogAPI: BlogAPI
+) : ViewModel() {
     private val PAGE_SZIE = 8
+    private val fetcher = this.fetcherType.getFetcher(this.key, this.blogAPI)
+    // BUG: if the fetched articles is fewer than initial load size, then unexpected behavior will show
     private val articles: LiveData<PagedList<ArticleMeta>> = LivePagedListBuilder(
         ArticleMetaDataSourceFactory(this.fetcher),
         PagedList.Config.Builder()
@@ -26,8 +34,12 @@ class ArticleListViewModel(private val fetcher: (pageIndex: Int, pageSize: Int) 
     }
 }
 
-class ArticleListViewModelFactory(private val fetcher: (pageIndex: Int, pageSize: Int) -> List<ArticleMeta>) : ViewModelProvider.Factory {
+class ArticleListViewModelFactory(
+    val fetcherType: ArticleMetasFetcher,
+    private val key: String,
+    private val blogAPI: BlogAPI
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ArticleListViewModel(this.fetcher) as T
+        return ArticleListViewModel(this.fetcherType, this.key, this.blogAPI) as T
     }
 }

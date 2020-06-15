@@ -15,11 +15,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import top.evian_zhang.evianblog.R
+import top.evian_zhang.evianblog.api.BlogAPI
 import top.evian_zhang.evianblog.views.writings.WritingsViewModel
 
 class ArticleDetailsFragment : Fragment() {
-    private var pager: ViewPager2? = null
-
     private val viewModel: ArticleDetailsViewModel by activityViewModels()
     private val args: ArticleDetailsFragmentArgs by navArgs()
 
@@ -38,15 +37,15 @@ class ArticleDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        this.pager = view.findViewById(R.id.article_details_view_pager)
-        this.pager?.adapter = ArticleDetailsAdapter(this, viewModel.detailViewModels)
+        val pager: ViewPager2 = view.findViewById(R.id.article_details_view_pager)
+        pager.adapter = ArticleDetailsAdapter(this, viewModel.detailViewModels)
 
         this.args.title?.let { title ->
-            toArticleDetailPage(title)
+            toArticleDetailPage(pager, title)
         }
 
         val navController = view.findNavController()
-        val floatingButton: FloatingActionButton = view.findViewById(R.id.writings_floating_button)
+        val floatingButton: FloatingActionButton = view.findViewById(R.id.writings_article_floating_button)
         floatingButton.setOnClickListener {
             navController.navigate(ArticleDetailsFragmentDirections.actionArticleDetailsFragmentToArticleListFragment())
         }
@@ -66,20 +65,26 @@ class ArticleDetailsFragment : Fragment() {
         })
     }
 
-    private fun toArticleDetailPage(title: String) {
+    private val blogAPI = BlogAPI()
+
+    private fun toArticleDetailPage(pager: ViewPager2, title: String) {
         val targetIndex = this.viewModel.detailViewModels.indexOfFirst { detailViewModel ->
             detailViewModel.title == title
         }
         if (targetIndex >= 0) {
-            this.pager?.currentItem = targetIndex
+            pager.currentItem = targetIndex
         } else {
-            this.viewModel.detailViewModels.add(ArticleDetailViewModel(title))
-            this.pager?.currentItem = this.viewModel.detailViewModels.count() - 1
+            this.viewModel.detailViewModels.add(ArticleDetailViewModel(title, this.blogAPI))
+            pager.currentItem = this.viewModel.detailViewModels.count() - 1
         }
     }
 }
 
-class ArticleDetailsAdapter(fragment: Fragment, private val articleDetailViewModels: MutableList<ArticleDetailViewModel>) : FragmentStateAdapter(fragment) {
+class ArticleDetailsAdapter(
+    fragment: Fragment,
+    private val articleDetailViewModels: MutableList<ArticleDetailViewModel>
+) : FragmentStateAdapter(fragment) {
+
     override fun getItemCount(): Int {
         return this.articleDetailViewModels.count()
     }

@@ -7,7 +7,7 @@ import top.evian_zhang.evianblog.api.Article
 import top.evian_zhang.evianblog.api.BlogAPI
 import top.evian_zhang.evianblog.api.writings.getArticle
 
-class ArticleDetailViewModel(val title: String) : ViewModel() {
+class ArticleDetailViewModel(val title: String, private val blogAPI: BlogAPI) : ViewModel() {
     enum class FetchStatus {
         Fetching,
         Succeeded,
@@ -16,7 +16,6 @@ class ArticleDetailViewModel(val title: String) : ViewModel() {
 
     private var fetchStatus: MutableLiveData<FetchStatus> = MutableLiveData(FetchStatus.Failed)
     private var article: MutableLiveData<Article?> = MutableLiveData(null)
-    private val blogAPI = BlogAPI()
 
     fun getFetchStatus(): LiveData<FetchStatus> {
         return this.fetchStatus
@@ -36,6 +35,7 @@ class ArticleDetailViewModel(val title: String) : ViewModel() {
             try {
                 article.postValue(blogAPI.getArticle(title))
                 fetchStatus.postValue(FetchStatus.Succeeded)
+                blogAPI.client.close()
             } catch (e: Throwable) {
                 fetchStatus.postValue(FetchStatus.Failed)
             }

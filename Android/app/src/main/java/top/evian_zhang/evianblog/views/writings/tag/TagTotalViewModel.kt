@@ -40,6 +40,7 @@ class TagTotalViewModel : ViewModel() {
                 val tags = blogAPI.getTags()
                 this@TagTotalViewModel.tags.postValue(tags)
                 fetchStatus.postValue(FetchStatus.Succeeded)
+                blogAPI.client.close()
             } catch (e: Throwable) {
                 fetchStatus.postValue(FetchStatus.Failed)
             }
