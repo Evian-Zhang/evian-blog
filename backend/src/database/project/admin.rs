@@ -13,7 +13,7 @@ impl Database {
     pub async fn post_project(&self, project: Project) -> Result<()> {
         let mutate_str = "\
 MERGE (project:Project {name: $name})
-SET project.description = $description, project.languages = $languages, project.frameworks = $frameworks, project.url = $url";
+SET project.description = $description, project.languages = $languages, project.frameworks = $frameworks, project.url = $url, project.priority = $priority";
         let mutate_statement = Neo4jStatement {
             statement: mutate_str,
             parameters: Some(hashmap!{
@@ -21,7 +21,8 @@ SET project.description = $description, project.languages = $languages, project.
                 "description" => serde_json::Value::from(project.description),
                 "languages" => serde_json::Value::from(project.languages),
                 "frameworks" => serde_json::Value::from(project.frameworks),
-                "url" => serde_json::Value::from(project.url)
+                "url" => serde_json::Value::from(project.url),
+                "priority" => serde_json::Value::from(project.priority)
             })
         };
         neo4j_ops::mutate(&self.url, &self.client, &self.authorization, mutate_statement)

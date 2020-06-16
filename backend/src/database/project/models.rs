@@ -7,5 +7,7 @@ pub struct Project {
     pub description: String,
     pub languages: Vec<String>,
     pub frameworks: Vec<String>,
-    pub url: String
+    pub url: String,
+    #[serde(skip_serializing)]
+    pub priority: usize
 }
