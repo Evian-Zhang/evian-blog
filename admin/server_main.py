@@ -39,4 +39,4 @@ if __name__ == '__main__':
         elif post_type == PostType.Project:
             poster.post_project(content)
         elif post_type == PostType.Resume:
-            poster.post_project(content)
+            poster.post_resume(content)
