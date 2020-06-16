@@ -4,7 +4,7 @@ services:
     database:
         image: neo4j:4.0
         environment:
-            NEO4J_dbms_default__database: blog
+            NEO4J_dbms_default__database: article
         env_file:
          - .env
         volumes:
@@ -36,25 +36,17 @@ services:
             - resume:/app/resume
     
     frontend:
-        image: evianzhang1999/blog_frontend:1.0
+        image: docker.pkg.github.com/evian-zhang/evian-blog/blog_frontend:latest
         environment:
             CONFIG_FILE: /frontend_config
         configs:
          - frontend_config
         networks:
             blog:
-
-    nginx:
-        image: nginx:1.17-alpine
-        configs:
-         - source: nginx_config
-           target: /etc/nginx/nginx.conf
-        networks:
-            blog:
-        volumes:
-         - img:/img
+                aliases:
+                    - frontend
         ports:
-            - "80:80"
+            - "8081:8081"
 
 networks:
     blog:
@@ -63,19 +55,13 @@ networks:
 
 volumes:
     database:
-    img:
     resume:
 
 configs:
     backend_config:
-        external: true
-        name: blog_backend_config
-    nginx_config:
-        external: true
-        name: blog_nginx_config
+        file: ./backend_config.toml
     frontend_config:
-        external: true
-        name: blog_frontend_config
+        file: ./frontend_config.json
 
 secrets:
     database_password:
