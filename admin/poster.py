@@ -22,4 +22,4 @@ class Poster:
         post(self.api["post_project"], json.dumps(project, ensure_ascii=False))
 
     def post_resume(self, resume: str):
-        post(self.api["post_resume"], resume)
+        post(self.api["post_resume"], json.dumps(resume, ensure_ascii=False))
