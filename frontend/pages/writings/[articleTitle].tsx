@@ -128,7 +128,7 @@ const ArticlePage = (props: { article: Article }) => {
             </Layout>
             <style jsx>{`
                 #article_body img {
-                    max-width: 80%
+                    max-width: 80%;
                 }
             `}</style>
             <script dangerouslySetInnerHTML={{__html: mathJaxSetup}}></script>
