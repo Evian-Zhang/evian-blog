@@ -127,7 +127,7 @@ const ArticlePage = (props: { article: Article }) => {
                 </Footer>
             </Layout>
             <style jsx>{`
-                #articleBody img {
+                #article_body img {
                     max-width: 80%
                 }
             `}</style>
