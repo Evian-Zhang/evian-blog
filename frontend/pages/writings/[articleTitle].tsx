@@ -18,22 +18,12 @@ const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 class MyRenderer extends Renderer {
-    heading(text, level) {
-        return `<h${level}>
-    <a name="${text}" class="anchor" href="#${text}">
-        ${text}
-    </a>
-</h${level}>
-`;
-    }
     image(href, title, text) {
         if (href.startsWith("evian://")) {
             const uuid = href.slice(8);
-            const newHref = `${IMAGE_BASE_URL}/${uuid}`;
-            return super.image(newHref, title, text);
-        } else {
-            return super.image(href, title, text);
+            href = `${IMAGE_BASE_URL}/${uuid}`;
         }
+        return `<img src="${href}" alt="${text} style="max-width: 80%;"/>`
     }
 }
 
