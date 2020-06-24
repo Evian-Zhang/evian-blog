@@ -4,6 +4,7 @@ import uuid
 import shutil
 import re
 import toml
+import argparse
 
 # base_url SHOULD end with '/'
 def process_img(current_dir, target_dir, base_url):
@@ -46,18 +47,12 @@ def process_file(dir_path, file_name, target_article_dir, target_img_dir, base_u
             print(f"Can't find {article_body_path}")
 
 if __name__ == '__main__':
-    config_path = "config.toml"
-    config = toml.load(config_path)
-    articles_dir = config["articles_dir"]
-    target_article_dir = config["target_article_dir"]
-    target_img_dir = config["target_img_dir"]
-    base_url = config["base_url"]
-    article_paths = os.listdir(articles_dir)
-    for article_path in article_paths:
-        article_absolute_path = os.path.join(articles_dir, article_path)
-        if os.path.isdir(article_absolute_path):
-            sub_article_paths = os.listdir(article_absolute_path)
-            for sub_article_path in sub_article_paths:
-                process_file(article_absolute_path, sub_article_path, target_article_dir, target_img_dir, base_url)
-        else:
-            process_file(articles_dir, article_path, target_article_dir, target_img_dir, base_url)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("file", help="name of json file")
+    parser.add_argument("-d", "--dir", help="path of directory containing the json file", default=".")
+    parser.add_argument("-o", "--output_dir", help="path of directory to output json file", default=".")
+    parser.add_argument("-i", "--image_dir", help="path of directory to output transformed image", default=".")
+    parser.add_argument("-b", "--base_url", help="base url for image", default="evian://")
+    
+    args = parser.parse_args()
+    process_file(args.dir, args.file, args.output_dir, args.image_dir, args.base_url)
